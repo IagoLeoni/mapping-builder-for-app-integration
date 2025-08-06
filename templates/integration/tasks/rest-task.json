@@ -1,0 +1,127 @@
+{
+  "task": "GenericRestV2Task",
+  "taskId": "{{TASK_ID}}",
+  "parameters": {
+    "throwError": {
+      "key": "throwError",
+      "value": {
+        "booleanValue": true
+      }
+    },
+    "responseBody": {
+      "key": "responseBody",
+      "value": {
+        "stringArray": {
+          "stringValues": ["$`Task_{{TASK_ID}}_responseBody`$"]
+        }
+      }
+    },
+    "disableSSLValidation": {
+      "key": "disableSSLValidation",
+      "value": {
+        "booleanValue": false
+      }
+    },
+    "httpParams": {
+      "key": "httpParams"
+    },
+    "authConfigName": {
+      "key": "authConfigName",
+      "value": {
+        "stringValue": ""
+      }
+    },
+    "responseHeader": {
+      "key": "responseHeader",
+      "value": {
+        "stringArray": {
+          "stringValues": ["$`Task_{{TASK_ID}}_responseHeader`$"]
+        }
+      }
+    },
+    "userAgent": {
+      "key": "userAgent",
+      "value": {
+        "stringValue": ""
+      }
+    },
+    "httpMethod": {
+      "key": "httpMethod",
+      "value": {
+        "stringValue": "{{HTTP_METHOD}}"
+      }
+    },
+    "responseStatus": {
+      "key": "responseStatus",
+      "value": {
+        "stringArray": {
+          "stringValues": ["$`Task_{{TASK_ID}}_responseStatus`$"]
+        }
+      }
+    },
+    "timeout": {
+      "key": "timeout",
+      "value": {
+        "intValue": "0"
+      }
+    },
+    "url": {
+      "key": "url",
+      "value": {
+        "stringValue": "{{URL}}"
+      }
+    },
+    "useSSL": {
+      "key": "useSSL",
+      "value": {
+        "booleanValue": false
+      }
+    },
+    "urlFetchingService": {
+      "key": "urlFetchingService",
+      "value": {
+        "stringValue": "HARPOON"
+      }
+    },
+    "urlQueryStrings": {
+      "key": "urlQueryStrings"
+    },
+    "requestorId": {
+      "key": "requestorId",
+      "value": {
+        "stringValue": ""
+      }
+    },
+    "jsonAdditionalHeaders": {
+      "key": "jsonAdditionalHeaders",
+      "value": {
+        "jsonValue": "{{ADDITIONAL_HEADERS}}"
+      }
+    },
+    "requestBody": {
+      "key": "requestBody",
+      "value": {
+        "stringValue": "{{REQUEST_BODY}}"
+      }
+    },
+    "followRedirects": {
+      "key": "followRedirects",
+      "value": {
+        "booleanValue": true
+      }
+    },
+    "additionalHeaders": {
+      "key": "additionalHeaders"
+    }
+  },
+  "nextTasks": "{{NEXT_TASKS}}",
+  "taskExecutionStrategy": "WHEN_ANY_SUCCEED",
+  "displayName": "{{DISPLAY_NAME}}",
+  "externalTaskType": "NORMAL_TASK",
+  "position": { "x": "{{POSITION_X}}", "y": "{{POSITION_Y}}" },
+  "conditionalFailurePolicies": {
+    "defaultFailurePolicy": {
+      "retryStrategy": "IGNORE"
+    }
+  }
+}

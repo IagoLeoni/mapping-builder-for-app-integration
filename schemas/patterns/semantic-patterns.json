@@ -1,0 +1,58 @@
+{
+  "version": "1.0",
+  "description": "Padrões semânticos para mapeamento automático com IA",
+  "patterns": {
+    "name_variations": [
+      "name", "nome", "firstName", "primeiroNome", "given_name",
+      "first_name", "fname", "forename", "givenName", "Name"
+    ],
+    "lastName_variations": [
+      "lastName", "sobrenome", "surname", "family_name", 
+      "last_name", "lname", "apellido", "familyName", "LastName"
+    ],
+    "email_variations": [
+      "email", "mail", "emailAddress", "email_address",
+      "e_mail", "electronic_mail", "correio", "Email", "Mail"
+    ],
+    "company_variations": [
+      "company", "empresa", "organization", "org", 
+      "companyName", "company_name", "organizacao", "Company", "Organization"
+    ],
+    "date_variations": [
+      "date", "data", "timestamp", "datetime", "created_at",
+      "updated_at", "time", "when", "Date", "DateTime"
+    ],
+    "id_variations": [
+      "id", "identifier", "uuid", "eventId", "event_id",
+      "Id", "ID", "Identifier", "UUID"
+    ],
+    "event_variations": [
+      "event", "action", "evento", "tipo", "type", "eventType",
+      "Event", "Action", "Type", "EventType"
+    ]
+  },
+  "hierarchical_patterns": {
+    "person_containers": [
+      "candidate", "person", "pessoa", "user", "employee", 
+      "worker", "funcionario", "Contact", "Individual"
+    ],
+    "company_containers": [
+      "company", "empresa", "organization", "org", "Account", "Client"
+    ],
+    "contact_containers": [
+      "contact", "contato", "info", "details", "data", "information"
+    ],
+    "personal_data_containers": [
+      "personalData", "personal_data", "dadosPessoais", "dados_pessoais",
+      "Personal_Data", "PersonalInfo"
+    ]
+  },
+  "confidence_rules": {
+    "exact_match": 100,
+    "semantic_tag_match": 95,
+    "similar_name": 85,
+    "hierarchical_match": 80,
+    "partial_match": 70,
+    "minimum_confidence": 70
+  }
+}

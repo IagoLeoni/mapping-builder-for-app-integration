@@ -1,0 +1,31 @@
+{
+  "name": "Sistema HR Genérico",
+  "description": "Exemplo genérico para sistemas de RH brasileiros",
+  "schema": {
+    "empresa": {
+      "nome": "string",
+      "codigo": "string",
+      "cnpj": "string"
+    },
+    "funcionario": {
+      "dados_pessoais": {
+        "nome": "string",
+        "sobrenome": "string",
+        "email": "string",
+        "cpf": "string",
+        "telefone": "string"
+      },
+      "dados_profissionais": {
+        "cargo": "string",
+        "departamento": "string",
+        "data_admissao": "string"
+      }
+    },
+    "evento": {
+      "tipo": "string",
+      "data": "string",
+      "origem": "string",
+      "id_evento": "string"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "Salesforce",
+  "description": "Exemplo de schema para integração com Salesforce",
+  "schema": {
+    "Account": {
+      "Name": "string",
+      "Type": "string",
+      "Industry": "string"
+    },
+    "Contact": {
+      "FirstName": "string",
+      "LastName": "string",
+      "Email": "string",
+      "AccountId": "string",
+      "Phone": "string"
+    },
+    "Custom_Event__c": {
+      "Event_Type__c": "string",
+      "Event_Date__c": "datetime",
+      "Source_System__c": "string",
+      "External_ID__c": "string"
+    }
+  }
+}

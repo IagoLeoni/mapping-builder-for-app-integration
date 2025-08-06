@@ -1,0 +1,33 @@
+{
+  "name": "Workday",
+  "description": "Exemplo de schema para integração com Workday",
+  "schema": {
+    "Worker": {
+      "Personal_Data": {
+        "Name_Data": {
+          "Legal_Name": {
+            "Name_Detail_Data": {
+              "First_Name": "string",
+              "Last_Name": "string"
+            }
+          }
+        },
+        "Contact_Data": {
+          "Email_Address_Data": {
+            "Email_Address": "string"
+          }
+        }
+      },
+      "Worker_ID": "string"
+    },
+    "Organization": {
+      "Organization_Name": "string",
+      "Organization_Code": "string"
+    },
+    "Event_Data": {
+      "Event_Type": "string",
+      "Event_DateTime": "datetime",
+      "Source_System": "string"
+    }
+  }
+}

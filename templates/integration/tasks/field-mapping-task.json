@@ -1,0 +1,17 @@
+{
+  "task": "FieldMappingTask",
+  "taskId": "{{TASK_ID}}",
+  "parameters": {
+    "FieldMappingConfigTaskParameterKey": {
+      "key": "FieldMappingConfigTaskParameterKey",
+      "value": {
+        "jsonValue": "{{MAPPING_CONFIG}}"
+      }
+    }
+  },
+  "nextTasks": "{{NEXT_TASKS}}",
+  "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+  "displayName": "{{DISPLAY_NAME}}",
+  "externalTaskType": "NORMAL_TASK",
+  "position": { "x": "{{POSITION_X}}", "y": "{{POSITION_Y}}" }
+}

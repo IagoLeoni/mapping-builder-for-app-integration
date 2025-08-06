@@ -1,0 +1,571 @@
+{
+  "companyName": "ACME",
+  "id": "24e99765-8583-4be5-87ae-489c86642964",
+  "event": "pre-employee.moved",
+  "date": "2019-06-19T23:48:46.952Z",
+  "data": {
+    "job": {
+      "id": 19139,
+      "code": "code-19139",
+      "name": "Developer",
+      "department": {
+        "id": 45,
+        "code": "45124",
+        "name": "App Development",
+        "similarity": "technology"
+      },
+      "role": {
+        "id": 56,
+        "code": "123456",
+        "name": "Developer",
+        "similarity": "developer"
+      },
+      "branch": {
+        "id": 1895,
+        "code": "1234",
+        "name": "GUPY > BRANCH 1"
+      },
+      "customFields": [
+        {
+          "id": "7bd3b8ba-180b-4ae2-b397-240f8fb249c6",
+          "title": "Pergunta",
+          "value": "Resposta"
+        }
+      ]
+    },
+    "application": {
+      "id": 2937132,
+      "score": 71.570454783086,
+      "preHiringInformation": {
+        "key1": "value1",
+        "key2": "value2"
+      },
+      "tags": [
+        "tag1"
+      ],
+      "currentStep": {
+        "id": 86547,
+        "name": "Pré-contratação"
+      }
+    },
+    "user": {
+      "id": 1215163,
+      "name": "Janaina Silva",
+      "email": "janaina.silva@email.com.br"
+    },
+    "candidate": {
+      "id": 1999450,
+      "name": "John",
+      "lastName": "Doe",
+      "email": "john.doe177@gmail.com",
+      "identificationDocument": "25272626207",
+      "countryOfOrigin": "Brasil",
+      "birthdate": "1994-11-16",
+      "addressZipCode": "01414-905",
+      "addressStreet": "Rua Haddock Lobo",
+      "addressNumber": "595 - 10º andar",
+      "addressCity": "São Paulo",
+      "addressState": "São Paulo",
+      "addressStateShortName": "SP",
+      "addressCountry": "Brasil",
+      "addressCountryShortName": "BR",
+      "mobileNumber": "+5511999990000",
+      "phoneNumber": "+551130000000",
+      "schooling": "technical_course",
+      "schoolingStatus": "complete",
+      "disabilities": false,
+      "gender": "Male"
+    },
+    "benefitsEnabled": true,
+    "benefits": {
+      "contracts": [
+        {
+          "id": "48fd89f7-7457-4ff3-b26d-0c5956b51a40",
+          "name": "Contrato de adesão ao benefício de plano odontológico"
+        },
+        {
+          "id": "269228a3-422a-4d6c-8ce0-cc2f82100ae7",
+          "name": "Contrato de adesão ao benefício de seguro de vida"
+        }
+      ],
+      "transportVoucher": {
+        "id": null,
+        "title": null,
+        "type": null,
+        "needSignature": null,
+        "description": null,
+        "termAndCondition": null,
+        "reasonForNotWanting": null,
+        "modality": null,
+        "amountDay": null,
+        "itinerary": null
+      },
+      "dentalPlan": {
+        "id": 6045,
+        "title": "Plano dental 340",
+        "type": "optional",
+        "needSignature": true,
+        "description": "Descrição do plano odontológico",
+        "termAndCondition": "true",
+        "includeDependents": "Sim",
+        "dependents": [
+          {
+            "id": 8369
+          }
+        ]
+      },
+      "healthAssurance": {
+        "id": null,
+        "title": null,
+        "type": null,
+        "needSignature": null,
+        "description": null,
+        "termAndCondition": null,
+        "includeDependents": null,
+        "dependents": []
+      },
+      "lifeAssurance": {
+        "id": 6046,
+        "title": "Beneficio seguro de vida",
+        "type": "optional",
+        "needSignature": true,
+        "description": "Descrição do benefício de seguro de vida",
+        "termAndCondition": "true",
+        "beneficiaries": [
+          {
+            "name": "Pedro",
+            "percentageOfParticipation": "50",
+            "relationship": "Filho(a)"
+          },
+          {
+            "name": "Henrique",
+            "percentageOfParticipation": "50",
+            "relationship": "Filho(a)"
+          }
+        ]
+      },
+      "foodAndMeal": {
+        "id": null,
+        "title": null,
+        "type": null,
+        "needSignature": null,
+        "description": null,
+        "termAndCondition": null,
+        "offerOptions": null,
+        "observation1": null,
+        "observation2": null
+      },
+      "other": [
+        {
+          "id": 5987,
+          "title": "Beneficio Outros",
+          "type": "optional",
+          "needSignature": true,
+          "description": "<p>Beneficio Outros</p>",
+          "termAndCondition": null,
+          "observation1": null,
+          "observation2": null
+        },
+        {
+          "id": 5990,
+          "title": "Beneficio Outros 2",
+          "type": "mandatory",
+          "needSignature": false,
+          "description": "<p>Beneficio outros 2</p>",
+          "termAndCondition": "true",
+          "observation1": "Qualquer observação 1",
+          "observation2": "Qualquer observação 2"
+        },
+        {
+          "id": 5989,
+          "title": "Beneficio Outros 4",
+          "type": "optional",
+          "needSignature": true,
+          "description": "<p>Beneficio outros 4</p>",
+          "termAndCondition": "true",
+          "observation1": "Qualquer observação 1",
+          "observation2": "Qualquer observação 2"
+        }
+      ]
+    },
+    "admission": {
+      "status": "SIGNING_CONTRACT",
+      "admissionDeadline": "2019-06-26T00:00:00.000",
+      "hiringDate": "2019-06-19T00:00:00.000Z",
+      "documentsTemplate": {
+        "id": 1,
+        "name": "List of Documents"
+      },
+      "documents": {
+        "preEmployee": [
+          {
+            "id": 1,
+            "name": "CNH",
+            "values": {
+              "name": "Pre-Employee",
+              "number": 1313213
+            },
+            "validation": {
+              "status": "APPROVED",
+              "validatedAt": "2020-09-17T22: 49: 10.981Z",
+              "companyUserId": 1
+            },
+            "schema": {
+              "id": 1,
+              "name": "CNH",
+              "companyId": null,
+              "additionalProperties": {
+                "additionalProperty1": {
+                  "attribute": true
+                }
+              },
+              "uiSchema": {
+                "name": {
+                  "ui:field": "text",
+                  "ui:options": {
+                    "option1": true,
+                    "option2": [
+                      "value1",
+                      "value2",
+                      "value3"
+                    ],
+                    "option3": {
+                      "attribute1": "value1",
+                      "attribute2": 2
+                    }
+                  },
+                  "ui:help": "text"
+                },
+                "number": {
+                  "ui:field": "number"
+                },
+                "ui:order": [
+                  "name",
+                  "number"
+                ]
+              },
+              "schema": {
+                "required": [
+                  "name",
+                  "number"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "title": "Nome Completo"
+                  },
+                  "number": {
+                    "type": "number",
+                    "title": "Número da CNH"
+                  }
+                },
+                "description": "",
+                "dependencies": {},
+                "definitions": {}
+              }
+            },
+            "missing": false
+          },
+          {
+            "id": 2,
+            "name": "Comprovante de residência",
+            "schema": {
+              "id": 2,
+              "name": "Comprovante de residência",
+              "companyId": null,
+              "additionalProperties": {
+                "isCity": {
+                  "cidade": true
+                },
+                "isState": {
+                  "estado": true
+                },
+                "isCountry": {
+                  "pais": true
+                }
+              },
+              "uiSchema": {
+                "cep": {
+                  "ui:field": "text",
+                  "ui:options": {
+                    "mask": [
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "-",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]"
+                    ],
+                    "exactLength": {
+                      "title": "CEP",
+                      "expectedLength": 8
+                    }
+                  }
+                },
+                "pais": {
+                  "ui:field": "select"
+                },
+                "tipo": {
+                  "ui:field": "select"
+                },
+                "bairro": {
+                  "ui:field": "text"
+                },
+                "cidade": {
+                  "ui:field": "select"
+                },
+                "estado": {
+                  "ui:field": "select"
+                },
+                "numero": {
+                  "ui:field": "houseNumber"
+                },
+                "ui:order": [
+                  "tipo",
+                  "logradouro",
+                  "numero",
+                  "complemento",
+                  "bairro",
+                  "pais",
+                  "estado",
+                  "cidade",
+                  "cep"
+                ],
+                "logradouro": {
+                  "ui:field": "text"
+                },
+                "complemento": {
+                  "ui:field": "text"
+                }
+              },
+              "schema": {
+                "required": [
+                  "tipo",
+                  "logradouro",
+                  "numero",
+                  "bairro",
+                  "cidade",
+                  "estado",
+                  "cep",
+                  "pais"
+                ],
+                "properties": {
+                  "cep": {
+                    "type": "string",
+                    "title": "CEP",
+                    "description": "00000-000"
+                  },
+                  "pais": {
+                    "type": "string",
+                    "title": "País"
+                  },
+                  "tipo": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Tipo"
+                  },
+                  "bairro": {
+                    "type": "string",
+                    "title": "Bairro"
+                  },
+                  "cidade": {
+                    "type": "string",
+                    "title": "Cidade"
+                  },
+                  "estado": {
+                    "type": "string",
+                    "title": "Estado"
+                  },
+                  "numero": {
+                    "type": [
+                      "string",
+                      "null"
+                    ],
+                    "title": "Número"
+                  },
+                  "logradouro": {
+                    "type": "string",
+                    "title": "Logradouro (ex: nome da rua)"
+                  },
+                  "complemento": {
+                    "type": "string",
+                    "title": "Complemento"
+                  }
+                },
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
+          }
+        ],
+        "dependents": [
+          {
+            "name": "Dependente 1",
+            "dependentTypeId": "3808db5b-b808-4cf0-97c6-9ac15cc98125",
+            "documents": [
+              {
+                "id": null,
+                "name": "Dados do dependente",
+                "values": {
+                  "cpf": "12345678900",
+                  "name": "Dependente 1"
+                },
+                "validation": null,
+                "missing": false,
+                "schema": {
+                  "id": null,
+                  "name": "Dados do dependente",
+                  "companyId": null,
+                  "additionalProperties": {},
+                  "uiSchema": {
+                    "name": {
+                      "ui:field": "text"
+                    },
+                    "cpf": {
+                      "ui:field": "text"
+                    },
+                    "ui:order": [
+                      "name",
+                      "cpf"
+                    ]
+                  },
+                  "schema": {
+                    "required": [
+                      "name",
+                      "cpf"
+                    ],
+                    "properties": {
+                      "name": {
+                        "type": "string",
+                        "title": "Nome"
+                      },
+                      "cpf": {
+                        "type": "string",
+                        "title": "CPF"
+                      }
+                    },
+                    "description": "",
+                    "dependencies": {},
+                    "definitions": {}
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "steps": [
+          {
+            "stepName": "Benefícios",
+            "triggerStep": true,
+            "forms": [
+              {
+                "id": null,
+                "name": "Plano de Saúde",
+                "values": {
+                  "cpf": "12345678900",
+                  "name": "Fulano de Tal"
+                },
+                "validation": null,
+                "missing": false,
+                "schema": {
+                  "id": null,
+                  "name": "Plano de Saúde",
+                  "companyId": null,
+                  "additionalProperties": {},
+                  "uiSchema": {
+                    "name": {
+                      "ui:field": "text"
+                    },
+                    "cpf": {
+                      "ui:field": "text"
+                    },
+                    "ui:order": [
+                      "name",
+                      "cpf"
+                    ]
+                  },
+                  "schema": {
+                    "required": [
+                      "name",
+                      "cpf"
+                    ],
+                    "properties": {
+                      "cpf": {
+                        "type": "string",
+                        "title": "CPF"
+                      },
+                      "name": {
+                        "type": "string",
+                        "title": "Nome"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "position": {
+        "positionId": 1000,
+        "integratingAgent": "senai",
+        "contractEndDate": "2023-10-31T03:00:00.000Z",
+        "paymentRecurrence": "mensalista",
+        "registration": "123321",
+        "salary": {
+          "value": 1250.5,
+          "currency": "R$"
+        },
+        "department": {
+          "id": 1,
+          "code": "1234",
+          "name": "Development"
+        },
+        "role": {
+          "id": 523,
+          "code": "44322",
+          "name": "Developer"
+        },
+        "branch": {
+          "id": 3321,
+          "code": "123",
+          "label": "BRANCH > BRANCH 1"
+        },
+        "customFields": [
+          {
+            "id": "7bd3b8ba-180b-4ae2-b397-240f8fb249c6",
+            "title": "Pergunta",
+            "value": "Resposta",
+            "isIntegrated": true
+          }
+        ],
+        "costCenter": {
+          "id": 448,
+          "code": "CODCENCOST",
+          "name": "NomeCentroCustoXYZ",
+          "department": {
+            "id": 19605,
+            "code": null,
+            "name": "Area 1"
+          },
+          "branch": {
+            "id": 116304,
+            "code": "ARAPIRACA",
+            "label": "BRANCH > ARAPIRACA"
+          }
+        },
+        "workShift": {
+          "id": 3,
+          "code": "TURNO 2",
+          "name": "Teste Turno",
+          "description": "Descrição",
+          "workload": "180",
+          "letter": "ABC"
+        }
+      }
+    }
+  }
+}

@@ -7,8 +7,12 @@ import {
   Paper,
   Typography
 } from '@mui/material';
+import TargetSchemaMethodSelector from './TargetSchemaMethodSelector';
+import GeminiSchemaGenerator from './GeminiSchemaGenerator';
+import SchemaTemplateSelector from './SchemaTemplateSelector';
 import SchemaDefinitionStep from './SchemaDefinitionStep';
 import MappingMethodSelector from './MappingMethodSelector';
+import PayloadComparisonStep from './PayloadComparisonStep';
 import AIMappingResults from './AIMappingResults';
 import { MappingConnection } from '../../types';
 
@@ -20,12 +24,18 @@ export type SchemaData = {
 };
 
 export type MappingFlowState = 
-  | 'schema-input'
-  | 'method-selection'
+  | 'target-schema-method'
+  | 'target-schema-definition'
+  | 'mapping-method-selection'
+  | 'payload-comparison'
   | 'ai-processing'
   | 'ai-results'
+  | 'comparison-processing'
+  | 'comparison-results'
   | 'manual-mapping'
   | 'completed';
+
+export type TargetSchemaMethod = 'manual' | 'gemini-assisted' | 'template';
 
 interface MappingWizardProps {
   onMappingsGenerated: (mappings: MappingConnection[]) => void;
@@ -44,14 +54,14 @@ const MappingWizard: React.FC<MappingWizardProps> = ({
   onManualMappingSelected,
   onSchemaProvided
 }) => {
-  const [currentState, setCurrentState] = useState<MappingFlowState>('schema-input');
+  const [currentState, setCurrentState] = useState<MappingFlowState>('target-schema-method');
   const [schemaData, setSchemaData] = useState<SchemaData | null>(null);
   const [generatedMappings, setGeneratedMappings] = useState<MappingConnection[]>([]);
   const [activeStep, setActiveStep] = useState(0);
 
   const handleSchemaSubmit = (data: SchemaData) => {
     setSchemaData(data);
-    setCurrentState('method-selection');
+    setCurrentState('mapping-method-selection');
     setActiveStep(1);
     
     // Notificar o schema para o componente pai
@@ -60,7 +70,7 @@ const MappingWizard: React.FC<MappingWizardProps> = ({
     }
   };
 
-  const handleMethodSelect = async (method: 'ai' | 'manual') => {
+  const handleMethodSelect = async (method: 'ai' | 'manual' | 'payload-comparison') => {
     if (method === 'manual') {
       // Notificar o schema antes de chamar manual mapping
       if (onSchemaProvided && schemaData?.parsedData) {
@@ -70,7 +80,14 @@ const MappingWizard: React.FC<MappingWizardProps> = ({
       return;
     }
 
-    // Usar IA
+    if (method === 'payload-comparison') {
+      // Ir para a interface de equiparação de payloads
+      setCurrentState('payload-comparison');
+      setActiveStep(2);
+      return;
+    }
+
+    // Usar IA tradicional
     setCurrentState('ai-processing');
     setActiveStep(2);
 
@@ -97,13 +114,48 @@ const MappingWizard: React.FC<MappingWizardProps> = ({
     }
   };
 
+  const handlePayloadComparison = async (gupyPayload: any, systemPayload: any) => {
+    setCurrentState('comparison-processing');
+
+    try {
+      const response = await fetch('http://localhost:8080/api/gemini/payload-comparison', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          gupyPayload,
+          systemPayload
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao analisar equiparação');
+      }
+
+      const { mappings } = await response.json();
+      setGeneratedMappings(mappings);
+      setCurrentState('comparison-results');
+    } catch (error) {
+      console.error('Erro na análise de equiparação:', error);
+      // TODO: Mostrar erro para o usuário
+    }
+  };
+
   const handleAcceptMappings = () => {
+    console.log('🎉 handleAcceptMappings - Enviando mapeamentos:', generatedMappings.length);
+    console.log('📋 Mapeamentos sendo enviados:', generatedMappings.map(m => ({
+      id: m.id,
+      source: m.sourceField.name,
+      sourcePath: m.sourceField.path,
+      target: m.targetPath,
+      confidence: m.confidence
+    })));
+    
     onMappingsGenerated(generatedMappings);
     setCurrentState('completed');
   };
 
   const handleRetryMapping = () => {
-    setCurrentState('method-selection');
+    setCurrentState('mapping-method-selection');
     setActiveStep(1);
   };
 
@@ -115,18 +167,35 @@ const MappingWizard: React.FC<MappingWizardProps> = ({
 
   const getStepContent = () => {
     switch (currentState) {
-      case 'schema-input':
+      case 'target-schema-method':
+        return (
+          <TargetSchemaMethodSelector
+            onMethodSelect={(method) => {
+              setCurrentState('target-schema-definition');
+              setActiveStep(1);
+            }}
+          />
+        );
+      
+      case 'target-schema-definition':
         return (
           <SchemaDefinitionStep 
             onSchemaSubmit={handleSchemaSubmit}
           />
         );
       
-      case 'method-selection':
+      case 'mapping-method-selection':
         return (
           <MappingMethodSelector
             schemaData={schemaData!}
             onMethodSelect={handleMethodSelect}
+          />
+        );
+      
+      case 'payload-comparison':
+        return (
+          <PayloadComparisonStep
+            onPayloadsSubmit={handlePayloadComparison}
           />
         );
       
@@ -142,7 +211,20 @@ const MappingWizard: React.FC<MappingWizardProps> = ({
           </Box>
         );
       
+      case 'comparison-processing':
+        return (
+          <Box sx={{ textAlign: 'center', py: 4 }}>
+            <Typography variant="h6" gutterBottom>
+              📋 Comparando Payloads com IA...
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Analisando as diferenças e detectando transformações automáticas
+            </Typography>
+          </Box>
+        );
+      
       case 'ai-results':
+      case 'comparison-results':
         return (
           <AIMappingResults
             mappings={generatedMappings}

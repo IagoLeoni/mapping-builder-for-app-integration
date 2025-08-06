@@ -5,17 +5,89 @@ export class SchemaManagerService {
   private static schemasPath = path.join(__dirname, '../../../schemas');
 
   /**
-   * Carrega o schema padrão da Gupy
+   * Carrega o schema padrão da Gupy (processado para compatibilidade)
    */
   static async loadGupySchema(): Promise<any> {
     try {
       const schemaPath = path.join(__dirname, '../../../schemas/gupy/gupy-full-schema.json');
       const schemaContent = await fs.readFile(schemaPath, 'utf-8');
-      return JSON.parse(schemaContent);
+      const rawSchema = JSON.parse(schemaContent);
+      
+      console.log('📋 SchemaManagerService - Carregando schema Gupy...');
+      
+      // Processar schema para usar a mesma estrutura que o drag & drop
+      let targetSchema = rawSchema;
+      
+      // Extrair body.properties se existe (mesmo que convertSchemaToPayloadStructure)
+      if (rawSchema.properties && rawSchema.properties.body && rawSchema.properties.body.properties) {
+        console.log('📦 SchemaManagerService - Extraindo body.properties...');
+        targetSchema = rawSchema.properties.body;
+      }
+      
+      console.log('✅ SchemaManagerService - Schema processado com sucesso');
+      return {
+        schema: this.processSchemaProperties(targetSchema.properties || {}),
+        rawSchema: rawSchema
+      };
     } catch (error) {
       console.error('Erro ao carregar schema da Gupy:', error);
       throw new Error('Falha ao carregar schema da Gupy');
     }
+  }
+
+  /**
+   * Processa properties do schema para estrutura consistente
+   */
+  private static processSchemaProperties(properties: any): any {
+    const processed: any = {};
+    
+    for (const [key, value] of Object.entries(properties)) {
+      const prop = value as any;
+      
+      if (prop.type === 'object' && prop.properties) {
+        // Objeto aninhado - processar recursivamente
+        processed[key] = this.processSchemaProperties(prop.properties);
+      } else if (prop.type === 'array' && prop.items && prop.items.properties) {
+        // Array de objetos - processar items.properties
+        processed[key] = this.processSchemaProperties(prop.items.properties);
+      } else {
+        // Campo primitivo - manter metadados importantes
+        processed[key] = {
+          type: prop.type || 'string',
+          description: prop.description || '',
+          semanticTags: this.extractSemanticTags(key, prop)
+        };
+      }
+    }
+    
+    return processed;
+  }
+
+  /**
+   * Extrai tags semânticas de um campo
+   */
+  private static extractSemanticTags(fieldName: string, fieldSpec: any): string[] {
+    const tags: string[] = [];
+    
+    // Tags baseadas no nome do campo
+    const name = fieldName.toLowerCase();
+    if (name.includes('name')) tags.push('name');
+    if (name.includes('email')) tags.push('email');
+    if (name.includes('phone') || name.includes('mobile')) tags.push('phone');
+    if (name.includes('document') || name.includes('id')) tags.push('document');
+    if (name.includes('address') || name.includes('city') || name.includes('state')) tags.push('address');
+    if (name.includes('salary') || name.includes('payment')) tags.push('payment');
+    if (name.includes('date') || name.includes('birth')) tags.push('date');
+    
+    // Tags baseadas na descrição
+    if (fieldSpec.description) {
+      const desc = fieldSpec.description.toLowerCase();
+      if (desc.includes('cpf') || desc.includes('rg')) tags.push('document', 'identification');
+      if (desc.includes('telefone') || desc.includes('celular')) tags.push('phone');
+      if (desc.includes('endereço')) tags.push('address');
+    }
+    
+    return tags;
   }
 
   /**

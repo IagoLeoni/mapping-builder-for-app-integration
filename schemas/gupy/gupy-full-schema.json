@@ -1,361 +1,230 @@
 {
-  "version": "2.0",
-  "description": "Schema completo dos webhooks da Gupy com todos os campos disponíveis",
-  "lastUpdated": "2024-08-04",
-  "schema": {
-    "companyName": {
-      "type": "string",
-      "description": "Nome da empresa no sistema Gupy",
-      "example": "ACME",
-      "semanticTags": ["company", "organization", "empresa", "companhia", "corporacao"]
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Gupy Pre-Employee Moved Webhook (Final Schema)",
+  "description": "Schema JSON completo para validar o payload do evento 'pre-employee.moved' da Gupy, incluindo todas as variações observadas (CLT, Estágio, Estrangeiro, Dependentes e Campos Customizados).",
+  "type": "object",
+  "required": [
+    "body"
+  ],
+  "properties": {
+    "params": {
+      "type": "object",
+      "description": "Parâmetros da URL, geralmente vazio."
     },
-    "id": {
-      "type": "string",
-      "description": "Identificador único do evento",
-      "example": "24e99765-8583-4be5-87ae-489c86642964",
-      "semanticTags": ["id", "identifier", "uuid", "eventId", "event_id"]
+    "query": {
+      "type": "object",
+      "description": "Parâmetros de query da URL, geralmente vazio."
     },
-    "event": {
-      "type": "string",
-      "description": "Tipo do evento disparado",
-      "example": "pre-employee.moved",
-      "semanticTags": ["event", "action", "evento", "tipo", "type", "eventType"]
-    },
-    "date": {
-      "type": "string",
-      "format": "ISO-8601",
-      "description": "Data e hora do evento",
-      "example": "2019-06-19T23:48:46.952Z",
-      "semanticTags": ["date", "timestamp", "data", "datetime", "created_at", "updated_at"]
-    },
-    "data.job.id": {
-      "type": "number",
-      "description": "ID da vaga",
-      "example": 19139,
-      "semanticTags": ["job_id", "position_id", "vaga_id", "cargo_id"]
-    },
-    "data.job.code": {
-      "type": "string",
-      "description": "Código da vaga",
-      "example": "code-19139",
-      "semanticTags": ["job_code", "position_code", "codigo_vaga", "codigo_cargo"]
-    },
-    "data.job.name": {
-      "type": "string",
-      "description": "Nome da vaga",
-      "example": "Developer",
-      "semanticTags": ["job_name", "position_name", "nome_vaga", "nome_cargo", "title", "titulo"]
-    },
-    "data.job.department.id": {
-      "type": "number",
-      "description": "ID do departamento",
-      "example": 45,
-      "semanticTags": ["department_id", "dept_id", "departamento_id"]
-    },
-    "data.job.department.code": {
-      "type": "string",
-      "description": "Código do departamento",
-      "example": "45124",
-      "semanticTags": ["department_code", "dept_code", "codigo_departamento"]
-    },
-    "data.job.department.name": {
-      "type": "string",
-      "description": "Nome do departamento",
-      "example": "App Development",
-      "semanticTags": ["department_name", "dept_name", "nome_departamento", "departamento"]
-    },
-    "data.job.role.id": {
-      "type": "number",
-      "description": "ID do papel/função",
-      "example": 56,
-      "semanticTags": ["role_id", "function_id", "funcao_id"]
-    },
-    "data.job.role.name": {
-      "type": "string",
-      "description": "Nome do papel/função",
-      "example": "Developer",
-      "semanticTags": ["role_name", "function_name", "nome_funcao", "funcao"]
-    },
-    "data.job.branch.id": {
-      "type": "number",
-      "description": "ID da filial",
-      "example": 1895,
-      "semanticTags": ["branch_id", "filial_id", "unidade_id"]
-    },
-    "data.job.branch.name": {
-      "type": "string",
-      "description": "Nome da filial",
-      "example": "GUPY > BRANCH 1",
-      "semanticTags": ["branch_name", "nome_filial", "unidade", "filial"]
-    },
-    "data.application.id": {
-      "type": "number",
-      "description": "ID da candidatura",
-      "example": 2937132,
-      "semanticTags": ["application_id", "candidatura_id", "inscricao_id"]
-    },
-    "data.application.score": {
-      "type": "number",
-      "description": "Score da candidatura",
-      "example": 71.570454783086,
-      "semanticTags": ["score", "pontuacao", "nota", "rating"]
-    },
-    "data.application.currentStep.id": {
-      "type": "number",
-      "description": "ID da etapa atual",
-      "example": 86547,
-      "semanticTags": ["step_id", "etapa_id", "stage_id"]
-    },
-    "data.application.currentStep.name": {
-      "type": "string",
-      "description": "Nome da etapa atual",
-      "example": "Pré-contratação",
-      "semanticTags": ["step_name", "nome_etapa", "stage_name", "etapa"]
-    },
-    "data.user.id": {
-      "type": "number",
-      "description": "ID do usuário responsável",
-      "example": 1215163,
-      "semanticTags": ["user_id", "usuario_id", "responsible_id"]
-    },
-    "data.user.name": {
-      "type": "string",
-      "description": "Nome do usuário responsável",
-      "example": "Janaina Silva",
-      "semanticTags": ["user_name", "nome_usuario", "responsible_name", "responsavel"]
-    },
-    "data.user.email": {
-      "type": "string",
-      "format": "email",
-      "description": "Email do usuário responsável",
-      "example": "janaina.silva@email.com.br",
-      "semanticTags": ["user_email", "email_usuario", "responsible_email"]
-    },
-    "data.candidate.id": {
-      "type": "number",
-      "description": "ID do candidato",
-      "example": 1999450,
-      "semanticTags": ["candidate_id", "candidato_id", "person_id"]
-    },
-    "data.candidate.name": {
-      "type": "string",
-      "description": "Primeiro nome do candidato",
-      "example": "John",
-      "semanticTags": ["name", "firstName", "nome", "primeiroNome", "given_name", "first_name"]
-    },
-    "data.candidate.lastName": {
-      "type": "string",
-      "description": "Sobrenome do candidato",
-      "example": "Doe",
-      "semanticTags": ["lastName", "surname", "sobrenome", "ultimoNome", "family_name", "last_name"]
-    },
-    "data.candidate.email": {
-      "type": "string",
-      "format": "email",
-      "description": "Email do candidato",
-      "example": "john.doe177@gmail.com",
-      "semanticTags": ["email", "mail", "emailAddress", "email_address", "e_mail", "correio"]
-    },
-    "data.candidate.identificationDocument": {
-      "type": "string",
-      "description": "Documento de identificação (CPF)",
-      "example": "25272626207",
-      "semanticTags": ["cpf", "document", "documento", "identification", "identificacao"]
-    },
-    "data.candidate.countryOfOrigin": {
-      "type": "string",
-      "description": "País de origem",
-      "example": "Brasil",
-      "semanticTags": ["country", "pais", "origem", "nationality", "nacionalidade"]
-    },
-    "data.candidate.birthdate": {
-      "type": "string",
-      "format": "date",
-      "description": "Data de nascimento",
-      "example": "1994-11-16",
-      "semanticTags": ["birthdate", "birth_date", "data_nascimento", "nascimento", "birthday"]
-    },
-    "data.candidate.addressZipCode": {
-      "type": "string",
-      "description": "CEP do endereço",
-      "example": "01414-905",
-      "semanticTags": ["zipcode", "cep", "postal_code", "codigo_postal"]
-    },
-    "data.candidate.addressStreet": {
-      "type": "string",
-      "description": "Rua do endereço",
-      "example": "Rua Haddock Lobo",
-      "semanticTags": ["street", "rua", "logradouro", "address_line1"]
-    },
-    "data.candidate.addressNumber": {
-      "type": "string",
-      "description": "Número do endereço",
-      "example": "595 - 10º andar",
-      "semanticTags": ["number", "numero", "house_number", "address_number"]
-    },
-    "data.candidate.addressCity": {
-      "type": "string",
-      "description": "Cidade do endereço",
-      "example": "São Paulo",
-      "semanticTags": ["city", "cidade", "municipio"]
-    },
-    "data.candidate.addressState": {
-      "type": "string",
-      "description": "Estado do endereço",
-      "example": "São Paulo",
-      "semanticTags": ["state", "estado", "uf", "province"]
-    },
-    "data.candidate.addressStateShortName": {
-      "type": "string",
-      "description": "Sigla do estado",
-      "example": "SP",
-      "semanticTags": ["state_code", "uf", "estado_sigla"]
-    },
-    "data.candidate.addressCountry": {
-      "type": "string",
-      "description": "País do endereço",
-      "example": "Brasil",
-      "semanticTags": ["country", "pais"]
-    },
-    "data.candidate.mobileNumber": {
-      "type": "string",
-      "description": "Número do celular",
-      "example": "+5511999990000",
-      "semanticTags": ["mobile", "celular", "phone", "telefone", "mobile_phone"]
-    },
-    "data.candidate.phoneNumber": {
-      "type": "string",
-      "description": "Número do telefone fixo",
-      "example": "+551130000000",
-      "semanticTags": ["phone", "telefone", "landline", "fixo"]
-    },
-    "data.candidate.schooling": {
-      "type": "string",
-      "description": "Nível de escolaridade",
-      "example": "technical_course",
-      "semanticTags": ["education", "escolaridade", "schooling", "education_level"]
-    },
-    "data.candidate.schoolingStatus": {
-      "type": "string",
-      "description": "Status da escolaridade",
-      "example": "complete",
-      "semanticTags": ["education_status", "status_escolaridade", "schooling_status"]
-    },
-    "data.candidate.disabilities": {
-      "type": "boolean",
-      "description": "Possui deficiências",
-      "example": false,
-      "semanticTags": ["disabilities", "deficiencias", "pcd", "special_needs"]
-    },
-    "data.candidate.gender": {
-      "type": "string",
-      "description": "Gênero",
-      "example": "Male",
-      "semanticTags": ["gender", "genero", "sexo", "sex"]
-    },
-    "data.admission.status": {
-      "type": "string",
-      "description": "Status da admissão",
-      "example": "SIGNING_CONTRACT",
-      "semanticTags": ["admission_status", "status_admissao", "hiring_status"]
-    },
-    "data.admission.admissionDeadline": {
-      "type": "string",
-      "format": "ISO-8601",
-      "description": "Prazo para admissão",
-      "example": "2019-06-26T00:00:00.000",
-      "semanticTags": ["deadline", "prazo", "admission_deadline", "prazo_admissao"]
-    },
-    "data.admission.hiringDate": {
-      "type": "string",
-      "format": "ISO-8601",
-      "description": "Data de contratação",
-      "example": "2019-06-19T00:00:00.000Z",
-      "semanticTags": ["hiring_date", "data_contratacao", "start_date", "data_inicio"]
-    },
-    "data.admission.position.salary.value": {
-      "type": "number",
-      "description": "Valor do salário",
-      "example": 1250.5,
-      "semanticTags": ["salary", "salario", "wage", "remuneracao", "pay"]
-    },
-    "data.admission.position.salary.currency": {
-      "type": "string",
-      "description": "Moeda do salário",
-      "example": "R$",
-      "semanticTags": ["currency", "moeda", "coin"]
-    },
-    "data.admission.position.department.id": {
-      "type": "number",
-      "description": "ID do departamento da posição",
-      "example": 1,
-      "semanticTags": ["department_id", "dept_id", "departamento_id"]
-    },
-    "data.admission.position.department.name": {
-      "type": "string",
-      "description": "Nome do departamento da posição",
-      "example": "Development",
-      "semanticTags": ["department_name", "dept_name", "nome_departamento", "departamento"]
-    },
-    "data.admission.position.role.id": {
-      "type": "number",
-      "description": "ID do cargo da posição",
-      "example": 523,
-      "semanticTags": ["role_id", "position_id", "cargo_id"]
-    },
-    "data.admission.position.role.name": {
-      "type": "string",
-      "description": "Nome do cargo da posição",
-      "example": "Developer",
-      "semanticTags": ["role_name", "position_name", "nome_cargo", "cargo"]
-    },
-    "data.admission.position.branch.id": {
-      "type": "number",
-      "description": "ID da filial da posição",
-      "example": 3321,
-      "semanticTags": ["branch_id", "filial_id", "unidade_id"]
-    },
-    "data.admission.position.branch.label": {
-      "type": "string",
-      "description": "Label da filial da posição",
-      "example": "BRANCH > BRANCH 1",
-      "semanticTags": ["branch_label", "filial_label", "unidade_label"]
-    },
-    "data.admission.position.costCenter.id": {
-      "type": "number",
-      "description": "ID do centro de custo",
-      "example": 448,
-      "semanticTags": ["cost_center_id", "centro_custo_id", "cc_id"]
-    },
-    "data.admission.position.costCenter.code": {
-      "type": "string",
-      "description": "Código do centro de custo",
-      "example": "CODCENCOST",
-      "semanticTags": ["cost_center_code", "codigo_centro_custo", "cc_code"]
-    },
-    "data.admission.position.costCenter.name": {
-      "type": "string",
-      "description": "Nome do centro de custo",
-      "example": "NomeCentroCustoXYZ",
-      "semanticTags": ["cost_center_name", "nome_centro_custo", "cc_name"]
-    },
-    "data.admission.position.workShift.id": {
-      "type": "number",
-      "description": "ID do turno de trabalho",
-      "example": 3,
-      "semanticTags": ["work_shift_id", "turno_id", "shift_id"]
-    },
-    "data.admission.position.workShift.name": {
-      "type": "string",
-      "description": "Nome do turno de trabalho",
-      "example": "Teste Turno",
-      "semanticTags": ["work_shift_name", "nome_turno", "shift_name", "turno"]
-    },
-    "data.admission.position.workShift.workload": {
-      "type": "string",
-      "description": "Carga horária do turno",
-      "example": "180",
-      "semanticTags": ["workload", "carga_horaria", "hours", "horas"]
+    "body": {
+      "type": "object",
+      "required": [
+        "companyName",
+        "event",
+        "id",
+        "date",
+        "data",
+        "user"
+      ],
+      "properties": {
+        "companyName": {
+          "type": "string",
+          "description": "Nome da empresa que está contratando."
+        },
+        "event": {
+          "type": "string",
+          "description": "Tipo do evento do webhook.",
+          "enum": [
+            "pre-employee.moved"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "ID único do evento."
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Data e hora em que o evento ocorreu."
+        },
+        "data": {
+          "type": "object",
+          "required": [
+            "job",
+            "application",
+            "candidate",
+            "admission",
+            "position"
+          ],
+          "properties": {
+            "job": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "name": { "type": "string" },
+                "type": { "type": "string" },
+                "code": { "type": "string" },
+                "department": { "type": "object" },
+                "role": { "type": "object" },
+                "branch": { "type": "object" },
+                "customFields": {
+                  "type": "array",
+                  "description": "Campos customizados relacionados à vaga. A estrutura do objeto 'value' é dinâmica.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string" },
+                      "title": { "type": "string" },
+                      "value": {
+                        "type": "object",
+                        "description": "Objeto com mapeamento dinâmico de chave-valor, onde as chaves são UUIDs das opções do campo.",
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "application": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "status": { "type": "string" },
+                "currentStep": { "type": "object" }
+              }
+            },
+            "candidate": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "name": { "type": "string" },
+                "lastName": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "identificationDocument": { "type": "string" },
+                "birthdate": { "type": "string", "format": "date" },
+                "addressStreet": { "type": "string" },
+                "addressCity": { "type": "string" },
+                "addressState": { "type": "string" },
+                "mobileNumber": { "type": "string" },
+                "phoneNumber": { "type": ["string", "null"] }
+              }
+            },
+            "admission": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "string" },
+                "hiringDate": { "type": "string", "format": "date-time" },
+                "documentsTemplate": { "type": "object" },
+                "documents": {
+                  "type": "object",
+                  "properties": {
+                    "preEmployee": {
+                      "type": "array",
+                      "description": "Lista de documentos do pré-colaborador. O conteúdo varia conforme o tipo de contratação.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": ["integer", "string"] },
+                          "name": { "type": "string" },
+                          "values": {
+                            "type": "object",
+                            "description": "Campos preenchidos para o documento. A estrutura é altamente dinâmica.",
+                            "additionalProperties": true
+                          },
+                          "validation": { "type": "object" },
+                          "missing": { "type": "boolean", "description": "Indica se o documento está faltando. Campo condicional." }
+                        }
+                      }
+                    }
+                  }
+                },
+                "dependents": {
+                  "type": "array",
+                  "description": "Lista de dependentes. Pode estar vazia.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer" },
+                      "name": { "type": "string" },
+                      "dependentTypeId": { "type": "string" },
+                      "documents": {
+                        "type": "array",
+                        "description": "Documentos específicos do dependente.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": { "type": "string" },
+                            "name": { "type": "string" },
+                            "values": {
+                              "type": "object",
+                              "description": "Campos preenchidos para o documento do dependente. Estrutura dinâmica.",
+                              "additionalProperties": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "position": {
+              "type": "object",
+              "properties": {
+                "positionId": { "type": "integer" },
+                "formGroupType": {
+                  "type": "string",
+                  "description": "Tipo de contratação. Ex: 'clt' para celetista, 'int' para estágio.",
+                  "enum": ["clt", "int"]
+                },
+                "paymentRecurrence": { "type": "string" },
+                "salary": {
+                  "type": "object",
+                  "properties": {
+                    "value": { "type": "number" },
+                    "currency": { "type": "string" }
+                  }
+                },
+                "integratingAgent": {
+                  "type": "string",
+                  "description": "Agente integrador (para estágios). Campo condicional."
+                },
+                "contractEndDate": {
+                  "type": ["string", "null"],
+                  "format": "date-time",
+                  "description": "Data de fim de contrato (para contratos com prazo determinado, como estágio). Campo condicional."
+                },
+                "customFields": {
+                  "type": "array",
+                  "description": "Campos customizados relacionados à contratação específica do candidato.",
+                  "items": {
+                    "type": "object",
+                    "required": ["id", "title", "value", "isIntegrated"],
+                    "properties": {
+                      "id": { "type": "string", "format": "uuid" },
+                      "title": { "type": "string" },
+                      "value": {
+                        "type": ["string", "number", "boolean", "null"],
+                        "description": "Valor do campo, que pode ser de múltiplos tipos primitivos."
+                      },
+                      "isIntegrated": { "type": "boolean" }
+                    }
+                  }
+                }
+              }
+            },
+            "source": { "type": "string" }
+          }
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "name": { "type": "string" },
+            "email": { "type": "string", "format": "email" }
+          }
+        }
+      }
     }
   }
 }

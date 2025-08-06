@@ -10,7 +10,7 @@ import ConfigPanel from './components/ConfigPanel/ConfigPanel';
 import DebugPanel from './components/DebugPanel/DebugPanel';
 
 import { PayloadField, MappingConnection, IntegrationConfig } from './types';
-import { parseGupyPayload } from './utils/payloadParser';
+import { parseGupyPayload, parseGupyPayloadSync } from './utils/payloadParser';
 
 const theme = createTheme({
   palette: {
@@ -41,9 +41,20 @@ function App() {
   const [targetFields, setTargetFields] = useState<PayloadField[]>([]);
 
   React.useEffect(() => {
-    // Parse the Gupy payload from the integration example
-    const fields = parseGupyPayload();
-    setGupyFields(fields);
+    const loadGupyPayload = async () => {
+      try {
+        console.log('🔄 Inicializando estrutura do payload Gupy...');
+        const fields = await parseGupyPayload();
+        console.log(`✅ Estrutura carregada no App: ${fields.length} campos de nível raiz`);
+        setGupyFields(fields);
+      } catch (error) {
+        console.warn('⚠️ Erro ao carregar estrutura, usando sync fallback:', error);
+        const fields = parseGupyPayloadSync();
+        setGupyFields(fields);
+      }
+    };
+    
+    loadGupyPayload();
   }, []);
 
   const handleDragStart = (event: DragStartEvent) => {
@@ -148,16 +159,31 @@ function App() {
   };
 
   const handleAddMappings = (aiMappings: MappingConnection[]) => {
+    console.log('🔄 handleAddMappings chamado com:', aiMappings.length, 'mapeamentos');
+    console.log('📋 Mapeamentos recebidos:', aiMappings.map(m => `${m.sourceField.name} → ${m.targetPath}`));
+    
     // Filtrar mapeamentos que já existem para evitar duplicatas
     const existingPaths = mappings.map(m => m.sourceField.path);
+    console.log('📝 Paths existentes:', existingPaths);
+    
     const newMappings = aiMappings.filter(mapping => 
       !existingPaths.includes(mapping.sourceField.path)
     );
     
+    console.log('✅ Novos mapeamentos após filtro:', newMappings.length);
+    console.log('📊 Detalhes dos novos mapeamentos:', newMappings.map(m => ({
+      source: m.sourceField.path,
+      target: m.targetPath,
+      confidence: m.confidence
+    })));
+    
     if (newMappings.length > 0) {
       const updatedMappings = [...mappings, ...newMappings];
+      console.log('🎯 Total de mapeamentos após atualização:', updatedMappings.length);
       setMappings(updatedMappings);
       updateSystemPayload(updatedMappings);
+    } else {
+      console.warn('⚠️ Nenhum mapeamento novo foi adicionado (todos eram duplicatas ou filtrados)');
     }
   };
 

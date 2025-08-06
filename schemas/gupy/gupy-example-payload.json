@@ -1,274 +1,1509 @@
 {
-  "companyName": "ACME",
-  "id": "24e99765-8583-4be5-87ae-489c86642964",
-  "event": "pre-employee.moved",
-  "date": "2019-06-19T23:48:46.952Z",
-  "data": {
-    "job": {
-      "id": 19139,
-      "code": "code-19139",
-      "name": "Developer",
-      "department": {
-        "id": 45,
-        "code": "45124",
-        "name": "App Development",
-        "similarity": "technology"
-      },
-      "role": {
-        "id": 56,
-        "code": "123456",
-        "name": "Developer",
-        "similarity": "developer"
-      },
-      "branch": {
-        "id": 1895,
-        "code": "1234",
-        "name": "GUPY > BRANCH 1"
-      },
-      "customFields": [
-        {
-          "id": "7bd3b8ba-180b-4ae2-b397-240f8fb249c6",
-          "title": "Pergunta",
-          "value": "Resposta"
-        }
-      ]
-    },
-    "application": {
-      "id": 2937132,
-      "score": 71.570454783086,
-      "preHiringInformation": {
-        "key1": "value1",
-        "key2": "value2"
-      },
-      "tags": [
-        "tag1"
-      ],
-      "currentStep": {
-        "id": 86547,
-        "name": "Pré-contratação"
-      }
-    },
-    "user": {
-      "id": 1215163,
-      "name": "Janaina Silva",
-      "email": "janaina.silva@email.com.br"
-    },
-    "candidate": {
-      "id": 1999450,
-      "name": "John",
-      "lastName": "Doe",
-      "email": "john.doe177@gmail.com",
-      "identificationDocument": "25272626207",
-      "countryOfOrigin": "Brasil",
-      "birthdate": "1994-11-16",
-      "addressZipCode": "01414-905",
-      "addressStreet": "Rua Haddock Lobo",
-      "addressNumber": "595 - 10º andar",
-      "addressCity": "São Paulo",
-      "addressState": "São Paulo",
-      "addressStateShortName": "SP",
-      "addressCountry": "Brasil",
-      "addressCountryShortName": "BR",
-      "mobileNumber": "+5511999990000",
-      "phoneNumber": "+551130000000",
-      "schooling": "technical_course",
-      "schoolingStatus": "complete",
-      "disabilities": false,
-      "gender": "Male"
-    },
-    "benefitsEnabled": true,
-    "benefits": {
-      "contracts": [
-        {
-          "id": "48fd89f7-7457-4ff3-b26d-0c5956b51a40",
-          "name": "Contrato de adesão ao benefício de plano odontológico"
+  "body": {
+    "companyName": "Minerva Foods",
+    "event": "pre-employee.moved",
+    "id": "49589201-dbb3-46b7-b2d6-4f3ec16ac742",
+    "date": "2025-07-03T13:22:51.239Z",
+    "data": {
+      "job": {
+        "departmentCode": "40000605",
+        "roleCode": "35251270",
+        "branchCode": null,
+        "customFields": [
+          {
+            "id": "583d1add-a920-4044-a570-7121e371cd1c",
+            "title": "Qual o seu idioma? / ¿Cuál es tu idioma? / What is your language?",
+            "value": {
+              "0b88a80f-296c-404d-88b9-10246fa099ba": "Seleção Externa (apenas candidatos externo)",
+              "27545cca-6298-47a2-99d0-04cf34d4f929": "AA00010137-CORTES",
+              "35329ad7-22c2-427b-9553-01e40ea63c68": [],
+              "575e6e7b-4b85-405a-834c-2c8f7f2c1f4a": "Escala 6x1 diurno",
+              "67134757-f466-4d2f-b920-7a3bb96a543e": false,
+              "f1924119-959d-42bd-9d05-60cc255ff3ad": true,
+              "583d1add-a920-4044-a570-7121e371cd1c__value": "Português"
+            }
+          }
+        ],
+        "id": 9282348,
+        "name": "VAGA TESTE INTEGRAÇÃO - Auxiliar de Produção",
+        "type": "vacancy_type_effective",
+        "department": {
+          "id": 726936,
+          "code": "40000605",
+          "name": "MIUDOS DIURNO",
+          "similarity": "operations"
         },
-        {
-          "id": "269228a3-422a-4d6c-8ce0-cc2f82100ae7",
-          "name": "Contrato de adesão ao benefício de seguro de vida"
-        }
-      ],
-      "transportVoucher": {
-        "id": null,
-        "title": null,
-        "type": null,
-        "needSignature": null,
-        "description": null,
-        "termAndCondition": null,
-        "reasonForNotWanting": null,
-        "modality": null,
-        "amountDay": null,
-        "itinerary": null
+        "role": {
+          "id": 1304055,
+          "code": "35251270",
+          "name": "35251270 - AUXILIAR PRODUCAO",
+          "similarity": "auxiliary"
+        },
+        "branch": {
+          "id": 1049440,
+          "code": null,
+          "name": "BARRETOS - 09.104.182/0001-15 > MINERVA FINE FOODS - BARRETOS > COUROS - MINERVA > DIRETORIA PROCESSADOS"
+        },
+        "code": "77785-9282348"
       },
-      "dentalPlan": {
-        "id": 6045,
-        "title": "Plano dental 340",
-        "type": "optional",
-        "needSignature": true,
-        "description": "Descrição do plano odontológico",
-        "termAndCondition": "true",
-        "includeDependents": "Sim",
-        "dependents": [
-          {
-            "id": 8369
-          }
-        ]
+      "application": {
+        "id": 574488860,
+        "score": 36.34942587268007,
+        "partnerName": "gupy_public_page",
+        "status": "hired",
+        "tags": [
+          "tagHired"
+        ],
+        "currentStep": {
+          "id": 54392498,
+          "name": "Contratação",
+          "type": "final"
+        },
+        "preHiringInformation": {}
       },
-      "healthAssurance": {
-        "id": null,
-        "title": null,
-        "type": null,
-        "needSignature": null,
-        "description": null,
-        "termAndCondition": null,
-        "includeDependents": null,
-        "dependents": []
+      "candidate": {
+        "name": "Erica",
+        "lastName": "Brugognolle",
+        "email": "ericabru@hotmail.com",
+        "identificationDocument": "26962277806",
+        "countryOfOrigin": "BR",
+        "birthdate": "1979-05-31",
+        "addressZipCode": "01521-000",
+        "addressStreet": "Rua Cesário Ramalho",
+        "addressNumber": "237",
+        "addressCity": "São Paulo",
+        "addressState": "São Paulo",
+        "addressStateShortName": "SP",
+        "addressCountry": "Brasil",
+        "addressCountryShortName": "BR",
+        "mobileNumber": "+5511986637567",
+        "phoneNumber": "+551138050155",
+        "schooling": "post_graduate",
+        "schoolingStatus": "complete",
+        "disabilities": false,
+        "id": 256080,
+        "gender": "Female"
       },
-      "lifeAssurance": {
-        "id": 6046,
-        "title": "Beneficio seguro de vida",
-        "type": "optional",
-        "needSignature": true,
-        "description": "Descrição do benefício de seguro de vida",
-        "termAndCondition": "true",
-        "beneficiaries": [
-          {
-            "name": "Pedro",
-            "percentageOfParticipation": "50",
-            "relationship": "Filho(a)"
-          },
-          {
-            "name": "Henrique",
-            "percentageOfParticipation": "50",
-            "relationship": "Filho(a)"
-          }
-        ]
-      },
-      "foodAndMeal": {
-        "id": null,
-        "title": null,
-        "type": null,
-        "needSignature": null,
-        "description": null,
-        "termAndCondition": null,
-        "offerOptions": null,
-        "observation1": null,
-        "observation2": null
-      },
-      "other": [
-        {
-          "id": 5987,
-          "title": "Beneficio Outros",
-          "type": "optional",
-          "needSignature": true,
-          "description": "<p>Beneficio Outros</p>",
+      "benefitsEnabled": true,
+      "benefits": {
+        "contracts": [],
+        "transportVoucher": {
+          "id": null,
+          "title": null,
+          "type": null,
+          "needSignature": null,
+          "description": null,
           "termAndCondition": null,
+          "allowAdhere": false,
+          "reasonForNotWanting": null,
+          "modality": [],
+          "amountDay": null,
+          "itinerary": null
+        },
+        "dentalPlan": {
+          "id": 277901,
+          "title": "Plano odontológico - Todos cargos",
+          "type": "mandatory",
+          "needSignature": null,
+          "description": "<p>TESTE</p>",
+          "termAndCondition": null,
+          "allowAdhere": true,
+          "includeDependents": null,
+          "dependents": []
+        },
+        "healthAssurance": {
+          "id": 277902,
+          "title": "Plano de saúde - Analistas e Coordenadores",
+          "type": "mandatory",
+          "needSignature": null,
+          "description": "<p>TESTE</p>",
+          "termAndCondition": null,
+          "allowAdhere": true,
+          "includeDependents": null,
+          "dependents": []
+        },
+        "lifeAssurance": {
+          "id": 277900,
+          "title": "Seguro de vida - Demais cargos ",
+          "type": "optional",
+          "needSignature": null,
+          "description": "<p>No caso de não haver cônjuge, não preencher o campo: Inclusão do cônjuge.</p>",
+          "termAndCondition": null,
+          "allowAdhere": true,
+          "beneficiaries": []
+        },
+        "foodAndMeal": {
+          "id": null,
+          "title": null,
+          "type": null,
+          "needSignature": null,
+          "description": null,
+          "termAndCondition": null,
+          "allowAdhere": false,
+          "offerOptions": null,
           "observation1": null,
           "observation2": null
         },
-        {
-          "id": 5990,
-          "title": "Beneficio Outros 2",
-          "type": "mandatory",
-          "needSignature": false,
-          "description": "<p>Beneficio outros 2</p>",
-          "termAndCondition": "true",
-          "observation1": "Qualquer observação 1",
-          "observation2": "Qualquer observação 2"
-        },
-        {
-          "id": 5989,
-          "title": "Beneficio Outros 4",
-          "type": "optional",
-          "needSignature": true,
-          "description": "<p>Beneficio outros 4</p>",
-          "termAndCondition": "true",
-          "observation1": "Qualquer observação 1",
-          "observation2": "Qualquer observação 2"
-        }
-      ]
-    },
-    "admission": {
-      "status": "SIGNING_CONTRACT",
-      "admissionDeadline": "2019-06-26T00:00:00.000",
-      "hiringDate": "2019-06-19T00:00:00.000Z",
-      "documentsTemplate": {
-        "id": 1,
-        "name": "List of Documents"
+        "other": []
       },
-      "documents": {
-        "preEmployee": [
+      "admission": {
+        "status": "c40c64d6-7890-4608-ae5b-c7ce1711ea9a",
+        "admissionDeadline": "2025-06-27T03:00:00.000Z",
+        "hiringDate": "2025-06-30T03:00:00.000Z",
+        "documentsTemplate": {
+          "id": 52807,
+          "name": "Admissão CLT"
+        },
+        "documents": [
           {
-            "id": 1,
-            "name": "CNH",
+            "id": 41,
+            "name": "Informações pessoais",
             "values": {
-              "name": "Pre-Employee",
-              "number": 1313213
+              "sexo": "Feminino",
+              "etnia": "Branca",
+              "deficiente": "Não",
+              "dependentes": [
+                "Mariana Brugognolle",
+                "Malu Brugognolle"
+              ],
+              "estado-civil": "Solteiro(a)",
+              "nacionalidade": "Brasil",
+              "data-de-nascimento": "1979-05-31T03:00:00.000Z",
+              "uniao-estavel": "Não",
+              "documento-identificacao": "Carteira de Identidade (RG)"
             },
             "validation": {
               "status": "APPROVED",
-              "validatedAt": "2020-09-17T22: 49: 10.981Z",
-              "companyUserId": 1
+              "validatedAt": "2025-06-20T14:56:20.427Z",
+              "isAutomaticallyValidated": false,
+              "cannotValidate": true
             },
             "schema": {
-              "id": 1,
-              "name": "CNH",
+              "id": 41,
+              "name": "Informações pessoais",
               "companyId": null,
               "additionalProperties": {
-                "additionalProperty1": {
-                  "attribute": true
-                }
+                "isCountry": {
+                  "nacionalidade": true
+                },
+                "conditionallyHiddenFieldsByFeatureFlags": [
+                  "documento-identificacao-outro"
+                ]
               },
               "uiSchema": {
-                "name": {
-                  "ui:field": "text",
-                  "ui:options": {
-                    "option1": true,
-                    "option2": [
-                      "value1",
-                      "value2",
-                      "value3"
-                    ],
-                    "option3": {
-                      "attribute1": "value1",
-                      "attribute2": 2
-                    }
-                  },
-                  "ui:help": "text"
+                "sexo": {
+                  "ui:field": "select"
                 },
-                "number": {
-                  "ui:field": "number"
+                "etnia": {
+                  "ui:field": "select"
                 },
                 "ui:order": [
-                  "name",
-                  "number"
-                ]
+                  "data-de-nascimento",
+                  "sexo",
+                  "etnia",
+                  "nacionalidade",
+                  "documento-identificacao",
+                  "deficiente",
+                  "estado-civil",
+                  "uniao-estavel",
+                  "dependentes"
+                ],
+                "deficiente": {
+                  "ui:field": "radio",
+                  "ui:options": {
+                    "inline": true
+                  }
+                },
+                "dependentes": {
+                  "ui:field": "fieldset",
+                  "ui:options": {
+                    "addOptionsName": "Adicionar dependente",
+                    "additionalInformation": "<strong>Observação</strong>: Para evitar atrasos e assegurar acesso aos benefícios e ao salário-família, tenha em mãos a documentação de todos os seus dependentes no momento do preenchimento.",
+                    "initialOptionsQuantityOnOpen": 1
+                  }
+                },
+                "estado-civil": {
+                  "ui:field": "select"
+                },
+                "nacionalidade": {
+                  "ui:field": "select"
+                },
+                "uniao-estavel": {
+                  "ui:widget": "hidden"
+                },
+                "data-de-nascimento": {
+                  "ui:field": "date",
+                  "ui:options": {
+                    "isPastDate": true
+                  }
+                },
+                "documento-identificacao": {
+                  "ui:widget": "hidden"
+                }
               },
               "schema": {
                 "required": [
-                  "name",
-                  "number"
+                  "data-de-nascimento",
+                  "sexo",
+                  "etnia",
+                  "estado-civil",
+                  "nacionalidade",
+                  "deficiente"
                 ],
                 "properties": {
-                  "name": {
+                  "sexo": {
+                    "enum": [],
                     "type": "string",
-                    "title": "Nome Completo"
+                    "title": "Qual o seu sexo?"
                   },
-                  "number": {
-                    "type": "number",
-                    "title": "Número da CNH"
+                  "etnia": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Você se classifica como qual raça/cor?",
+                    "infoTipText": "De acordo com o Art. 39º, incluído pela Lei nº 14.553 de 2023, os empregadores privados e os trabalhadores que lhes sejam subordinados deverão preencher campos destinados a identificar o segmento étnico e racial."
+                  },
+                  "deficiente": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Você possui algum tipo de deficiência?"
+                  },
+                  "dependentes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "title": "Quem são seu(s) dependente(s)?",
+                    "description": "Nome do(a) dependente"
+                  },
+                  "estado-civil": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Qual o seu estado civil?"
+                  },
+                  "nacionalidade": {
+                    "type": "string",
+                    "title": "Qual a sua nacionalidade?"
+                  },
+                  "uniao-estavel": {
+                    "type": "boolean",
+                    "title": "Você está em uma união estável?"
+                  },
+                  "data-de-nascimento": {
+                    "type": "string",
+                    "title": "Qual a sua data de nascimento?"
+                  },
+                  "documento-identificacao": {
+                    "type": "string",
+                    "title": "Qual documento de identificação você utilizará?",
+                    "description": "Selecione uma opção",
+                    "defaultValueIfHidden": "Carteira de Identidade (RG)",
+                    "onlyShowIfFeatureFlags": [
+                      "admission-handle-conditional-documents-with-cin"
+                    ]
                   }
                 },
-                "description": "",
                 "dependencies": {},
                 "definitions": {}
               }
+            }
+          },
+          {
+            "id": 3,
+            "name": "Carteira de Identidade (RG)",
+            "values": {
+              "nome": "Erica Brugognolle",
+              "etnia": "Branca",
+              "genero": "Feminino",
+              "uf-emissor": "SP",
+              "nome-da-mae": "Alice Maria",
+              "nome-social": "Erica Brugognolle",
+              "estado-civil": "Solteiro(a)",
+              "numero-do-rg": "277756625",
+              "filiacao-tipo": "Mãe",
+              "nacionalidade": "Brasil",
+              "orgao-emissor": "SSP",
+              "filiacao-tipo-2": "Pai",
+              "data-de-expedicao": "2020-01-01T03:00:00.000Z",
+              "cidade-onde-nasceu": "São Paulo",
+              "data-de-nascimento": "1979-05-31T03:00:00.000Z",
+              "estado-onde-nasceu": "São Paulo",
+              "uniao-estavel": "Não",
+              "nome-do-pai": "Mauricio Antonio"
             },
-            "missing": false
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:40:38.172Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 3,
+              "name": "Carteira de Identidade (RG)",
+              "companyId": null,
+              "additionalProperties": {
+                "isCity": {
+                  "cidade-onde-nasceu": true
+                },
+                "isState": {
+                  "estado-onde-nasceu": true
+                },
+                "isCountry": {
+                  "nacionalidade": true
+                },
+                "isOrgaoEmissor": {
+                  "orgao-emissor": true
+                }
+              },
+              "uiSchema": {
+                "nome": {
+                  "ui:field": "text",
+                  "ui:options": {
+                    "isFullName": true
+                  }
+                },
+                "etnia": {
+                  "ui:widget": "hidden"
+                },
+                "genero": {
+                  "ui:field": "select"
+                },
+                "ui:order": [
+                  "cod-ibge-cidade",
+                  "cod-ibge-estado",
+                  "nome",
+                  "nome-social",
+                  "genero",
+                  "etnia",
+                  "estado-civil",
+                  "uniao-estavel",
+                  "nacionalidade",
+                  "estado-onde-nasceu",
+                  "cidade-onde-nasceu",
+                  "data-de-nascimento",
+                  "filiacao-tipo",
+                  "nome-da-mae",
+                  "filiacao-tipo-2",
+                  "nome-do-pai",
+                  "numero-do-rg",
+                  "data-de-expedicao",
+                  "orgao-emissor",
+                  "uf-emissor"
+                ],
+                "uf-emissor": {
+                  "ui:field": "select"
+                },
+                "nome-da-mae": {
+                  "ui:field": "text",
+                  "classNames": "input-margin-top-negative",
+                  "ui:options": {
+                    "isFullName": true
+                  }
+                },
+                "nome-do-pai": {
+                  "ui:widget": "hidden"
+                },
+                "nome-social": {
+                  "ui:help": "De acordo com o Art. 1º do Decreto nº 8.727 de 2016, nome social é a designação pela qual a pessoa travesti ou transexual se identifica e é socialmente reconhecida.",
+                  "ui:field": "text"
+                },
+                "estado-civil": {
+                  "ui:field": "select"
+                },
+                "numero-do-rg": {
+                  "ui:field": "text",
+                  "ui:options": {
+                    "minLength": {
+                      "title": "O RG",
+                      "length": 6
+                    }
+                  }
+                },
+                "filiacao-tipo": {
+                  "ui:field": "select"
+                },
+                "nacionalidade": {
+                  "ui:field": "select"
+                },
+                "orgao-emissor": {
+                  "ui:field": "select",
+                  "ui:options": {
+                    "tipHelperMessage": "Dúvidas sobre o que é o órgão emissor? <a href=\"#rg-orgao-emissor-modal\">Clique aqui e saiba como encontrá-lo no seu documento.</a>",
+                    "searchableDebounce": true
+                  }
+                },
+                "uniao-estavel": {
+                  "ui:widget": "hidden"
+                },
+                "cod-ibge-cidade": {
+                  "ui:widget": "hidden"
+                },
+                "cod-ibge-estado": {
+                  "ui:widget": "hidden"
+                },
+                "filiacao-tipo-2": {
+                  "ui:field": "select"
+                },
+                "data-de-expedicao": {
+                  "ui:field": "date",
+                  "ui:options": {
+                    "isPastDate": true
+                  }
+                },
+                "cidade-onde-nasceu": {
+                  "ui:field": "select"
+                },
+                "data-de-nascimento": {
+                  "ui:field": "date",
+                  "ui:options": {
+                    "isPastDate": true
+                  }
+                },
+                "estado-onde-nasceu": {
+                  "ui:field": "select"
+                }
+              },
+              "schema": {
+                "type": "object",
+                "required": [
+                  "nome",
+                  "genero",
+                  "nacionalidade",
+                  "estado-civil",
+                  "data-de-nascimento",
+                  "estado-onde-nasceu",
+                  "cidade-onde-nasceu",
+                  "nome-da-mae",
+                  "numero-do-rg",
+                  "data-de-expedicao",
+                  "orgao-emissor",
+                  "uf-emissor",
+                  "filiacao-tipo",
+                  "filiacao-tipo-2"
+                ],
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "title": "Nome completo",
+                    "infoTipText": "Seu nome civil completo, presente no documento de RG."
+                  },
+                  "etnia": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Raça/Cor",
+                    "infoTipText": "De acordo com o Art. 39º incluído pela Lei nº 14.553 de 2023, os empregadores privados e a trabalhadores que lhes sejam subordinados deverá conter campos destinados a identificar o segmento étnico e racial."
+                  },
+                  "genero": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Sexo"
+                  },
+                  "uf-emissor": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "UF emissor",
+                    "isDeactivable": true
+                  },
+                  "nome-da-mae": {
+                    "type": "string",
+                    "title": "Nome completo da primeira filiação"
+                  },
+                  "nome-do-pai": {
+                    "type": "string",
+                    "title": "Nome completo da segunda filiação"
+                  },
+                  "nome-social": {
+                    "type": "string",
+                    "title": "Nome social"
+                  },
+                  "estado-civil": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Estado civil"
+                  },
+                  "numero-do-rg": {
+                    "type": "string",
+                    "title": "Número do RG"
+                  },
+                  "filiacao-tipo": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Primeira filiação",
+                    "default": "Mãe"
+                  },
+                  "nacionalidade": {
+                    "type": "string",
+                    "title": "Nacionalidade"
+                  },
+                  "orgao-emissor": {
+                    "type": "string",
+                    "title": "Orgão emissor",
+                    "description": "Digite o órgão emissor",
+                    "isDeactivable": true
+                  },
+                  "uniao-estavel": {
+                    "type": "string",
+                    "title": "Você está em uma união estável?"
+                  },
+                  "cod-ibge-cidade": {
+                    "type": "string",
+                    "title": "Código IBGE da cidade"
+                  },
+                  "cod-ibge-estado": {
+                    "type": "string",
+                    "title": "Código IBGE do estado"
+                  },
+                  "filiacao-tipo-2": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Segunda filiação",
+                    "default": "Pai"
+                  },
+                  "data-de-expedicao": {
+                    "type": "string",
+                    "title": "Data de expedição",
+                    "isDeactivable": true
+                  },
+                  "cidade-onde-nasceu": {
+                    "type": "string",
+                    "title": "Cidade onde nasceu"
+                  },
+                  "data-de-nascimento": {
+                    "type": "string",
+                    "title": "Data de nascimento"
+                  },
+                  "estado-onde-nasceu": {
+                    "type": "string",
+                    "title": "Estado onde nasceu"
+                  }
+                },
+                "description": "A validação considera somente as informações da carteira de identidade (RG), ou seja, outros documentos enviados aqui (como a CNH) não são aceitos nessa seção.",
+                "dependencies": {},
+                "hasEditableFields": true,
+                "hasDeactivableFields": true,
+                "definitions": {}
+              }
+            }
+          },
+          {
+            "id": 4,
+            "name": "CPF",
+            "values": {
+              "numero-do-cpf": "269.622.778-06"
+            },
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:40:51.994Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 4,
+              "name": "CPF",
+              "companyId": null,
+              "additionalProperties": null,
+              "uiSchema": {
+                "numero-do-cpf": {
+                  "ui:field": "taxpayerIdentification"
+                }
+              },
+              "schema": {
+                "required": [
+                  "numero-do-cpf"
+                ],
+                "properties": {
+                  "numero-do-cpf": {
+                    "type": "string",
+                    "title": "Número do CPF"
+                  }
+                },
+                "description": "É importante que a imagem mostre todo o documento. Não recorte a imagem para exibir somente o número do CPF.",
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
+          },
+          {
+            "id": 31,
+            "name": "Comprovante de PIS/Pasep ",
+            "values": {
+              "numero": "123.45678.92-0",
+              "primeiro-emprego": true
+            },
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:39:36.690Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 31,
+              "name": "Comprovante de PIS/Pasep ",
+              "companyId": null,
+              "additionalProperties": null,
+              "uiSchema": {
+                "numero": {
+                  "ui:field": "text",
+                  "ui:options": {
+                    "mask": [
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      ".",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      ".",
+                      "[0-9]",
+                      "[0-9]",
+                      "-",
+                      "[0-9]"
+                    ],
+                    "exactLength": {
+                      "title": "número do PIS/Pasep",
+                      "expectedLength": 11
+                    },
+                    "mobileKeyboard": true,
+                    "sameCharacters": {
+                      "title": "PIS/Pasep"
+                    }
+                  }
+                },
+                "ui:order": [
+                  "numero",
+                  "primeiro-emprego"
+                ],
+                "primeiro-emprego": {
+                  "ui:field": "boolean",
+                  "ui:options": {
+                    "inline": true
+                  }
+                }
+              },
+              "schema": {
+                "required": [
+                  "numero",
+                  "primeiro-emprego"
+                ],
+                "properties": {
+                  "numero": {
+                    "type": "string",
+                    "title": "Número do PIS/Pasep",
+                    "description": "000.00000.00-0"
+                  },
+                  "primeiro-emprego": {
+                    "type": "boolean",
+                    "title": "É o seu primeiro emprego de carteira assinada?"
+                  }
+                },
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
+          },
+          {
+            "id": 35,
+            "name": "Atestado de Saúde Ocupacional (ASO)",
+            "values": {
+              "data_exame": "2025-06-20T03:00:00.000Z"
+            },
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:39:55.529Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 35,
+              "name": "Atestado de Saúde Ocupacional (ASO)",
+              "companyId": null,
+              "additionalProperties": null,
+              "uiSchema": {
+                "ui:order": [
+                  "data_exame"
+                ],
+                "data_exame": {
+                  "ui:field": "date"
+                }
+              },
+              "schema": {
+                "type": "object",
+                "required": [
+                  "data_exame"
+                ],
+                "properties": {
+                  "data_exame": {
+                    "type": "string",
+                    "title": "Data da realização do exame admissional:"
+                  }
+                },
+                "description": "o Atestado de Saúde Ocupacional (ASO) é um documento recebido logo após a realização do exame admissional.",
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
+          },
+          {
+            "id": 33,
+            "name": "Cartão Nacional de Saúde (CNS)",
+            "values": {
+              "numero": "123 4567 8910 1112"
+            },
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:40:14.572Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 33,
+              "name": "Cartão Nacional de Saúde (CNS)",
+              "companyId": null,
+              "additionalProperties": null,
+              "uiSchema": {
+                "numero": {
+                  "ui:field": "text",
+                  "ui:options": {
+                    "mask": [
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      " ",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      " ",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      " ",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]"
+                    ],
+                    "exactLength": {
+                      "title": "número do CNS",
+                      "expectedLength": 15
+                    },
+                    "mobileKeyboard": true,
+                    "sameCharacters": {
+                      "title": "CNS"
+                    }
+                  }
+                },
+                "ui:order": [
+                  "numero"
+                ]
+              },
+              "schema": {
+                "type": "object",
+                "required": [
+                  "numero"
+                ],
+                "properties": {
+                  "numero": {
+                    "type": "string",
+                    "title": "Número do CNS",
+                    "description": "000 0000 0000 0000"
+                  }
+                },
+                "description": "Todos os brasileiros possuem cadastro no SUS. O número pode ser encontrado no CNS (Cartão Nacional de Saúde), cartão do convênio, acessando o site ou pelos aplicativos do SUS (IOS e Android)",
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
+          },
+          {
+            "id": 5,
+            "name": "Carteira de Habilitação (CNH)",
+            "values": {
+              "validade": "2025-07-01T03:00:00.000Z",
+              "categoria": "B",
+              "uf-emissor": "SP",
+              "orgao-emissor": "Denatran",
+              "data-de-emissao": "2020-07-01T03:00:00.000Z",
+              "numero-de-registro": "12345678910",
+              "data-da-primeira-habilitacao": "2000-10-18T03:00:00.000Z"
+            },
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:40:27.932Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 5,
+              "name": "Carteira de Habilitação (CNH)",
+              "companyId": null,
+              "additionalProperties": null,
+              "uiSchema": {
+                "ui:order": [
+                  "categoria",
+                  "numero-de-registro",
+                  "data-da-primeira-habilitacao",
+                  "orgao-emissor",
+                  "uf-emissor",
+                  "data-de-emissao",
+                  "validade"
+                ],
+                "validade": {
+                  "ui:field": "date"
+                },
+                "categoria": {
+                  "ui:field": "select"
+                },
+                "uf-emissor": {
+                  "ui:field": "select"
+                },
+                "orgao-emissor": {
+                  "ui:field": "select"
+                },
+                "data-de-emissao": {
+                  "ui:field": "date",
+                  "ui:options": {
+                    "isPastDate": true
+                  }
+                },
+                "numero-de-registro": {
+                  "ui:field": "text",
+                  "ui:options": {
+                    "mask": [
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]"
+                    ],
+                    "exactLength": {
+                      "title": "número de registro",
+                      "expectedLength": 11
+                    },
+                    "mobileKeyboard": true,
+                    "sameCharacters": {
+                      "title": "registro"
+                    }
+                  }
+                },
+                "data-da-primeira-habilitacao": {
+                  "ui:field": "date",
+                  "ui:options": {
+                    "isPastDate": true
+                  }
+                }
+              },
+              "schema": {
+                "type": "object",
+                "required": [
+                  "categoria",
+                  "numero-de-registro",
+                  "data-da-primeira-habilitacao",
+                  "orgao-emissor",
+                  "uf-emissor",
+                  "data-de-emissao",
+                  "validade"
+                ],
+                "properties": {
+                  "validade": {
+                    "type": "string",
+                    "title": "Validade"
+                  },
+                  "categoria": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Categoria"
+                  },
+                  "uf-emissor": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "UF emissor"
+                  },
+                  "orgao-emissor": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Orgão emissor"
+                  },
+                  "data-de-emissao": {
+                    "type": "string",
+                    "title": "Data de emissão"
+                  },
+                  "numero-de-registro": {
+                    "type": "string",
+                    "title": "Número de registro",
+                    "description": "00000000000"
+                  },
+                  "data-da-primeira-habilitacao": {
+                    "type": "string",
+                    "title": "Data da 1ª habilitação"
+                  }
+                },
+                "description": "envie uma foto da sua Carteira Nacional de Habilitação ou um print da sua CNH digital que você pode acessar no aplicativo Carteira Digital de Trânsito (versão Android ou Versão iOS)",
+                "dependencies": {},
+                "definitions": {}
+              }
+            }
+          },
+          {
+            "id": 8,
+            "name": "Carteira de Trabalho (CTPS)",
+            "values": {
+              "ctps": "CTPS Física",
+              "serie-ctps": "00241",
+              "uf-emissor": "SP",
+              "numero-ctps": "05665",
+              "data-de-emissao": "2000-07-18T03:00:00.000Z",
+              "primeiro-emprego": true
+            },
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:41:02.742Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 8,
+              "name": "Carteira de Trabalho (CTPS)",
+              "companyId": null,
+              "additionalProperties": null,
+              "uiSchema": {
+                "ui:order": [
+                  "numero-ctps",
+                  "serie-ctps",
+                  "data-de-emissao",
+                  "uf-emissor",
+                  "numero-do-cpf",
+                  "primeiro-emprego"
+                ],
+                "serie-ctps": {
+                  "ui:field": "specialNumber",
+                  "ui:options": {
+                    "minLength": {
+                      "title": "A série da Carteira de Trabalho (CTPS)",
+                      "length": 4
+                    },
+                    "sameCharacters": {
+                      "title": "série da Carteira de Trabalho (CTPS)"
+                    }
+                  }
+                },
+                "uf-emissor": {
+                  "ui:field": "select"
+                },
+                "numero-ctps": {
+                  "ui:field": "specialNumber",
+                  "ui:options": {
+                    "minLength": {
+                      "title": "O número da Carteira de Trabalho (CTPS)",
+                      "length": 5
+                    },
+                    "sameCharacters": {
+                      "title": "Carteira de Trabalho (CTPS)"
+                    }
+                  }
+                },
+                "numero-do-cpf": {
+                  "ui:field": "taxpayerIdentification",
+                  "ui:widget": "hidden"
+                },
+                "data-de-emissao": {
+                  "ui:field": "date"
+                },
+                "primeiro-emprego": {
+                  "ui:field": "boolean",
+                  "ui:options": {
+                    "inline": true
+                  }
+                }
+              },
+              "schema": {
+                "required": [
+                  "numero-ctps",
+                  "serie-ctps",
+                  "data-de-emissao",
+                  "uf-emissor",
+                  "primeiro-emprego"
+                ],
+                "properties": {
+                  "serie-ctps": {
+                    "type": "string",
+                    "title": "Série da Carteira de Trabalho (CTPS)",
+                    "isDeactivable": true,
+                    "conditionalControl": {
+                      "field": "ctps",
+                      "value": "CTPS Física"
+                    }
+                  },
+                  "uf-emissor": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "UF emissor",
+                    "isDeactivable": true,
+                    "conditionalControl": {
+                      "field": "ctps",
+                      "value": "CTPS Física"
+                    }
+                  },
+                  "numero-ctps": {
+                    "type": "string",
+                    "title": "Número da Carteira de Trabalho (CTPS)",
+                    "conditionalControl": {
+                      "field": "ctps",
+                      "value": "CTPS Física"
+                    }
+                  },
+                  "numero-do-cpf": {
+                    "type": "string",
+                    "title": "Número do CPF",
+                    "conditionalControl": {
+                      "field": "ctps",
+                      "value": "CTPS Digital"
+                    }
+                  },
+                  "data-de-emissao": {
+                    "type": "string",
+                    "title": "Data de emissão",
+                    "isDeactivable": true,
+                    "conditionalControl": {
+                      "field": "ctps",
+                      "value": "CTPS Física"
+                    }
+                  },
+                  "primeiro-emprego": {
+                    "type": "boolean",
+                    "title": "É o seu primeiro emprego de carteira assinada?"
+                  }
+                },
+                "conditionals": [
+                  {
+                    "key": "ctps",
+                    "options": [
+                      {
+                        "name": "CTPS Física"
+                      },
+                      {
+                        "name": "CTPS Digital"
+                      }
+                    ],
+                    "question": "Qual modalidade da CTPS você quer enviar?"
+                  }
+                ],
+                "hasEditableFields": true,
+                "hasDeactivableFields": true,
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
+          },
+          {
+            "id": 36,
+            "name": "Comprovante de Escolaridade",
+            "values": {
+              "grau_instrucao": "Educação superior completa"
+            },
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:41:22.365Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 36,
+              "name": "Comprovante de Escolaridade",
+              "companyId": null,
+              "additionalProperties": null,
+              "uiSchema": {
+                "ui:order": [
+                  "grau_instrucao"
+                ],
+                "grau_instrucao": {
+                  "ui:field": "select"
+                }
+              },
+              "schema": {
+                "type": "object",
+                "required": [
+                  "grau_instrucao"
+                ],
+                "properties": {
+                  "grau_instrucao": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Grau de instrução"
+                  }
+                },
+                "description": "envie o seu comprovante de escolaridade mais recente.",
+                "hasEditableFields": true,
+                "hasDeactivableFields": false,
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
+          },
+          {
+            "id": 34,
+            "name": "Foto",
+            "values": {},
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:41:41.708Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 34,
+              "name": "Foto",
+              "companyId": null,
+              "additionalProperties": null,
+              "uiSchema": {},
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {},
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
+          },
+          {
+            "id": 6,
+            "name": "Título de Eleitor",
+            "values": {
+              "zona": "006",
+              "secao": "0389",
+              "numero": "2840 9566 0141",
+              "uf-emissor": "SP",
+              "cidade-votacao": "São Paulo",
+              "data-de-emissao": "2017-08-10T03:00:00.000Z"
+            },
+            "validation": {
+              "status": "APPROVED",
+              "validatedAt": "2025-06-20T18:30:52.367Z",
+              "isAutomaticallyValidated": true,
+              "isSample": false,
+              "details": {
+                "fields": {
+                  "nome": "ACCEPTED",
+                  "zona": "ACCEPTED",
+                  "secao": "ACCEPTED",
+                  "numero": "ACCEPTED",
+                  "uf-emissor": "ACCEPTED",
+                  "cidade-votacao": "ACCEPTED"
+                },
+                "images": [
+                  {
+                    "type": "TITULO_ELEITOR",
+                    "status": "ACCEPTED"
+                  },
+                  {
+                    "type": "TITULO_ELEITOR",
+                    "status": "ACCEPTED"
+                  }
+                ],
+                "aiFieldValidationAttempts": 3
+              }
+            },
+            "schema": {
+              "id": 6,
+              "name": "Título de Eleitor",
+              "companyId": null,
+              "additionalProperties": {
+                "isCityCode": {
+                  "cidade-votacao": true
+                },
+                "isStateCode": {
+                  "uf-emissor": true
+                }
+              },
+              "uiSchema": {
+                "zona": {
+                  "ui:field": "text",
+                  "ui:options": {
+                    "mask": [
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]"
+                    ],
+                    "exactLength": {
+                      "title": "número de Zona Eleitoral",
+                      "expectedLength": 3
+                    }
+                  }
+                },
+                "secao": {
+                  "ui:field": "text",
+                  "ui:options": {
+                    "mask": [
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]"
+                    ],
+                    "exactLength": {
+                      "title": "número de Seção Eleitoral",
+                      "expectedLength": 4
+                    }
+                  }
+                },
+                "numero": {
+                  "ui:field": "text",
+                  "ui:options": {
+                    "mask": [
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      " ",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      " ",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]",
+                      "[0-9]"
+                    ],
+                    "exactLength": {
+                      "title": "número de título",
+                      "expectedLength": 12
+                    }
+                  }
+                },
+                "ui:order": [
+                  "cod-ibge-cidade",
+                  "cod-ibge-estado",
+                  "numero",
+                  "zona",
+                  "secao",
+                  "uf-emissor",
+                  "cidade-votacao",
+                  "data-de-emissao"
+                ],
+                "uf-emissor": {
+                  "ui:field": "select"
+                },
+                "cidade-votacao": {
+                  "ui:field": "select"
+                },
+                "cod-ibge-cidade": {
+                  "ui:widget": "hidden"
+                },
+                "cod-ibge-estado": {
+                  "ui:widget": "hidden"
+                },
+                "data-de-emissao": {
+                  "ui:field": "date",
+                  "ui:options": {
+                    "isPastDate": true
+                  }
+                }
+              },
+              "schema": {
+                "type": "object",
+                "required": [
+                  "numero",
+                  "zona",
+                  "secao",
+                  "uf-emissor",
+                  "cidade-votacao",
+                  "data-de-emissao"
+                ],
+                "properties": {
+                  "zona": {
+                    "type": "string",
+                    "title": "Zona",
+                    "description": "000"
+                  },
+                  "secao": {
+                    "type": "string",
+                    "title": "Seção",
+                    "description": "0000"
+                  },
+                  "numero": {
+                    "type": "string",
+                    "title": "Número",
+                    "description": "0000 0000 0000"
+                  },
+                  "uf-emissor": {
+                    "type": "string",
+                    "title": "UF emissor"
+                  },
+                  "cidade-votacao": {
+                    "type": "string",
+                    "title": "Cidade de votação"
+                  },
+                  "cod-ibge-cidade": {
+                    "type": "string",
+                    "title": "Código IBGE da cidade"
+                  },
+                  "cod-ibge-estado": {
+                    "type": "string",
+                    "title": "Código IBGE do estado"
+                  },
+                  "data-de-emissao": {
+                    "type": "string",
+                    "title": "Data de Emissão"
+                  }
+                },
+                "description": "envie uma foto do seu Título de Eleitor ou um print do seu Título de Eleitor digital que você pode acessar no aplicativo e-Título (versão Android ou versão iOS). Também é possível imprimir seu título no autoatendimento do TSE, escolhendo a opção \"Imprimir Título Eleitoral\".",
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
+          },
+          {
+            "id": 39,
+            "name": "Documento de Identificação Profissional (DIP)",
+            "values": {
+              "uf": "SP",
+              "numero": "123 4567 8910 1112",
+              "data-de-emissao": "2000-07-18T03:00:00.000Z",
+              "data-de-registro": "2000-06-18T03:00:00.000Z",
+              "data-de-validade": "2030-06-20T03:00:00.000Z",
+              "associacao-profissional": "Conselho Regional de Engenharia e Agronomia - CREA"
+            },
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:41:53.832Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 39,
+              "name": "Documento de Identificação Profissional (DIP)",
+              "companyId": null,
+              "additionalProperties": null,
+              "uiSchema": {
+                "uf": {
+                  "ui:field": "select"
+                },
+                "numero": {
+                  "ui:field": "text"
+                },
+                "ui:order": [
+                  "associacao-profissional",
+                  "uf",
+                  "numero",
+                  "data-de-registro",
+                  "data-de-emissao",
+                  "data-de-validade"
+                ],
+                "data-de-emissao": {
+                  "ui:field": "date"
+                },
+                "data-de-registro": {
+                  "ui:field": "date"
+                },
+                "data-de-validade": {
+                  "ui:field": "date"
+                },
+                "associacao-profissional": {
+                  "ui:field": "select"
+                }
+              },
+              "schema": {
+                "type": "object",
+                "required": [
+                  "numero",
+                  "data-de-registro",
+                  "associacao-profissional",
+                  "uf"
+                ],
+                "properties": {
+                  "uf": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "UF emissor",
+                    "description": "Selecione"
+                  },
+                  "numero": {
+                    "type": "string",
+                    "title": "Número de registro",
+                    "description": "Digite o número do documento"
+                  },
+                  "data-de-emissao": {
+                    "type": "string",
+                    "title": "Data de emissão",
+                    "isDeactivable": true
+                  },
+                  "data-de-registro": {
+                    "type": "string",
+                    "title": "Data de registro"
+                  },
+                  "data-de-validade": {
+                    "type": "string",
+                    "title": "Data de validade",
+                    "isDeactivable": true
+                  },
+                  "associacao-profissional": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Associação profissional",
+                    "description": "Selecione"
+                  }
+                },
+                "hasEditableFields": true,
+                "hasDeactivableFields": true,
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
+          },
+          {
+            "id": 80450,
+            "name": "Certidão de nascimento/ Casamento / Divorcio",
+            "values": {},
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:42:02.580Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 80450,
+              "name": "Certidão de nascimento/ Casamento / Divorcio",
+              "companyId": 77785,
+              "additionalProperties": null,
+              "uiSchema": {
+                "ui:order": []
+              },
+              "schema": {
+                "required": [],
+                "properties": {},
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
           },
           {
             "id": 2,
             "name": "Comprovante de residência",
+            "values": {
+              "cep": "01521-000",
+              "pais": "Brasil",
+              "tipo": "Rua",
+              "bairro": "Cambuci",
+              "cidade": "São Paulo",
+              "estado": "São Paulo",
+              "numero": "237",
+              "logradouro": "Cesário Ramalho",
+              "complemento": "não tem"
+            },
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:42:13.500Z",
+              "isAutomaticallyValidated": true
+            },
             "schema": {
               "id": 2,
               "name": "Comprovante de residência",
@@ -324,6 +1559,8 @@
                   "ui:field": "houseNumber"
                 },
                 "ui:order": [
+                  "cod-ibge-cidade",
+                  "cod-ibge-estado",
                   "tipo",
                   "logradouro",
                   "numero",
@@ -339,6 +1576,12 @@
                 },
                 "complemento": {
                   "ui:field": "text"
+                },
+                "cod-ibge-cidade": {
+                  "ui:widget": "hidden"
+                },
+                "cod-ibge-estado": {
+                  "ui:widget": "hidden"
                 }
               },
               "schema": {
@@ -393,8 +1636,134 @@
                   "complemento": {
                     "type": "string",
                     "title": "Complemento"
+                  },
+                  "cod-ibge-cidade": {
+                    "type": "string",
+                    "title": "Código IBGE da cidade"
+                  },
+                  "cod-ibge-estado": {
+                    "type": "string",
+                    "title": "Código IBGE do estado"
                   }
                 },
+                "conditionals": [
+                  {
+                    "key": "residencia-em-seu-nome",
+                    "options": [
+                      {
+                        "name": "Sim"
+                      },
+                      {
+                        "name": "Não"
+                      }
+                    ],
+                    "question": "O documento está em seu nome?"
+                  }
+                ],
+                "hasEditableFields": true,
+                "hasDeactivableFields": false,
+                "definitions": {},
+                "dependencies": {}
+              }
+            }
+          },
+          {
+            "id": 42,
+            "name": "Informações bancárias",
+            "values": {
+              "banco": "BANCO BRADESCO S.A.",
+              "conta": "0123456",
+              "digito": "7",
+              "agencia": "0123",
+              "tipo-da-conta": "Conta poupança",
+              "codigo": "237"
+            },
+            "validation": {
+              "status": "APPROVED",
+              "companyUserId": 961029,
+              "validatedAt": "2025-06-20T18:42:25.523Z",
+              "isAutomaticallyValidated": true
+            },
+            "schema": {
+              "id": 42,
+              "name": "Informações bancárias",
+              "companyId": null,
+              "additionalProperties": null,
+              "uiSchema": {
+                "banco": {
+                  "ui:field": "bankSelect",
+                  "ui:options": {
+                    "additionalLabel": "Banco Bradesco"
+                  }
+                },
+                "conta": {
+                  "ui:field": "text"
+                },
+                "digito": {
+                  "ui:field": "text"
+                },
+                "agencia": {
+                  "ui:field": "text"
+                },
+                "ui:order": [
+                  "banco",
+                  "agencia",
+                  "conta",
+                  "digito",
+                  "tipo-da-conta"
+                ],
+                "tipo-da-conta": {
+                  "ui:field": "select"
+                }
+              },
+              "schema": {
+                "required": [
+                  "banco",
+                  "agencia",
+                  "conta",
+                  "digito",
+                  "tipo-da-conta"
+                ],
+                "properties": {
+                  "banco": {
+                    "type": "object",
+                    "title": "Banco",
+                    "required": [
+                      "nome",
+                      "codigo"
+                    ],
+                    "properties": {
+                      "nome": {
+                        "type": "string",
+                        "title": "Nome do banco"
+                      },
+                      "codigo": {
+                        "type": "string",
+                        "title": "Código do banco"
+                      }
+                    }
+                  },
+                  "conta": {
+                    "type": "string",
+                    "title": "Conta (sem o dígito)"
+                  },
+                  "digito": {
+                    "type": "string",
+                    "title": "Dígito da conta"
+                  },
+                  "agencia": {
+                    "type": "string",
+                    "title": "Agência (sem o dígito)"
+                  },
+                  "tipo-da-conta": {
+                    "enum": [],
+                    "type": "string",
+                    "title": "Tipo da conta"
+                  }
+                },
+                "hasEditableFields": true,
+                "hasDeactivableFields": false,
+                "additionalInstruction": "Banco Bradesco",
                 "definitions": {},
                 "dependencies": {}
               }
@@ -403,105 +1772,699 @@
         ],
         "dependents": [
           {
-            "name": "Dependente 1",
+            "id": 1647847,
+            "name": "Mariana Brugognolle",
             "dependentTypeId": "3808db5b-b808-4cf0-97c6-9ac15cc98125",
             "documents": [
               {
-                "id": null,
+                "id": "a3c51d53-3c86-4142-aea8-ed9fc84e0e94",
                 "name": "Dados do dependente",
                 "values": {
-                  "cpf": "12345678900",
-                  "name": "Dependente 1"
+                  "cpf": "520.505.278-37",
+                  "name": "Mariana Brugognolle",
+                  "gender": "Feminino",
+                  "birthDate": "2010-11-07T03:00:00.000Z",
+                  "payPension": false,
+                  "handicapped": false,
+                  "cityOfOrigin": "São Paulo",
+                  "birthLocation": "São Paulo - São Paulo - Brasil",
+                  "maritalStatus": "Solteiro(a)",
+                  "stateOfOrigin": "São Paulo",
+                  "countryOfOrigin": "Brasil",
+                  "educationalLevel": "Ensino fundamental II incompleto",
+                  "includeIncomeTax": false,
+                  "hasIdentificationDocument": false
                 },
-                "validation": null,
-                "missing": false,
+                "validation": {
+                  "status": "APPROVED",
+                  "companyUserId": 961029,
+                  "validatedAt": "2025-06-20T18:38:56.413Z",
+                  "isAutomaticallyValidated": true
+                },
                 "schema": {
-                  "id": null,
+                  "id": "a3c51d53-3c86-4142-aea8-ed9fc84e0e94",
                   "name": "Dados do dependente",
                   "companyId": null,
-                  "additionalProperties": {},
+                  "additionalProperties": {
+                    "isCity": {
+                      "cityOfOrigin": true
+                    },
+                    "isState": {
+                      "stateOfOrigin": true
+                    },
+                    "isCountry": {
+                      "countryOfOrigin": true
+                    }
+                  },
                   "uiSchema": {
+                    "cpf": {
+                      "ui:field": "taxpayerIdentification"
+                    },
                     "name": {
                       "ui:field": "text"
                     },
-                    "cpf": {
-                      "ui:field": "text"
+                    "gender": {
+                      "ui:field": "select"
                     },
                     "ui:order": [
                       "name",
-                      "cpf"
-                    ]
+                      "cpf",
+                      "birthDate",
+                      "handicapped",
+                      "gender",
+                      "educationalLevel",
+                      "countryOfOrigin",
+                      "stateOfOrigin",
+                      "cityOfOrigin",
+                      "birthLocation",
+                      "hasIdentificationDocument",
+                      "includeIncomeTax"
+                    ],
+                    "birthDate": {
+                      "ui:field": "date",
+                      "ui:disabled": true
+                    },
+                    "handicapped": {
+                      "ui:field": "boolean",
+                      "ui:disabled": true
+                    },
+                    "cityOfOrigin": {
+                      "ui:field": "select"
+                    },
+                    "birthLocation": {
+                      "ui:widget": "hidden"
+                    },
+                    "stateOfOrigin": {
+                      "ui:field": "select"
+                    },
+                    "countryOfOrigin": {
+                      "ui:field": "select"
+                    },
+                    "educationalLevel": {
+                      "ui:field": "select"
+                    },
+                    "includeIncomeTax": {
+                      "ui:field": "boolean",
+                      "ui:disabled": true
+                    },
+                    "hasIdentificationDocument": {
+                      "ui:field": "boolean",
+                      "ui:disabled": true
+                    }
                   },
                   "schema": {
                     "required": [
                       "name",
+                      "cpf",
+                      "birthDate",
+                      "birthLocation",
+                      "handicapped",
+                      "gender",
+                      "countryOfOrigin",
+                      "stateOfOrigin",
+                      "cityOfOrigin",
+                      "hasIdentificationDocument",
+                      "educationalLevel",
+                      "includeIncomeTax"
+                    ],
+                    "properties": {
+                      "cpf": {
+                        "type": "string",
+                        "title": "CPF do dependente"
+                      },
+                      "name": {
+                        "type": "string",
+                        "title": "Nome completo do dependente"
+                      },
+                      "gender": {
+                        "enum": [],
+                        "type": "string",
+                        "title": "Sexo"
+                      },
+                      "birthDate": {
+                        "type": "string",
+                        "title": "Data de nascimento"
+                      },
+                      "handicapped": {
+                        "type": "boolean",
+                        "title": "Este dependente tem alguma incapacidade física ou mental para o trabalho?"
+                      },
+                      "cityOfOrigin": {
+                        "type": "string",
+                        "title": "Cidade onde nasceu"
+                      },
+                      "birthLocation": {
+                        "type": "string",
+                        "title": "Local de nascimento"
+                      },
+                      "stateOfOrigin": {
+                        "type": "string",
+                        "title": "Estado onde nasceu"
+                      },
+                      "countryOfOrigin": {
+                        "type": "string",
+                        "title": "País onde nasceu"
+                      },
+                      "educationalLevel": {
+                        "enum": [],
+                        "type": "string",
+                        "title": "Grau de Instrução"
+                      },
+                      "includeIncomeTax": {
+                        "type": "boolean",
+                        "title": "Incluir como meu dependente no Imposto de Renda"
+                      },
+                      "hasIdentificationDocument": {
+                        "type": "boolean",
+                        "title": "Esse dependente possui carteira de identidade (RG)?"
+                      }
+                    },
+                    "definitions": {},
+                    "dependencies": {}
+                  }
+                }
+              },
+              {
+                "id": "d4a15371-6278-4e2b-9d15-859853424b82",
+                "name": "Certidão de nascimento",
+                "values": {
+                  "nome-da-mae": "Erica Brugognolle",
+                  "nome-do-pai": "Fabio Bales"
+                },
+                "validation": {
+                  "status": "APPROVED",
+                  "companyUserId": 961029,
+                  "validatedAt": "2025-06-20T18:42:41.421Z",
+                  "isAutomaticallyValidated": true
+                },
+                "schema": {
+                  "id": "d4a15371-6278-4e2b-9d15-859853424b82",
+                  "name": "Certidão de nascimento",
+                  "companyId": null,
+                  "uiSchema": {
+                    "ui:order": [
+                      "nome-da-mae",
+                      "nome-do-pai"
+                    ],
+                    "nome-da-mae": {
+                      "ui:field": "text",
+                      "ui:options": {
+                        "isFullName": true
+                      }
+                    },
+                    "nome-do-pai": {
+                      "ui:field": "text",
+                      "ui:options": {
+                        "isFullName": true
+                      }
+                    }
+                  },
+                  "schema": {
+                    "required": [
+                      "nome-da-mae"
+                    ],
+                    "properties": {
+                      "nome-da-mae": {
+                        "type": "string",
+                        "title": "Nome da mãe completo"
+                      },
+                      "nome-do-pai": {
+                        "type": "string",
+                        "title": "Nome do pai completo",
+                        "isDeactivable": true
+                      }
+                    },
+                    "definitions": {},
+                    "dependencies": {}
+                  }
+                }
+              },
+              {
+                "id": "f65a929b-72f3-4d20-b16d-f17fd697bdf2",
+                "name": "CPF",
+                "values": {
+                  "cpf": "520.505.278-37"
+                },
+                "validation": {
+                  "status": "APPROVED",
+                  "companyUserId": 961029,
+                  "validatedAt": "2025-06-20T18:42:57.169Z",
+                  "isAutomaticallyValidated": true
+                },
+                "schema": {
+                  "id": "f65a929b-72f3-4d20-b16d-f17fd697bdf2",
+                  "name": "CPF",
+                  "companyId": null,
+                  "uiSchema": {
+                    "cpf": {
+                      "ui:field": "taxpayerIdentification"
+                    }
+                  },
+                  "schema": {
+                    "required": [
                       "cpf"
                     ],
                     "properties": {
-                      "name": {
-                        "type": "string",
-                        "title": "Nome"
-                      },
                       "cpf": {
                         "type": "string",
-                        "title": "CPF"
+                        "title": "CPF do dependente"
                       }
                     },
-                    "description": "",
-                    "dependencies": {},
-                    "definitions": {}
+                    "description": "É importante que a imagem mostre todo o documento. Não recorte a imagem para exibir somente o número do CPF.",
+                    "definitions": {},
+                    "dependencies": {}
+                  }
+                }
+              },
+              {
+                "id": "30454540-e1c5-416c-a9a0-acb7b58a1404",
+                "name": "Cartão Nacional de Saúde (CNS)",
+                "values": {
+                  "numero": "123 1010 2020 3030"
+                },
+                "validation": {
+                  "status": "APPROVED",
+                  "companyUserId": 961029,
+                  "validatedAt": "2025-06-20T18:43:08.684Z",
+                  "isAutomaticallyValidated": true
+                },
+                "schema": {
+                  "id": "30454540-e1c5-416c-a9a0-acb7b58a1404",
+                  "name": "Cartão Nacional de Saúde (CNS)",
+                  "companyId": null,
+                  "additionalProperties": {
+                    "replaceOptionalCheckbox": {
+                      "label": "<span style=\"font-weight: bold; text-decoration: underline;\">Não possuo</span> ou <span style=\"font-weight: bold; text-decoration: underline;\">não desejo</span> informar este documento"
+                    }
+                  },
+                  "uiSchema": {
+                    "numero": {
+                      "ui:field": "text",
+                      "ui:options": {
+                        "mask": [
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          " ",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          " ",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          " ",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]"
+                        ],
+                        "exactLength": {
+                          "title": "número do CNS",
+                          "expectedLength": 15
+                        },
+                        "mobileKeyboard": true,
+                        "sameCharacters": {
+                          "title": "CNS"
+                        }
+                      }
+                    },
+                    "ui:order": [
+                      "numero"
+                    ]
+                  },
+                  "schema": {
+                    "type": "object",
+                    "required": [
+                      "numero"
+                    ],
+                    "properties": {
+                      "numero": {
+                        "type": "string",
+                        "title": "Número do CNS",
+                        "description": "000 0000 0000 0000"
+                      }
+                    },
+                    "description": "Todos os brasileiros possuem cadastro no SUS. O número pode ser encontrado no CNS (Cartão Nacional de Saúde), cartão do convênio, acessando o site ou pelos aplicativos do SUS (IOS e Android)",
+                    "definitions": {},
+                    "dependencies": {}
                   }
                 }
               }
             ]
-          }
-        ],
-        "steps": [
+          },
           {
-            "stepName": "Benefícios",
-            "triggerStep": true,
-            "forms": [
+            "id": 1647852,
+            "name": "Malu Brugognolle",
+            "dependentTypeId": "3808db5b-b808-4cf0-97c6-9ac15cc98125",
+            "documents": [
               {
-                "id": null,
-                "name": "Plano de Saúde",
+                "id": "a3c51d53-3c86-4142-aea8-ed9fc84e0e94",
+                "name": "Dados do dependente",
                 "values": {
-                  "cpf": "12345678900",
-                  "name": "Fulano de Tal"
+                  "cpf": "312.229.748-51",
+                  "name": "Malu Brugognolle",
+                  "gender": "Feminino",
+                  "birthDate": "2018-10-21T03:00:00.000Z",
+                  "payPension": false,
+                  "handicapped": false,
+                  "cityOfOrigin": "São Paulo",
+                  "birthLocation": "São Paulo - São Paulo - Brasil",
+                  "maritalStatus": "Solteiro(a)",
+                  "stateOfOrigin": "São Paulo",
+                  "countryOfOrigin": "Brasil",
+                  "educationalLevel": "Ensino fundamental I incompleto",
+                  "includeIncomeTax": false,
+                  "includeSalarioFamilia": false,
+                  "hasIdentificationDocument": false
                 },
-                "validation": null,
-                "missing": false,
+                "validation": {
+                  "status": "APPROVED",
+                  "companyUserId": 961029,
+                  "validatedAt": "2025-06-20T18:38:46.412Z",
+                  "isAutomaticallyValidated": true
+                },
                 "schema": {
-                  "id": null,
-                  "name": "Plano de Saúde",
+                  "id": "a3c51d53-3c86-4142-aea8-ed9fc84e0e94",
+                  "name": "Dados do dependente",
                   "companyId": null,
-                  "additionalProperties": {},
+                  "additionalProperties": {
+                    "isCity": {
+                      "cityOfOrigin": true
+                    },
+                    "isState": {
+                      "stateOfOrigin": true
+                    },
+                    "isCountry": {
+                      "countryOfOrigin": true
+                    }
+                  },
                   "uiSchema": {
+                    "cpf": {
+                      "ui:field": "taxpayerIdentification"
+                    },
                     "name": {
                       "ui:field": "text"
                     },
-                    "cpf": {
-                      "ui:field": "text"
+                    "gender": {
+                      "ui:field": "select"
                     },
                     "ui:order": [
                       "name",
-                      "cpf"
-                    ]
+                      "cpf",
+                      "birthDate",
+                      "handicapped",
+                      "gender",
+                      "educationalLevel",
+                      "countryOfOrigin",
+                      "stateOfOrigin",
+                      "cityOfOrigin",
+                      "birthLocation",
+                      "hasIdentificationDocument",
+                      "includeSalarioFamilia",
+                      "includeIncomeTax"
+                    ],
+                    "birthDate": {
+                      "ui:field": "date",
+                      "ui:disabled": true
+                    },
+                    "handicapped": {
+                      "ui:field": "boolean",
+                      "ui:disabled": true
+                    },
+                    "cityOfOrigin": {
+                      "ui:field": "select"
+                    },
+                    "birthLocation": {
+                      "ui:widget": "hidden"
+                    },
+                    "stateOfOrigin": {
+                      "ui:field": "select"
+                    },
+                    "countryOfOrigin": {
+                      "ui:field": "select"
+                    },
+                    "educationalLevel": {
+                      "ui:field": "select"
+                    },
+                    "includeIncomeTax": {
+                      "ui:field": "boolean",
+                      "ui:disabled": true
+                    },
+                    "includeSalarioFamilia": {
+                      "ui:field": "boolean",
+                      "ui:disabled": true
+                    },
+                    "hasIdentificationDocument": {
+                      "ui:field": "boolean",
+                      "ui:disabled": true
+                    }
                   },
                   "schema": {
                     "required": [
                       "name",
+                      "cpf",
+                      "birthDate",
+                      "birthLocation",
+                      "handicapped",
+                      "gender",
+                      "countryOfOrigin",
+                      "stateOfOrigin",
+                      "cityOfOrigin",
+                      "hasIdentificationDocument",
+                      "educationalLevel",
+                      "includeSalarioFamilia",
+                      "includeIncomeTax"
+                    ],
+                    "properties": {
+                      "cpf": {
+                        "type": "string",
+                        "title": "CPF do dependente"
+                      },
+                      "name": {
+                        "type": "string",
+                        "title": "Nome completo do dependente"
+                      },
+                      "gender": {
+                        "enum": [],
+                        "type": "string",
+                        "title": "Sexo"
+                      },
+                      "birthDate": {
+                        "type": "string",
+                        "title": "Data de nascimento"
+                      },
+                      "handicapped": {
+                        "type": "boolean",
+                        "title": "Este dependente tem alguma incapacidade física ou mental para o trabalho?"
+                      },
+                      "cityOfOrigin": {
+                        "type": "string",
+                        "title": "Cidade onde nasceu"
+                      },
+                      "birthLocation": {
+                        "type": "string",
+                        "title": "Local de nascimento"
+                      },
+                      "stateOfOrigin": {
+                        "type": "string",
+                        "title": "Estado onde nasceu"
+                      },
+                      "countryOfOrigin": {
+                        "type": "string",
+                        "title": "País onde nasceu"
+                      },
+                      "educationalLevel": {
+                        "enum": [],
+                        "type": "string",
+                        "title": "Grau de Instrução"
+                      },
+                      "includeIncomeTax": {
+                        "type": "boolean",
+                        "title": "Incluir como meu dependente no Imposto de Renda"
+                      },
+                      "includeSalarioFamilia": {
+                        "type": "boolean",
+                        "title": "Incluir como meu dependente no Salário família"
+                      },
+                      "hasIdentificationDocument": {
+                        "type": "boolean",
+                        "title": "Esse dependente possui carteira de identidade (RG)?"
+                      }
+                    },
+                    "definitions": {},
+                    "dependencies": {}
+                  }
+                }
+              },
+              {
+                "id": "d4a15371-6278-4e2b-9d15-859853424b82",
+                "name": "Certidão de nascimento",
+                "values": {
+                  "nome-da-mae": "Erica Brugognolle",
+                  "nome-do-pai": "Fabio Bales"
+                },
+                "validation": {
+                  "status": "APPROVED",
+                  "companyUserId": 961029,
+                  "validatedAt": "2025-06-20T18:43:23.070Z",
+                  "isAutomaticallyValidated": true
+                },
+                "schema": {
+                  "id": "d4a15371-6278-4e2b-9d15-859853424b82",
+                  "name": "Certidão de nascimento",
+                  "companyId": null,
+                  "uiSchema": {
+                    "ui:order": [
+                      "nome-da-mae",
+                      "nome-do-pai"
+                    ],
+                    "nome-da-mae": {
+                      "ui:field": "text",
+                      "ui:options": {
+                        "isFullName": true
+                      }
+                    },
+                    "nome-do-pai": {
+                      "ui:field": "text",
+                      "ui:options": {
+                        "isFullName": true
+                      }
+                    }
+                  },
+                  "schema": {
+                    "required": [
+                      "nome-da-mae"
+                    ],
+                    "properties": {
+                      "nome-da-mae": {
+                        "type": "string",
+                        "title": "Nome da mãe completo"
+                      },
+                      "nome-do-pai": {
+                        "type": "string",
+                        "title": "Nome do pai completo",
+                        "isDeactivable": true
+                      }
+                    },
+                    "definitions": {},
+                    "dependencies": {}
+                  }
+                }
+              },
+              {
+                "id": "f65a929b-72f3-4d20-b16d-f17fd697bdf2",
+                "name": "CPF",
+                "values": {
+                  "cpf": "312.229.748-51"
+                },
+                "validation": {
+                  "status": "APPROVED",
+                  "companyUserId": 961029,
+                  "validatedAt": "2025-06-20T18:43:37.687Z",
+                  "isAutomaticallyValidated": true
+                },
+                "schema": {
+                  "id": "f65a929b-72f3-4d20-b16d-f17fd697bdf2",
+                  "name": "CPF",
+                  "companyId": null,
+                  "uiSchema": {
+                    "cpf": {
+                      "ui:field": "taxpayerIdentification"
+                    }
+                  },
+                  "schema": {
+                    "required": [
                       "cpf"
                     ],
                     "properties": {
                       "cpf": {
                         "type": "string",
-                        "title": "CPF"
-                      },
-                      "name": {
-                        "type": "string",
-                        "title": "Nome"
+                        "title": "CPF do dependente"
                       }
+                    },
+                    "description": "É importante que a imagem mostre todo o documento. Não recorte a imagem para exibir somente o número do CPF.",
+                    "definitions": {},
+                    "dependencies": {}
+                  }
+                }
+              },
+              {
+                "id": "30454540-e1c5-416c-a9a0-acb7b58a1404",
+                "name": "Cartão Nacional de Saúde (CNS)",
+                "values": {
+                  "numero": "321 1010 2020 3030"
+                },
+                "validation": {
+                  "status": "APPROVED",
+                  "companyUserId": 961029,
+                  "validatedAt": "2025-06-20T18:43:52.633Z",
+                  "isAutomaticallyValidated": true
+                },
+                "schema": {
+                  "id": "30454540-e1c5-416c-a9a0-acb7b58a1404",
+                  "name": "Cartão Nacional de Saúde (CNS)",
+                  "companyId": null,
+                  "additionalProperties": {
+                    "replaceOptionalCheckbox": {
+                      "label": "<span style=\"font-weight: bold; text-decoration: underline;\">Não possuo</span> ou <span style=\"font-weight: bold; text-decoration: underline;\">não desejo</span> informar este documento"
                     }
+                  },
+                  "uiSchema": {
+                    "numero": {
+                      "ui:field": "text",
+                      "ui:options": {
+                        "mask": [
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          " ",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          " ",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          " ",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]",
+                          "[0-9]"
+                        ],
+                        "exactLength": {
+                          "title": "número do CNS",
+                          "expectedLength": 15
+                        },
+                        "mobileKeyboard": true,
+                        "sameCharacters": {
+                          "title": "CNS"
+                        }
+                      }
+                    },
+                    "ui:order": [
+                      "numero"
+                    ]
+                  },
+                  "schema": {
+                    "type": "object",
+                    "required": [
+                      "numero"
+                    ],
+                    "properties": {
+                      "numero": {
+                        "type": "string",
+                        "title": "Número do CNS",
+                        "description": "000 0000 0000 0000"
+                      }
+                    },
+                    "description": "Todos os brasileiros possuem cadastro no SUS. O número pode ser encontrado no CNS (Cartão Nacional de Saúde), cartão do convênio, acessando o site ou pelos aplicativos do SUS (IOS e Android)",
+                    "definitions": {},
+                    "dependencies": {}
                   }
                 }
               }
@@ -509,63 +2472,138 @@
           }
         ]
       },
-      "position": {
-        "positionId": 1000,
-        "integratingAgent": "senai",
-        "contractEndDate": "2023-10-31T03:00:00.000Z",
-        "paymentRecurrence": "mensalista",
-        "registration": "123321",
-        "salary": {
-          "value": 1250.5,
-          "currency": "R$"
-        },
-        "department": {
-          "id": 1,
-          "code": "1234",
-          "name": "Development"
-        },
-        "role": {
-          "id": 523,
-          "code": "44322",
-          "name": "Developer"
-        },
-        "branch": {
-          "id": 3321,
-          "code": "123",
-          "label": "BRANCH > BRANCH 1"
-        },
-        "customFields": [
-          {
-            "id": "7bd3b8ba-180b-4ae2-b397-240f8fb249c6",
-            "title": "Pergunta",
-            "value": "Resposta",
-            "isIntegrated": true
-          }
-        ],
-        "costCenter": {
-          "id": 448,
-          "code": "CODCENCOST",
-          "name": "NomeCentroCustoXYZ",
-          "department": {
-            "id": 19605,
-            "code": null,
-            "name": "Area 1"
-          },
-          "branch": {
-            "id": 116304,
-            "code": "ARAPIRACA",
-            "label": "BRANCH > ARAPIRACA"
-          }
-        },
-        "workShift": {
-          "id": 3,
-          "code": "TURNO 2",
-          "name": "Teste Turno",
-          "description": "Descrição",
-          "workload": "180",
-          "letter": "ABC"
+      "steps": [
+        {
+          "stepName": "Cadastro na Folha",
+          "forms": [],
+          "triggerStep": true
         }
-      }
-    }
+      ]
+    },
+    "position": {
+      "positionId": 1156278,
+      "formGroupType": "clt",
+      "paymentRecurrence": "mensalista",
+      "customFields": [
+        {
+          "id": "1608e91d-599f-455f-ac23-41103fabbc9d",
+          "title": "Autorização de Aprendiz",
+          "value": false,
+          "isIntegrated": true
+        },
+        {
+          "id": "2bf3a18e-c206-4576-b91a-715c72108801",
+          "title": "Empresa",
+          "value": "1000 - BRA - MINERVA S/A",
+          "isIntegrated": true
+        },
+        {
+          "id": "3922084e-61b9-4ac5-95f1-e99fcbde3855",
+          "title": "Possui pausa térmica?",
+          "value": false,
+          "isIntegrated": false
+        },
+        {
+          "id": "5dfe5dc8-d9f8-41c5-aacc-17f10f836719",
+          "title": "Beneficios VT, VC e VR",
+          "value": "Vale Transporte",
+          "isIntegrated": true
+        },
+        {
+          "id": "8b60ef7a-5e67-4cef-9e74-3ecdd0e75962",
+          "title": "Status do Gerenciamento de Tempos",
+          "value": "0 - Sem avaliação de tempos",
+          "isIntegrated": true
+        },
+        {
+          "id": "8f82019e-9b5c-4f65-b43d-d4018dab51d2",
+          "title": "Tipo de regime de jornada",
+          "value": "1 - Submetidos a Horário de Trabalho (Cap. II da CLT)",
+          "isIntegrated": true
+        },
+        {
+          "id": "94fe6791-26b2-4f5c-8798-d71623afb647",
+          "title": "Esse colaborador(a) vai precisar de e-mail?",
+          "value": false,
+          "isIntegrated": false
+        },
+        {
+          "id": "9e34cfc7-4d9a-4ee2-8912-460de0502146",
+          "title": "Esse colaborador(a) vai usar computador?",
+          "value": "Não utilizará computador",
+          "isIntegrated": false
+        },
+        {
+          "id": "ac432911-3e8c-40b9-8164-02b5c62ea0be",
+          "title": "Qual o nome do gestor/supervisor direto que esse novo(a) colaborador(a) vai responder? * apenas para os cargos de vendedor",
+          "value": null,
+          "isIntegrated": false
+        },
+        {
+          "id": "b41672fa-7f6b-43c0-92f5-6d5326202fc2",
+          "title": "Isento de marcação de ponto?",
+          "value": false,
+          "isIntegrated": false
+        },
+        {
+          "id": "b68a30df-7631-4245-a04d-fdaa37888c0f",
+          "title": "Qual o Código da Posição? Cod que esta no E/C",
+          "value": 100,
+          "isIntegrated": false
+        },
+        {
+          "id": "dd83fb2b-9b64-4144-b85e-87c6c7d83e12",
+          "title": "Para contratos com tempo determinado preencha corretamente a data de termino",
+          "value": null,
+          "isIntegrated": true
+        },
+        {
+          "id": "de9663d5-615e-4d33-b63e-25c25e3bdae2",
+          "title": "Tipo de contrato de trabalho",
+          "value": "BRA-01 - Indeterminado",
+          "isIntegrated": true
+        },
+        {
+          "id": "ef9fa744-8ebb-44f7-b90f-254971afe701",
+          "title": "Plano de Horário de Trabalho",
+          "value": "E0001 - 00:00 AS 06:00 (06h00)",
+          "isIntegrated": true
+        },
+        {
+          "id": "f88f9060-5524-4524-b711-614bac646c90",
+          "title": "Local de trabalho físico? (a resposta nesse campo influencia nos benefícios) ",
+          "value": null,
+          "isIntegrated": false
+        }
+      ],
+      "branch": {
+        "id": 1049440,
+        "code": "",
+        "label": "BARRETOS - 09.104.182/0001-15 > MINERVA FINE FOODS - BARRETOS > COUROS - MINERVA > DIRETORIA PROCESSADOS"
+      },
+      "department": {
+        "id": 726936,
+        "code": "40000605",
+        "name": "MIUDOS DIURNO"
+      },
+      "role": {
+        "id": 1304055,
+        "code": "35251270",
+        "name": "35251270 - AUXILIAR PRODUCAO"
+      },
+      "salary": {
+        "value": 3000,
+        "currency": "R$"
+      },
+      "costCenter": null,
+      "workShift": null
+    },
+    "source": "ats",
+    "isDirectInsertion": false
+  },
+  "user": {
+    "id": 359236,
+    "name": "Maria Eduarda da Silva Joaquim",
+    "email": "mariaeduarda.joaquim@gupy.com.br"
   }
 }

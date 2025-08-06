@@ -22,22 +22,25 @@ import {
   Speed,
   Psychology,
   Tune,
-  TouchApp
+  TouchApp,
+  Compare,
+  TrendingUp,
+  Insights
 } from '@mui/icons-material';
 import { SchemaData } from './MappingWizard';
 
 interface MappingMethodSelectorProps {
   schemaData: SchemaData;
-  onMethodSelect: (method: 'ai' | 'manual') => void;
+  onMethodSelect: (method: 'ai' | 'manual' | 'payload-comparison') => void;
 }
 
 const MappingMethodSelector: React.FC<MappingMethodSelectorProps> = ({
   schemaData,
   onMethodSelect
 }) => {
-  const [selectedMethod, setSelectedMethod] = useState<'ai' | 'manual' | null>(null);
+  const [selectedMethod, setSelectedMethod] = useState<'ai' | 'manual' | 'payload-comparison' | null>(null);
 
-  const handleMethodSelect = (method: 'ai' | 'manual') => {
+  const handleMethodSelect = (method: 'ai' | 'manual' | 'payload-comparison') => {
     setSelectedMethod(method);
     // Pequeno delay para mostrar a seleção
     setTimeout(() => {
@@ -84,7 +87,7 @@ const MappingMethodSelector: React.FC<MappingMethodSelectorProps> = ({
 
       <Grid container spacing={3}>
         {/* Opção IA */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <Card 
             sx={{ 
               height: '100%',
@@ -102,31 +105,22 @@ const MappingMethodSelector: React.FC<MappingMethodSelectorProps> = ({
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
                 <AutoAwesome color="primary" />
                 <Typography variant="h6" color="primary">
-                  Usar Gemini AI
+                  Gemini AI
                 </Typography>
-                <Chip label="Recomendado" color="primary" size="small" />
+                <Chip label="Rápido" color="primary" size="small" />
               </Box>
 
               <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                Deixe a inteligência artificial analisar sua estrutura e criar mapeamentos automáticos.
+                IA analisa estrutura e cria mapeamentos automáticos.
               </Typography>
 
               <List dense>
                 <ListItem sx={{ px: 0 }}>
                   <ListItemIcon sx={{ minWidth: 32 }}>
-                    <CheckCircle color="success" fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText 
-                    primary="Mapeamento automático inteligente"
-                    primaryTypographyProps={{ variant: 'body2' }}
-                  />
-                </ListItem>
-                <ListItem sx={{ px: 0 }}>
-                  <ListItemIcon sx={{ minWidth: 32 }}>
                     <Psychology color="success" fontSize="small" />
                   </ListItemIcon>
                   <ListItemText 
-                    primary="Análise semântica avançada"
+                    primary="Análise semântica"
                     primaryTypographyProps={{ variant: 'body2' }}
                   />
                 </ListItem>
@@ -135,7 +129,7 @@ const MappingMethodSelector: React.FC<MappingMethodSelectorProps> = ({
                     <Speed color="success" fontSize="small" />
                   </ListItemIcon>
                   <ListItemText 
-                    primary="Resultados em segundos"
+                    primary="10-20 segundos"
                     primaryTypographyProps={{ variant: 'body2' }}
                   />
                 </ListItem>
@@ -144,7 +138,7 @@ const MappingMethodSelector: React.FC<MappingMethodSelectorProps> = ({
                     <CheckCircle color="success" fontSize="small" />
                   </ListItemIcon>
                   <ListItemText 
-                    primary="Explicações detalhadas"
+                    primary="~95% precisão"
                     primaryTypographyProps={{ variant: 'body2' }}
                   />
                 </ListItem>
@@ -152,7 +146,7 @@ const MappingMethodSelector: React.FC<MappingMethodSelectorProps> = ({
 
               <Box sx={{ mt: 2, p: 1, bgcolor: '#e3f2fd', borderRadius: 1 }}>
                 <Typography variant="caption" color="primary">
-                  💡 A IA entende contexto e padrões, criando mapeamentos mais precisos que o método manual.
+                  💡 Baseado em schema/payload
                 </Typography>
               </Box>
             </CardContent>
@@ -174,8 +168,92 @@ const MappingMethodSelector: React.FC<MappingMethodSelectorProps> = ({
           </Card>
         </Grid>
 
+        {/* Opção Equiparação de Payload - NOVA */}
+        <Grid item xs={12} md={4}>
+          <Card 
+            sx={{ 
+              height: '100%',
+              cursor: 'pointer',
+              border: selectedMethod === 'payload-comparison' ? '2px solid #ff6b35' : '1px solid #e0e0e0',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                boxShadow: 3,
+                transform: 'translateY(-2px)'
+              }
+            }}
+            onClick={() => handleMethodSelect('payload-comparison')}
+          >
+            <CardContent sx={{ pb: 1 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                <Compare sx={{ color: '#ff6b35' }} />
+                <Typography variant="h6" sx={{ color: '#ff6b35' }}>
+                  Equiparação
+                </Typography>
+                <Chip label="Máxima Precisão" sx={{ bgcolor: '#ff6b35', color: 'white' }} size="small" />
+              </Box>
+
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                Compare payload Gupy vs Sistema com mesmos dados mockados.
+              </Typography>
+
+              <List dense>
+                <ListItem sx={{ px: 0 }}>
+                  <ListItemIcon sx={{ minWidth: 32 }}>
+                    <TrendingUp sx={{ color: '#ff6b35' }} fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText 
+                    primary="Comparação lado a lado"
+                    primaryTypographyProps={{ variant: 'body2' }}
+                  />
+                </ListItem>
+                <ListItem sx={{ px: 0 }}>
+                  <ListItemIcon sx={{ minWidth: 32 }}>
+                    <Insights sx={{ color: '#ff6b35' }} fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText 
+                    primary="Detecta transformações"
+                    primaryTypographyProps={{ variant: 'body2' }}
+                  />
+                </ListItem>
+                <ListItem sx={{ px: 0 }}>
+                  <ListItemIcon sx={{ minWidth: 32 }}>
+                    <CheckCircle sx={{ color: '#ff6b35' }} fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText 
+                    primary="~99% precisão"
+                    primaryTypographyProps={{ variant: 'body2' }}
+                  />
+                </ListItem>
+              </List>
+
+              <Box sx={{ mt: 2, p: 1, bgcolor: '#fff3e0', borderRadius: 1 }}>
+                <Typography variant="caption" sx={{ color: '#ff6b35' }}>
+                  🎯 Mesmos dados, formatos diferentes
+                </Typography>
+              </Box>
+            </CardContent>
+
+            <CardActions sx={{ pt: 0 }}>
+              <Button
+                variant="contained"
+                fullWidth
+                startIcon={<Compare />}
+                disabled={selectedMethod === 'payload-comparison'}
+                sx={{ 
+                  bgcolor: selectedMethod === 'payload-comparison' ? '#ff6b35' : '#ff6b35',
+                  '&:hover': { bgcolor: '#e55a2b' },
+                  opacity: selectedMethod === 'payload-comparison' ? 0.7 : 1,
+                  transform: selectedMethod === 'payload-comparison' ? 'scale(0.98)' : 'scale(1)'
+                }}
+              >
+                {selectedMethod === 'payload-comparison' ? 'Selecionado!' : 'Equiparar Payloads'}
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+
         {/* Opção Manual */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={4}>
           <Card 
             sx={{ 
               height: '100%',
@@ -273,14 +351,19 @@ const MappingMethodSelector: React.FC<MappingMethodSelectorProps> = ({
           📊 Comparação Rápida:
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <Typography variant="caption" color="text.secondary">
-              <strong>Gemini AI:</strong> ~95% de precisão, 10-20 segundos
+              <strong>🤖 Gemini AI:</strong> ~95% precisão, 10-20 segundos
             </Typography>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
+            <Typography variant="caption" sx={{ color: '#ff6b35' }}>
+              <strong>📋 Equiparação:</strong> ~99% precisão, 5-10 segundos
+            </Typography>
+          </Grid>
+          <Grid item xs={4}>
             <Typography variant="caption" color="text.secondary">
-              <strong>Manual:</strong> 100% controle, 5-15 minutos
+              <strong>✋ Manual:</strong> 100% controle, 5-15 minutos
             </Typography>
           </Grid>
         </Grid>

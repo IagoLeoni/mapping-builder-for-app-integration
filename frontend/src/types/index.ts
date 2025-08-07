@@ -79,10 +79,13 @@ export interface MappingConfigOutput {
 }
 
 export interface IntegrationConfig {
+  clientName: string;           // Nome do cliente (ex: "Minerva Foods")
+  eventName: string;            // Nome do evento (ex: "pre-employee.moved")
   customerEmail: string;
   systemEndpoint: string;
   mappings: MappingConnection[];
-  systemPayload: any;
+  systemPayload?: any;
+  integrationName?: string;     // Nome gerado automaticamente
 }
 
 export interface GupyPayload {

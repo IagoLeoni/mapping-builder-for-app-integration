@@ -78,20 +78,34 @@ export class TemplateService {
     transformationTasks: any[];
     transformationVariables: any[];
   }): any {
+    console.log(`🔍 TemplateService.generateIntegration chamado com:`);
+    console.log(`  📧 customerEmail: "${config.customerEmail}"`);
+    console.log(`  📧 customerEmail type: ${typeof config.customerEmail}`);
+    console.log(`  📧 customerEmail empty?: ${!config.customerEmail}`);
+    console.log(`  📧 customerEmail length: ${config.customerEmail?.length || 0}`);
+    console.log(`  🔗 systemEndpoint: "${config.systemEndpoint}"`);
+    console.log(`  🏷️ integrationName: "${config.integrationName}"`);
+    console.log(`  🔍 Full config:`, JSON.stringify(config, null, 2));
+    
     const timestamp = new Date().toISOString();
     const integrationId = `int-${Date.now()}`;
     const versionId = this.generateUUID();
     
-    // Gerar tarefas usando métodos diretos
+    // Usar integrationName para trigger ID (mesmo nome da integração)
+    const triggerName = config.integrationName || integrationId;
+    
+    console.log(`🏷️ Usando integrationName para trigger: "${triggerName}"`);
+    
+    // Gerar tarefas usando métodos diretos - sem JsonnetMapperTask separado
     const taskConfigs = [
       ...config.transformationTasks,
-      this.generateFieldMappingTask(),
+      this.generateFieldMappingTask(config.customerEmail),
       this.generateRestTask(),
-      this.generateEmailTaskHardcoded(config.customerEmail),
+      this.generatePubSubTask(),
       this.generateSuccessOutputTaskHardcoded()
     ];
 
-    // Determinar tarefas iniciais
+    // Determinar tarefas iniciais 
     const startTasks = config.transformationTasks.length > 0 
       ? config.transformationTasks.map(task => ({ "taskId": task.taskId }))
       : [{ "taskId": "1" }];
@@ -105,11 +119,11 @@ export class TemplateService {
         "label": "API Trigger",
         "startTasks": startTasks,
         "properties": {
-          "Trigger name": `${integrationId}_API_1`
+          "Trigger name": triggerName
         },
         "triggerType": "API",
         "triggerNumber": "2",
-        "triggerId": `api_trigger/${integrationId}_API_1`,
+        "triggerId": `api_trigger/${triggerName}`,
         "position": { "x": 140, "y": 45 },
         "inputVariables": {},
         "outputVariables": {
@@ -136,7 +150,9 @@ export class TemplateService {
         {
           "key": "customerEmail",
           "dataType": "STRING_VALUE",
-          "defaultValue": {},
+          "defaultValue": {
+            "stringValue": config.customerEmail || "admin@example.com"
+          },
           "displayName": "customerEmail"
         },
         {
@@ -149,21 +165,31 @@ export class TemplateService {
           "key": "gupyPayload",
           "dataType": "JSON_VALUE",
           "defaultValue": {
-            "jsonValue": JSON.stringify({
-              "companyName": "ACME",
-              "id": "sample-id",
-              "event": "pre-employee.moved",
-              "date": "2019-06-19T23:48:46.952Z",
-              "data": {
-                "candidate": {
-                  "name": "John",
-                  "lastName": "Doe",
-                  "email": "john.doe@example.com"
-                }
-              }
-            })
+            "jsonValue": "{\n  \"body\": {\n    \"companyName\": \"Minerva Foods\",\n    \"event\": \"pre-employee.moved\",\n    \"id\": \"49589201-dbb3-46b7-b2d6-4f3ec16ac742\",\n    \"date\": \"2025-07-03T13:22:51.239Z\",\n    \"data\": {\n      \"job\": {\n        \"departmentCode\": \"40000605\",\n        \"roleCode\": \"35251270\",\n        \"branchCode\": null,\n        \"customFields\": [{\n          \"id\": \"583d1add-a920-4044-a570-7121e371cd1c\",\n          \"title\": \"Qual o seu idioma? / ¿Cuál es tu idioma? / What is your language?\",\n          \"value\": {\n            \"0b88a80f-296c-404d-88b9-10246fa099ba\": \"Seleção Externa (apenas candidatos externo)\",\n            \"27545cca-6298-47a2-99d0-04cf34d4f929\": \"AA00010137-CORTES\",\n            \"35329ad7-22c2-427b-9553-01e40ea63c68\": [],\n            \"575e6e7b-4b85-405a-834c-2c8f7f2c1f4a\": \"Escala 6x1 diurno\",\n            \"67134757-f466-4d2f-b920-7a3bb96a543e\": false,\n            \"f1924119-959d-42bd-9d05-60cc255ff3ad\": true,\n            \"583d1add-a920-4044-a570-7121e371cd1c__value\": \"Português\"\n          }\n        }],\n        \"id\": 9282348.0,\n        \"name\": \"VAGA TESTE INTEGRAÇÃO - Auxiliar de Produção\",\n        \"type\": \"vacancy_type_effective\",\n        \"department\": {\n          \"id\": 726936.0,\n          \"code\": \"40000605\",\n          \"name\": \"MIUDOS DIURNO\",\n          \"similarity\": \"operations\"\n        },\n        \"role\": {\n          \"id\": 1304055.0,\n          \"code\": \"35251270\",\n          \"name\": \"35251270 - AUXILIAR PRODUCAO\",\n          \"similarity\": \"auxiliary\"\n        },\n        \"branch\": {\n          \"id\": 1049440.0,\n          \"code\": null,\n          \"name\": \"BARRETOS - 09.104.182/0001-15 > MINERVA FINE FOODS - BARRETOS > COUROS - MINERVA > DIRETORIA PROCESSADOS\"\n        },\n        \"code\": \"77785-9282348\"\n      },\n      \"application\": {\n        \"id\": 5.7448886E8,\n        \"score\": 36.34942587268007,\n        \"partnerName\": \"gupy_public_page\",\n        \"status\": \"hired\",\n        \"tags\": [\"tagHired\"],\n        \"currentStep\": {\n          \"id\": 5.4392498E7,\n          \"name\": \"Contratação\",\n          \"type\": \"final\"\n        },\n        \"preHiringInformation\": {\n        }\n      },\n      \"candidate\": {\n        \"name\": \"Erica\",\n        \"lastName\": \"Brugognolle\",\n        \"email\": \"ericabru@hotmail.com\",\n        \"identificationDocument\": \"26962277806\",\n        \"countryOfOrigin\": \"BR\",\n        \"birthdate\": \"1979-05-31\",\n        \"addressZipCode\": \"01521-000\",\n        \"addressStreet\": \"Rua Cesário Ramalho\",\n        \"addressNumber\": \"237\",\n        \"addressCity\": \"São Paulo\",\n        \"addressState\": \"São Paulo\",\n        \"addressStateShortName\": \"SP\",\n        \"addressCountry\": \"Brasil\",\n        \"addressCountryShortName\": \"BR\",\n        \"mobileNumber\": \"+5511986637567\",\n        \"phoneNumber\": \"+551138050155\",\n        \"schooling\": \"post_graduate\",\n        \"schoolingStatus\": \"complete\",\n        \"disabilities\": false,\n        \"id\": 256080.0,\n        \"gender\": \"Female\"\n      },\n      \"benefitsEnabled\": true,\n      \"benefits\": {\n        \"contracts\": [],\n        \"transportVoucher\": {\n          \"id\": null,\n          \"title\": null,\n          \"type\": null,\n          \"needSignature\": null,\n          \"description\": null,\n          \"termAndCondition\": null,\n          \"allowAdhere\": false,\n          \"reasonForNotWanting\": null,\n          \"modality\": [],\n          \"amountDay\": null,\n          \"itinerary\": null\n        },\n        \"dentalPlan\": {\n          \"id\": 277901.0,\n          \"title\": \"Plano odontológico - Todos cargos\",\n          \"type\": \"mandatory\",\n          \"needSignature\": null,\n          \"description\": \"<p>TESTE</p>\",\n          \"termAndCondition\": null,\n          \"allowAdhere\": true,\n          \"includeDependents\": null,\n          \"dependents\": []\n        },\n        \"healthAssurance\": {\n          \"id\": 277902.0,\n          \"title\": \"Plano de saúde - Analistas e Coordenadores\",\n          \"type\": \"mandatory\",\n          \"needSignature\": null,\n          \"description\": \"<p>TESTE</p>\",\n          \"termAndCondition\": null,\n          \"allowAdhere\": true,\n          \"includeDependents\": null,\n          \"dependents\": []\n        },\n        \"lifeAssurance\": {\n          \"id\": 277900.0,\n          \"title\": \"Seguro de vida - Demais cargos \",\n          \"type\": \"optional\",\n          \"needSignature\": null,\n          \"description\": \"<p>No caso de não haver cônjuge, não preencher o campo: Inclusão do cônjuge.</p>\",\n          \"termAndCondition\": null,\n          \"allowAdhere\": true,\n          \"beneficiaries\": []\n        },\n        \"foodAndMeal\": {\n          \"id\": null,\n          \"title\": null,\n          \"type\": null,\n          \"needSignature\": null,\n          \"description\": null,\n          \"termAndCondition\": null,\n          \"allowAdhere\": false,\n          \"offerOptions\": null,\n          \"observation1\": null,\n          \"observation2\": null\n        },\n        \"other\": []\n      },\n      \"admission\": {\n        \"status\": \"c40c64d6-7890-4608-ae5b-c7ce1711ea9a\",\n        \"admissionDeadline\": \"2025-06-27T03:00:00.000Z\",\n        \"hiringDate\": \"2025-06-30T03:00:00.000Z\",\n        \"documentsTemplate\": {\n          \"id\": 52807.0,\n          \"name\": \"Admissão CLT\"\n        },\n        \"documents\": [{\n          \"id\": 41.0,\n          \"name\": \"Informações pessoais\",\n          \"values\": {\n            \"sexo\": \"Feminino\",\n            \"etnia\": \"Branca\",\n            \"deficiente\": \"Não\",\n            \"dependentes\": [\"Mariana Brugognolle\", \"Malu Brugognolle\"],\n            \"estado-civil\": \"Solteiro(a)\",\n            \"nacionalidade\": \"Brasil\",\n            \"data-de-nascimento\": \"1979-05-31T03:00:00.000Z\",\n            \"uniao-estavel\": \"Não\",\n            \"documento-identificacao\": \"Carteira de Identidade (RG)\"\n          },\n          \"validation\": {\n            \"status\": \"APPROVED\",\n            \"validatedAt\": \"2025-06-20T14:56:20.427Z\",\n            \"isAutomaticallyValidated\": false,\n            \"cannotValidate\": true\n          }\n        }]\n      },\n      \"position\": {\n        \"positionId\": 1156278.0,\n        \"formGroupType\": \"clt\",\n        \"paymentRecurrence\": \"mensalista\",\n        \"customFields\": [{\n          \"id\": \"1608e91d-599f-455f-ac23-41103fabbc9d\",\n          \"title\": \"Autorização de Aprendiz\",\n          \"value\": false,\n          \"isIntegrated\": true\n        }],\n        \"branch\": {\n          \"id\": 1049440.0,\n          \"code\": \"\",\n          \"label\": \"BARRETOS - 09.104.182/0001-15 > MINERVA FINE FOODS - BARRETOS > COUROS - MINERVA > DIRETORIA PROCESSADOS\"\n        },\n        \"department\": {\n          \"id\": 726936.0,\n          \"code\": \"40000605\",\n          \"name\": \"MIUDOS DIURNO\"\n        },\n        \"role\": {\n          \"id\": 1304055.0,\n          \"code\": \"35251270\",\n          \"name\": \"35251270 - AUXILIAR PRODUCAO\"\n        },\n        \"salary\": {\n          \"value\": 3000.0,\n          \"currency\": \"R$\"\n        },\n        \"costCenter\": null,\n        \"workShift\": null\n      },\n      \"source\": \"ats\",\n      \"isDirectInsertion\": false\n    },\n    \"user\": {\n      \"id\": 359236.0,\n      \"name\": \"Maria Eduarda da Silva Joaquim\",\n      \"email\": \"mariaeduarda.joaquim@gupy.com.br\"\n    }\n  }\n}"
           },
-          "displayName": "gupyPayload"
+          "displayName": "gupyPayload",
+          "inputOutputType": "IN"
+        },
+        {
+          "key": "pubsub_message_string",
+          "dataType": "STRING_VALUE",
+          "defaultValue": {},
+          "displayName": "pubsub_message_string"
+        },
+        {
+          "key": "`Task_4_connectorInputPayload`",
+          "dataType": "JSON_VALUE",
+          "displayName": "`Task_4_connectorInputPayload`",
+          "producer": "1_4",
+          "jsonSchema": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"properties\": {\n    \"message\": {\n      \"type\": \"string\",\n      \"description\": \"Message to publish to Cloud PubSub.\"\n    },\n    \"topic\": {\n      \"type\": \"string\",\n      \"description\": \"Topic of Cloud PubSub.\"\n    },\n    \"attributes\": {\n      \"type\": [\"string\", \"null\"],\n      \"description\": \"Custom attributes as metadata in pub/sub messages.\"\n    }\n  },\n  \"required\": [\"message\", \"topic\"]\n}"
+        },
+        {
+          "key": "`Task_4_connectorOutputPayload`",
+          "dataType": "JSON_VALUE",
+          "displayName": "`Task_4_connectorOutputPayload`",
+          "isTransient": true,
+          "producer": "1_4",
+          "jsonSchema": "{\n  \"type\": \"array\",\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"items\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"messageId\": {\n        \"type\": \"string\",\n        \"description\": \"Message ID of the published message.\"\n      }\n    },\n    \"$schema\": \"http://json-schema.org/draft-07/schema#\"\n  }\n}"
         },
         ...config.transformationVariables
       ],
@@ -181,16 +207,6 @@ export class TemplateService {
         },
         {
           "parameter": {
-            "key": "`CONFIG_customerEmail`",
-            "dataType": "STRING_VALUE",
-            "defaultValue": {
-              "stringValue": config.customerEmail || ""
-            },
-            "displayName": "`CONFIG_customerEmail`"
-          }
-        },
-        {
-          "parameter": {
             "key": "`CONFIG_systemEndpoint`",
             "dataType": "STRING_VALUE",
             "defaultValue": {
@@ -204,7 +220,7 @@ export class TemplateService {
   }
 
   // Gerar tarefa de mapeamento de campos
-  private static generateFieldMappingTask(): any {
+  private static generateFieldMappingTask(customerEmail: string): any {
     // Retornar objeto hardcoded para evitar problemas de template
     return {
       "task": "FieldMappingTask",
@@ -249,6 +265,62 @@ export class TemplateService {
                   },
                   "outputField": {
                     "referenceKey": "$systemEndpoint$",
+                    "fieldType": "STRING_VALUE",
+                    "cardinality": "OPTIONAL"
+                  }
+                },
+                {
+                  "inputField": {
+                    "fieldType": "STRING_VALUE",
+                    "transformExpression": {
+                      "initialValue": {
+                        "literalValue": {
+                          "stringValue": customerEmail || "admin@example.com"
+                        }
+                      }
+                    }
+                  },
+                  "outputField": {
+                    "referenceKey": "$customerEmail$",
+                    "fieldType": "STRING_VALUE",
+                    "cardinality": "OPTIONAL"
+                  }
+                },
+                {
+                  "inputField": {
+                    "fieldType": "STRING_VALUE",
+                    "transformExpression": {
+                      "initialValue": {
+                        "literalValue": {
+                          "stringValue": "dlq-pre-employee-moved"
+                        }
+                      }
+                    }
+                  },
+                  "outputField": {
+                    "referenceKey": "$`Task_4_connectorInputPayload`.topic$",
+                    "fieldType": "STRING_VALUE",
+                    "cardinality": "OPTIONAL"
+                  }
+                },
+                {
+                  "inputField": {
+                    "fieldType": "JSON_VALUE",
+                    "transformExpression": {
+                      "initialValue": {
+                        "referenceValue": "$systemPayload$"
+                      },
+                      "transformationFunctions": [{
+                        "functionType": {
+                          "stringFunction": {
+                            "functionName": "TO_JSON"
+                          }
+                        }
+                      }]
+                    }
+                  },
+                  "outputField": {
+                    "referenceKey": "$`Task_4_connectorInputPayload`.message$",
                     "fieldType": "STRING_VALUE",
                     "cardinality": "OPTIONAL"
                   }
@@ -403,36 +475,85 @@ export class TemplateService {
     };
   }
 
-  // Gerar tarefa de email (versão hardcoded)
-  private static generateEmailTaskHardcoded(customerEmail: string): any {
+  // Gerar tarefa PubSub (substitui EmailTask)
+  private static generatePubSubTask(): any {
+    console.log(`📨 Gerando PubSubTask para dlq-pre-employee-moved`);
+    
     return {
-      "task": "EmailTask",
+      "task": "GenericConnectorTask",
       "taskId": "4",
       "parameters": {
-        "to": {
-          "key": "to",
+        "connectorInputPayload": {
+          "key": "connectorInputPayload",
           "value": {
-            "stringValue": customerEmail || "customer@example.com"
+            "stringValue": "$`Task_4_connectorInputPayload`$"
           }
         },
-        "subject": {
-          "key": "subject",
+        "authOverrideEnabled": {
+          "key": "authOverrideEnabled",
           "value": {
-            "stringValue": "Integration Error Notification"
+            "booleanValue": false
           }
         },
-        "body": {
-          "key": "body",
+        "connectionName": {
+          "key": "connectionName",
           "value": {
-            "stringValue": "There was an error processing your integration. Please check your system."
+            "stringValue": "projects/apigee-prd1/locations/us-central1/connections/pubsub-poc"
+          }
+        },
+        "connectorOutputPayload": {
+          "key": "connectorOutputPayload",
+          "value": {
+            "stringValue": "$`Task_4_connectorOutputPayload`$"
+          }
+        },
+        "operation": {
+          "key": "operation",
+          "value": {
+            "stringValue": "EXECUTE_ACTION"
+          }
+        },
+        "connectionVersion": {
+          "key": "connectionVersion",
+          "value": {
+            "stringValue": "projects/apigee-prd1/locations/global/providers/gcp/connectors/pubsub/versions/1"
+          }
+        },
+        "actionName": {
+          "key": "actionName",
+          "value": {
+            "stringValue": "publishMessage"
           }
         }
       },
       "nextTasks": [],
       "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
-      "displayName": "Send Error Email",
+      "displayName": "Publish to PubSub DLQ",
       "externalTaskType": "NORMAL_TASK",
       "position": { "x": "620", "y": "181" }
+    };
+  }
+
+  // Gerar JsonnetMapperTask para converter JSON em string para PubSub
+  private static generateJsonToStringMapperTask(): any {
+    console.log(`🔧 Gerando JsonnetMapperTask para conversão JSON → String`);
+    
+    return {
+      "task": "JsonnetMapperTask",
+      "taskId": "14",
+      "parameters": {
+        "template": {
+          "key": "template",
+          "value": {
+            "stringValue": "local gupyPayload = std.extVar(\"gupyPayload\"); local systemPayload = std.extVar(\"systemPayload\"); { pubsub_message_string: std.manifestJsonEx(systemPayload, \"    \") }"
+          }
+        }
+      },
+      "nextTasks": [{ "taskId": "1" }],
+      "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+      "displayName": "Convert JSON to String for PubSub",
+      "externalTaskType": "NORMAL_TASK",
+      "position": { "x": "140", "y": "120" }
     };
   }
 
@@ -569,26 +690,41 @@ export class TemplateService {
   }>): any {
     const transformedPayload: any = {};
     
-    // Payload de exemplo da Gupy para aplicar transformações
+    // Payload de exemplo da Gupy para aplicar transformações (com wrapper body)
     const gupyExamplePayload = {
-      companyName: "ACME",
-      data: {
-        candidate: {
-          name: "John",
-          lastName: "Doe",
-          email: "john.doe177@gmail.com",
-          identificationDocument: "25272626207",
-          mobileNumber: "+5511999990000",
-          addressCity: "São Paulo",
-          addressState: "São Paulo",
-          addressCountry: "Brasil",
-          addressZipCode: "01414-905",
-          gender: "Male"
-        },
-        admission: {
-          hiringDate: "2019-06-19T00:00:00.000Z",
-          position: {
-            salary: { value: 1250.5 }
+      body: {
+        companyName: "Minerva Foods",
+        event: "pre-employee.moved",
+        id: "49589201-dbb3-46b7-b2d6-4f3ec16ac742",
+        date: "2025-07-03T13:22:51.239Z",
+        data: {
+          job: {
+            departmentCode: "40000605",
+            roleCode: "35251270",
+            branchCode: null,
+            name: "Developer",
+            department: {
+              name: "Technology",
+              code: "40000605"
+            }
+          },
+          candidate: {
+            name: "John",
+            lastName: "Doe",
+            email: "john.doe177@gmail.com",
+            identificationDocument: "123.456.789-00",
+            mobileNumber: "+5511999990000",
+            addressCity: "São Paulo",
+            addressState: "São Paulo",
+            addressCountry: "Brasil",
+            addressZipCode: "01414-905",
+            gender: "Male"
+          },
+          admission: {
+            hiringDate: "2019-06-19T00:00:00.000Z",
+            position: {
+              salary: { value: 1250.5 }
+            }
           }
         }
       }

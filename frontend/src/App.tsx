@@ -31,6 +31,8 @@ function App() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mappings, setMappings] = useState<MappingConnection[]>([]);
   const [config, setConfig] = useState<IntegrationConfig>({
+    clientName: '',
+    eventName: '',
     customerEmail: '',
     systemEndpoint: '',
     mappings: [],
@@ -199,58 +201,79 @@ function App() {
           </Toolbar>
         </AppBar>
         
-        <Container maxWidth={false} sx={{ mt: 2, mb: 2 }}>
+        <Container maxWidth={false} sx={{ 
+          mt: 2, 
+          mb: 2,
+          position: 'relative'
+        }}>
           <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
             <Box ref={containerRef} sx={{ position: 'relative' }}>
-              <Grid container spacing={2} sx={{ height: 'calc(100vh - 120px)' }}>
-              {/* Payload Tree - Left Panel (Fixed) */}
-              <Grid item xs={3}>
-                <Paper sx={{ 
-                  height: '100%', 
-                  p: 2, 
-                  position: 'sticky', 
-                  top: 0,
-                  display: 'flex',
-                  flexDirection: 'column'
+              {/* Payload Tree - Fixed Floating Panel */}
+              <Paper sx={{ 
+                position: 'fixed',
+                left: '16px',              // Margem da esquerda
+                top: '80px',               // Altura AppBar + margem
+                width: 'calc(25% - 32px)', // 25% menos margens
+                height: 'calc(100vh - 100px)',
+                zIndex: 1000,
+                p: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: 'white',
+                boxShadow: 3,              // Sombra mais forte para destacar
+                border: '1px solid #e0e0e0' // Borda sutil
+              }}>
+                <Typography variant="h6" gutterBottom sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 1,
+                  borderBottom: '1px solid #f0f0f0',
+                  pb: 1,
+                  mb: 1
                 }}>
-                  <Typography variant="h6" gutterBottom>
-                    Gupy Payload
-                  </Typography>
-                  <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
-                    <PayloadTree fields={gupyFields} />
-                  </Box>
-                </Paper>
-              </Grid>
-              
-              {/* Mapping Canvas - Center Panel */}
-              <Grid item xs={6}>
-                <Paper sx={{ height: '100%', p: 2 }}>
-                  <Typography variant="h6" gutterBottom>
-                    Mapping Canvas
-                  </Typography>
-                  <MappingCanvas 
-                    mappings={mappings}
-                    onRemoveMapping={handleRemoveMapping}
-                    onUpdateMapping={handleUpdateMapping}
-                    onTargetSchemaChange={handleTargetSchemaChange}
-                    onAddMappings={handleAddMappings}
-                  />
-                </Paper>
-              </Grid>
-              
-              {/* Config Panel - Right Panel */}
-              <Grid item xs={3}>
-                <Paper sx={{ height: '100%', p: 2 }}>
-                  <Typography variant="h6" gutterBottom>
-                    Configuration
-                  </Typography>
-                  <ConfigPanel 
-                    config={config}
-                    onChange={handleConfigChange}
-                  />
-                </Paper>
-              </Grid>
-              </Grid>
+                  📌 Gupy Payload (Fixo)
+                </Typography>
+                <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
+                  <PayloadTree fields={gupyFields} />
+                </Box>
+              </Paper>
+
+              {/* Layout ajustado para compensar painel fixo */}
+              <Box sx={{ marginLeft: 'calc(25% + 16px)' }}>
+                <Grid container spacing={2} sx={{ 
+                  minHeight: 'calc(100vh - 120px)',
+                  alignItems: 'flex-start'
+                }}>
+                  {/* Mapping Canvas - Center Panel (agora 75% da largura restante) */}
+                  <Grid item xs={8}>
+                    <Paper sx={{ height: '100%', p: 2 }}>
+                      <Typography variant="h6" gutterBottom>
+                        Mapping Canvas
+                      </Typography>
+                      <MappingCanvas 
+                        mappings={mappings}
+                        onRemoveMapping={handleRemoveMapping}
+                        onUpdateMapping={handleUpdateMapping}
+                        onTargetSchemaChange={handleTargetSchemaChange}
+                        onAddMappings={handleAddMappings}
+                      />
+                    </Paper>
+                  </Grid>
+                  
+                  {/* Config Panel - Right Panel (25% da largura restante) */}
+                  <Grid item xs={4}>
+                    <Paper sx={{ height: '100%', p: 2 }}>
+                      <Typography variant="h6" gutterBottom>
+                        Configuration
+                      </Typography>
+                      <ConfigPanel 
+                        config={config}
+                        onChange={handleConfigChange}
+                      />
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Box>
             </Box>
             
             <DragOverlay>

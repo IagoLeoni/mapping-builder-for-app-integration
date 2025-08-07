@@ -97,6 +97,8 @@ jspm_packages/
 # Google Cloud
 .gcloudignore
 service-account-key.json
+integration-deployer-key.json
+*-service-account-key.json
 
 # Terraform
 *.tfstate

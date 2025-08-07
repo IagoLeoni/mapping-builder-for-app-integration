@@ -9,11 +9,17 @@ interface MappingConnection {
     path: string;
   };
   targetPath: string;
+  confidence?: number;        // ✅ NOVO: Campo confidence da IA
+  reasoning?: string;         // ✅ NOVO: Campo reasoning da IA  
+  aiGenerated?: boolean;      // ✅ NOVO: Campo aiGenerated da IA
   transformation?: any;
 }
 
 interface IntegrationConfig {
   integrationId: string;
+  integrationName?: string;      // NOVO CAMPO
+  clientName?: string;           // NOVO CAMPO
+  eventName?: string;            // NOVO CAMPO
   customerEmail: string;
   systemEndpoint: string;
   mappings: MappingConnection[];
@@ -33,17 +39,34 @@ export class IntegrationService {
         throw new Error('Required templates are missing');
       }
 
-      const { integrationId, customerEmail, systemEndpoint, systemPayload } = config;
+      const { 
+        integrationId, 
+        integrationName, 
+        clientName, 
+        eventName, 
+        customerEmail, 
+        systemEndpoint, 
+        systemPayload 
+      } = config;
+      
+      // Usar nome da integração se fornecido, senão usar ID
+      const finalIntegrationName = integrationName || integrationId;
       
       // Usar TemplateService para gerar a integração
       const integrationJson = TemplateService.generateIntegration({
-        integrationName: integrationId,
-        customerEmail,
-        systemEndpoint,
-        systemPayload,
+        integrationName: finalIntegrationName,
+        customerEmail: customerEmail,
+        systemEndpoint: systemEndpoint,
+        systemPayload: systemPayload,
         transformationTasks: config.transformationTasks || [],
         transformationVariables: config.transformationVariables || []
       });
+
+      console.log(`📧 Email sendo passado para TemplateService: "${customerEmail}"`);
+      console.log(`🔗 Endpoint sendo passado para TemplateService: "${systemEndpoint}"`);
+
+      // Não adicionar parâmetros extras para evitar erros de formato
+      // Metadata será rastreada através dos nomes dos arquivos e logs
 
       return integrationJson;
     } catch (error) {

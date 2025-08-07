@@ -8,6 +8,19 @@ const router = express.Router();
 
 // Validation schema for deployment request
 const deploySchema = Joi.object({
+  // NOVOS CAMPOS OBRIGATÓRIOS
+  clientName: Joi.string().min(2).max(50).required().messages({
+    'string.min': 'Client name must be at least 2 characters',
+    'string.max': 'Client name cannot exceed 50 characters',
+    'any.required': 'Client name is required'
+  }),
+  eventName: Joi.string().min(2).max(50).required().messages({
+    'string.min': 'Event name must be at least 2 characters',
+    'string.max': 'Event name cannot exceed 50 characters',
+    'any.required': 'Event name is required'
+  }),
+  
+  // CAMPOS EXISTENTES
   customerEmail: Joi.string().email().required(),
   systemEndpoint: Joi.string().uri().required(),
   mappings: Joi.array().items(
@@ -20,6 +33,9 @@ const deploySchema = Joi.object({
         path: Joi.string().required()
       }).required(),
       targetPath: Joi.string().required(),
+      confidence: Joi.number().min(0).max(1).optional(), // Campo confidence da IA
+      reasoning: Joi.string().optional(), // ✅ NOVO: Campo reasoning da IA
+      aiGenerated: Joi.boolean().optional(), // ✅ NOVO: Campo aiGenerated da IA
       transformation: Joi.object({
         type: Joi.string().required(),
         operation: Joi.string().optional(),
@@ -30,14 +46,46 @@ const deploySchema = Joi.object({
         inputFormat: Joi.string().optional(),
         outputFormat: Joi.string().optional(),
         preview: Joi.object({
-          input: Joi.string().required(),
-          output: Joi.string().required()
+          input: Joi.any(),
+          output: Joi.any()
         }).optional()
       }).optional()
     })
   ).min(1).required(),
   systemPayload: Joi.object().required()
 });
+
+// FUNÇÕES DE NORMALIZAÇÃO (MESMAS DO FRONTEND)
+function normalizeClientName(value: string): string {
+  if (!value) return '';
+  
+  return value
+    .toLowerCase()                    // Converte para lowercase
+    .replace(/[^a-z0-9]/g, '')       // Remove TODOS caracteres especiais e espaços
+    .replace(/^-+|-+$/g, '');        // Remove hífens das bordas
+}
+
+function normalizeEventName(value: string): string {
+  if (!value) return '';
+  
+  return value
+    .toLowerCase()                    // Converte para lowercase
+    .replace(/\./g, '-')             // Substitui APENAS pontos por hífen
+    .replace(/-+/g, '-')             // Remove hífens duplicados
+    .replace(/^-+|-+$/g, '');        // Remove hífens das bordas
+}
+
+function generateIntegrationName(clientName: string, eventName: string): string {
+  const normalizedClient = normalizeClientName(clientName);
+  const normalizedEvent = normalizeEventName(eventName);
+  
+  // Validação adicional
+  if (!normalizedClient || !normalizedEvent) {
+    throw new Error('Client name and event name cannot be empty after normalization');
+  }
+  
+  return `${normalizedClient}-${normalizedEvent}`;
+}
 
 /**
  * POST /api/deploy
@@ -48,21 +96,31 @@ router.post('/', async (req, res) => {
     // Validate request body
     const { error, value } = deploySchema.validate(req.body);
     if (error) {
-      return res.status(400).json({
+      res.status(400).json({
         error: 'Validation failed',
         details: error.details.map(d => d.message)
       });
+      return;
     }
 
-    const { customerEmail, systemEndpoint, mappings, systemPayload } = value;
+    const { clientName, eventName, customerEmail, systemEndpoint, mappings, systemPayload } = value;
 
-    // Generate unique integration ID
-    const integrationId = `int-${Date.now()}-${uuidv4().substring(0, 8)}`;
+    // GERAR NOME DA INTEGRAÇÃO PADRONIZADO
+    const integrationName = generateIntegrationName(clientName, eventName);
+    const integrationId = `int-${Date.now()}-${integrationName}`;
+
+    console.log(`🏷️ Nome da integração gerado: ${integrationName}`);
+    console.log(`🆔 ID da integração: ${integrationId}`);
+    console.log(`👤 Cliente: "${clientName}" → "${normalizeClientName(clientName)}"`);
+    console.log(`⚡ Evento: "${eventName}" → "${normalizeEventName(eventName)}"`);
 
     // Create integration JSON with transformations
     const integrationService = new IntegrationService();
     const integrationJson = integrationService.generateIntegrationWithTransformations({
       integrationId,
+      integrationName,      // NOVO CAMPO
+      clientName,           // NOVO CAMPO  
+      eventName,            // NOVO CAMPO
       customerEmail,
       systemEndpoint,
       mappings,
@@ -73,6 +131,7 @@ router.post('/', async (req, res) => {
     const cloudBuildService = new CloudBuildService();
     const deploymentResult = await cloudBuildService.deployIntegration({
       integrationId,
+      integrationName,      // NOVO CAMPO
       integrationJson,
       customerEmail
     });
@@ -80,12 +139,19 @@ router.post('/', async (req, res) => {
     res.status(200).json({
       success: true,
       integrationId,
+      integrationName,      // RETORNA NOME PADRONIZADO
       deploymentId: deploymentResult.deploymentId,
       status: deploymentResult.status,
-      message: 'Integration deployment initiated successfully',
+      message: `Integration '${integrationName}' deployment initiated successfully`,
       endpoints: {
         trigger: deploymentResult.triggerUrl,
         status: `/api/integration/${integrationId}/status`
+      },
+      metadata: {
+        clientName,
+        eventName,
+        normalizedClientName: normalizeClientName(clientName),
+        normalizedEventName: normalizeEventName(eventName)
       }
     });
 

@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { 
   Box, 
   Typography,
-  Divider
+  Divider,
+  Paper
 } from '@mui/material';
 import { MappingConnection, PayloadField, TransformationConfig } from '../../types';
-import TargetSchemaInput from './TargetSchemaInput';
 import TargetFieldsTree from './TargetFieldsTree';
 import MappingWizard from '../MappingWizard/MappingWizard';
 
@@ -110,10 +110,21 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
         }}
       />
 
-      {/* Target Schema Input */}
-      <TargetSchemaInput onSchemaChange={handleSchemaChange} />
+      {/* Schema Status quando wizard completado */}
+      {wizardCompleted && targetFields.length > 0 && (
+        <Paper sx={{ p: 2, mb: 2, bgcolor: 'success.light', color: 'success.contrastText' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="subtitle1" fontWeight="medium">
+              ✅ Schema Configurado via Wizard ({targetFields.length} campos)
+            </Typography>
+            <Typography variant="body2">
+              Arraste campos da Gupy para os campos do seu sistema abaixo ↓
+            </Typography>
+          </Box>
+        </Paper>
+      )}
 
-      <Divider sx={{ mb: 2 }} />
+      {wizardCompleted && <Divider sx={{ mb: 2 }} />}
 
       {/* Target fields tree */}
       <Box sx={{ flexGrow: 1, overflow: 'auto' }}>

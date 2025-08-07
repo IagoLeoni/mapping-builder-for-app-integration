@@ -22,10 +22,157 @@ Uma plataforma visual de integração que serve como fachada "customer face" par
 
 - ✅ Interface visual drag & drop
 - ✅ Mapeamento de payload Gupy → Sistema cliente
+- ✅ **Sistema PubSub DLQ para tratamento robusto de falhas** ⭐ **NOVO**
 - ✅ Geração automática de JSON de integração
 - ✅ Deploy automático no Google Cloud Application Integration
 - ✅ Pipeline CI/CD com Cloud Build
 - ✅ Monitoramento e logs de execução
+
+### 🔄 **Sistema PubSub Dead Letter Queue (DLQ)** ⭐ **FUNCIONALIDADE CRÍTICA IMPLEMENTADA**
+
+#### **Contexto e Necessidade Business**
+Substituímos o sistema EmailTask tradicional por uma solução PubSub Dead Letter Queue para tratamento robusto de falhas de integração. Esta mudança resolve limitações críticas de escalabilidade e configuração.
+
+#### **Problema EmailTask Resolvido**
+- **❌ Dependência email corporativa**: Configuração SMTP complexa e específica por cliente
+- **❌ Limitações de escalabilidade**: Emails não são ideais para processamento em lote
+- **❌ Variáveis dinâmicas problemáticas**: Contexto de erro corrompia variáveis de email
+- **❌ Falta de reprocessamento**: Emails não permitem retry automático
+
+#### **Solução PubSub Implementada**
+- **✅ Assíncrono por design**: Processamento batch, retry automático e load balancing
+- **✅ Infraestrutura existente**: Reutiliza connection PubSub já configurada
+- **✅ Monitoramento avançado**: Métricas, alertas e tracking de mensagens
+- **✅ Payload preservado**: SystemPayload original mantido para reprocessamento
+
+#### **Arquitetura do Sistema DLQ**
+
+```
+Webhook Gupy → FieldMappingTask → RestTask (Cliente)
+                                      ↓ (falha)
+                               PubSubTask (DLQ)
+                                      ↓
+                          Topic: "dlq-pre-employee-moved"
+                                      ↓
+                            Sistema de Reprocessamento
+```
+
+#### **Especificações Técnicas**
+
+**Connection PubSub**:
+```
+projects/apigee-prd1/locations/us-central1/connections/pubsub-poc
+```
+
+**Topic DLQ**:
+```
+dlq-pre-employee-moved
+```
+
+**Payload DLQ**: SystemPayload completo convertido para JSON string usando função nativa `TO_JSON`
+
+**Schemas Definidos**:
+- **Input Schema**: `{message: string, topic: string, attributes?: string}`
+- **Output Schema**: `{messageId: string}` para tracking
+
+#### **Fluxo de Execução Detalhado**
+
+```
+1. FieldMappingTask (taskId: 1) [~200ms]
+   ├─ Resolve systemPayload usando CONFIG_systemPayload + RESOLVE_TEMPLATE
+   ├─ Configura systemEndpoint usando CONFIG_systemEndpoint  
+   ├─ Hardcode topic "dlq-pre-employee-moved"
+   └─ Converte systemPayload JSON → String usando TO_JSON nativo
+   
+2. RestTask (taskId: 2) [~1-5s]
+   ├─ POST para endpoint do cliente com systemPayload
+   ├─ Headers: Content-Type: application/json, X-Integration-Source: iPaaS-Builder
+   ├─ Conditional Success: responseStatus = "200 OK" → Task 5 (Success)
+   └─ Conditional Failure: responseStatus != "200 OK" → Task 4 (PubSub DLQ)
+
+3a. SUCCESS PATH: SuccessOutputTask (taskId: 5) [~100ms]
+    └─ Retorna { "Status": "Success" } para Gupy
+
+3b. FAILURE PATH: PubSubTask (taskId: 4) [~300-500ms]
+    ├─ Connection: projects/apigee-prd1/locations/us-central1/connections/pubsub-poc
+    ├─ Action: publishMessage usando Google Cloud Connectors
+    ├─ Topic: "dlq-pre-employee-moved" 
+    ├─ Message: systemPayload convertido para JSON string
+    └─ Output: messageId para tracking e monitoramento
+```
+
+#### **Vantagens Técnicas**
+
+**Performance e Simplicidade**:
+- ✅ **Conversão Nativa**: TO_JSON integrado (elimina JsonnetMapperTask extra)
+- ✅ **Compatibilidade Total**: Mantém taskId 4 (zero refactoring)
+- ✅ **Schemas Bem Definidos**: JSON Draft-07 para validation automática
+
+**Robustez e Monitoramento**:
+- ✅ **Connection Reutilização**: Infraestrutura PubSub existente e testada
+- ✅ **Topic Dedicado**: Filtering e alertas específicos para falhas Gupy
+- ✅ **Payload Preservado**: Reprocessamento com dados originais completos
+- ✅ **MessageId Tracking**: Rastreamento end-to-end de mensagens
+
+**Escalabilidade e Flexibilidade**:
+- ✅ **Processamento Assíncrono**: Batch processing, retry automático
+- ✅ **Input Variable**: gupyPayload configurável por cliente
+- ✅ **Schema Extensível**: Metadata customizada (timestamp, clientName)
+- ✅ **Multi-ambiente**: Connection parameterizável para dev/prod
+
+#### **Configuração Payload Gupy Real**
+
+O sistema agora usa dados reais da Minerva Foods com estrutura completa:
+
+```json
+{
+  "body": {
+    "companyName": "Minerva Foods",
+    "event": "pre-employee.moved",
+    "id": "49589201-dbb3-46b7-b2d6-4f3ec16ac742",
+    "date": "2025-07-03T13:22:51.239Z",
+    "data": {
+      "job": {
+        "departmentCode": "40000605",
+        "roleCode": "35251270", 
+        "name": "VAGA TESTE INTEGRAÇÃO - Auxiliar de Produção",
+        "department": {
+          "id": 726936.0,
+          "code": "40000605",
+          "name": "MIUDOS DIURNO"
+        }
+      },
+      "candidate": {
+        "name": "Erica",
+        "lastName": "Brugognolle", 
+        "email": "ericabru@hotmail.com",
+        "identificationDocument": "26962277806",
+        "mobileNumber": "+5511986637567"
+      },
+      "admission": {
+        "hiringDate": "2025-06-30T03:00:00.000Z",
+        "documentsTemplate": {
+          "id": 52807.0,
+          "name": "Admissão CLT"
+        }
+      },
+      "position": {
+        "salary": {
+          "value": 3000.0,
+          "currency": "R$"
+        }
+      }
+    }
+  }
+}
+```
+
+#### **Evidências de Sucesso**
+- ✅ **Deploy Successful**: Integration JSON gerado sem erros
+- ✅ **PubSub Connection**: Validada e operacional no ambiente apigee-prd1
+- ✅ **Topic Creation**: "dlq-pre-employee-moved" criado e monitorado
+- ✅ **Conditional Flow**: RestTask falha → PubSubTask executa automaticamente
+- ✅ **Payload Structure**: Wrapper body.data.* funcionando com dados reais
 
 ## 📋 Pré-requisitos
 

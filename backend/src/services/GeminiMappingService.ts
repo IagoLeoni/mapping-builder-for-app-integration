@@ -236,7 +236,7 @@ export class GeminiMappingService {
           path: mapping.sourceField.path
         },
         targetPath: mapping.targetPath,
-        confidence: mapping.confidence,
+        confidence: this.normalizeConfidence(mapping.confidence), // Normalizar confidence
         reasoning: mapping.reasoning + ' (Gemini 2.0 Flash)',
         aiGenerated: true,
         transformation: mapping.transformation || undefined
@@ -1131,6 +1131,23 @@ IMPORTANTE: Inclua TODOS os mapeamentos detectados, não limite quantidade!
    */
   private async sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  /**
+   * Normaliza o valor de confidence para garantir que esteja entre 0.0 e 1.0
+   */
+  private normalizeConfidence(confidence: number): number {
+    if (typeof confidence !== 'number' || isNaN(confidence)) {
+      return 0.5; // Default confidence
+    }
+    
+    // Se o valor está em percentual (ex: 95), converter para decimal (0.95)
+    if (confidence > 1) {
+      return Math.min(confidence / 100, 1.0);
+    }
+    
+    // Se já é decimal, garantir que está no range correto
+    return Math.max(0, Math.min(confidence, 1.0));
   }
 
   /**

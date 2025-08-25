@@ -155,9 +155,10 @@ export class SchemaManagerService {
       errors.push('Schema não pode estar vazio');
     }
 
-    // Verificar se há campos aninhados muito profundos (>5 níveis)
+    // Verificar se há campos aninhados excessivamente profundos (>15 níveis)
+    // ✅ LIMITE AUMENTADO DE 5 PARA 15 NÍVEIS - SCHEMAS REAIS PRECISAM DE MAIS PROFUNDIDADE
     const checkDepth = (obj: any, depth = 0): number => {
-      if (depth > 5) return depth;
+      if (depth > 15) return depth; // ✅ LIMITE AUMENTADO PARA 15 NÍVEIS
       if (typeof obj !== 'object' || obj === null) return depth;
       
       let maxDepth = depth;
@@ -170,8 +171,8 @@ export class SchemaManagerService {
     };
 
     const maxDepth = checkDepth(schema);
-    if (maxDepth > 5) {
-      errors.push('Schema muito profundo (máximo 5 níveis de aninhamento)');
+    if (maxDepth > 15) { // ✅ LIMITE AUMENTADO PARA 15 NÍVEIS
+      errors.push('Schema muito profundo (máximo 15 níveis de aninhamento)');
     }
 
     return {

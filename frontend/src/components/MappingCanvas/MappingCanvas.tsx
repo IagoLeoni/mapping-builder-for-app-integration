@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { 
   Box, 
   Typography,
-  Divider,
+  TextField,
+  Button,
   Paper
 } from '@mui/material';
 import { MappingConnection, PayloadField, TransformationConfig } from '../../types';
 import TargetFieldsTree from './TargetFieldsTree';
-import MappingWizard from '../MappingWizard/MappingWizard';
 
 interface MappingCanvasProps {
   mappings: MappingConnection[];
@@ -25,23 +25,21 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
   onAddMappings
 }) => {
   const [targetFields, setTargetFields] = useState<PayloadField[]>([]);
-  const [wizardCompleted, setWizardCompleted] = useState(false);
-  const [clientSchemaFromWizard, setClientSchemaFromWizard] = useState<any>(null);
+  const [schemaInput, setSchemaInput] = useState('');
 
   const handleSchemaChange = (fields: PayloadField[]) => {
     setTargetFields(fields);
     onTargetSchemaChange(fields);
   };
 
-  const handleAIMappingsGenerated = (aiMappings: MappingConnection[]) => {
-    if (onAddMappings) {
-      onAddMappings(aiMappings);
+  const handleSchemaSubmit = () => {
+    try {
+      const schema = JSON.parse(schemaInput);
+      const fields = convertSchemaToFields(schema);
+      handleSchemaChange(fields);
+    } catch (error) {
+      console.error('Invalid JSON schema:', error);
     }
-    setWizardCompleted(true);
-  };
-
-  const handleManualMappingSelected = () => {
-    setWizardCompleted(true);
   };
 
   // Função para converter schema do wizard em PayloadFields
@@ -91,40 +89,48 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
     return fields;
   };
 
-  // Quando o wizard é completado e temos um schema, converter automaticamente
-  React.useEffect(() => {
-    if (wizardCompleted && clientSchemaFromWizard && targetFields.length === 0) {
-      const fields = convertSchemaToFields(clientSchemaFromWizard);
-      handleSchemaChange(fields);
-    }
-  }, [wizardCompleted, clientSchemaFromWizard, targetFields.length]);
-
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* AI Mapping Wizard */}
-      <MappingWizard 
-        onMappingsGenerated={handleAIMappingsGenerated}
-        onManualMappingSelected={handleManualMappingSelected}
-        onSchemaProvided={(schema) => {
-          setClientSchemaFromWizard(schema);
-        }}
-      />
+      {/* Schema Input Section */}
+      {targetFields.length === 0 && (
+        <Paper sx={{ p: 2, mb: 2 }}>
+          <Typography variant="h6" gutterBottom>
+            Target Schema Configuration
+          </Typography>
+          <TextField
+            fullWidth
+            multiline
+            rows={4}
+            variant="outlined"
+            label="Paste your target system schema (JSON)"
+            placeholder='{"name": "string", "email": "string", "department": {"name": "string"}}'
+            value={schemaInput}
+            onChange={(e) => setSchemaInput(e.target.value)}
+            sx={{ mb: 2 }}
+          />
+          <Button 
+            variant="contained" 
+            onClick={handleSchemaSubmit}
+            disabled={!schemaInput.trim()}
+          >
+            Load Schema
+          </Button>
+        </Paper>
+      )}
 
-      {/* Schema Status quando wizard completado */}
-      {wizardCompleted && targetFields.length > 0 && (
+      {/* Schema Status */}
+      {targetFields.length > 0 && (
         <Paper sx={{ p: 2, mb: 2, bgcolor: 'success.light', color: 'success.contrastText' }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="subtitle1" fontWeight="medium">
-              ✅ Schema Configurado via Wizard ({targetFields.length} campos)
+              ✅ Schema Loaded ({targetFields.length} fields)
             </Typography>
             <Typography variant="body2">
-              Arraste campos da Gupy para os campos do seu sistema abaixo ↓
+              Drag fields from Gupy payload to your system fields below ↓
             </Typography>
           </Box>
         </Paper>
       )}
-
-      {wizardCompleted && <Divider sx={{ mb: 2 }} />}
 
       {/* Target fields tree */}
       <Box sx={{ flexGrow: 1, overflow: 'auto' }}>

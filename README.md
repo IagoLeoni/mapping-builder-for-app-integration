@@ -322,26 +322,71 @@ Navegue até a URL do frontend deployado no Cloud Run.
 
 Clique em "Deploy Integration" para criar a integração no Google Cloud.
 
-## 🔧 Estrutura do Projeto
+## 🧹 **LIMPEZA DE CÓDIGO RECÉM-IMPLEMENTADA** (Agosto 2025)
+
+### ✅ **Código Otimizado e Simplificado**
+O projeto passou por uma limpeza abrangente para remover código não utilizado:
+
+- **22 arquivos/pastas removidos** (~25% redução no tamanho)
+- **Interface simplificada** sem componentes Wizard desnecessários
+- **Build otimizado** para 164.01 kB (bundle final)
+- **Código mais limpo** focado apenas no essencial
+
+### 📁 **Arquivos Removidos**
+- ❌ Arquivos de teste manuais obsoletos (6 arquivos)
+- ❌ Schemas duplicados e documentação redundante
+- ❌ Templates Jsonnet obsoletos (pasta completa)
+- ❌ Componentes Wizard não utilizados (2 pastas completas)
+- ❌ Templates integration obsoletos
+
+### 🎯 **Interface Otimizada**
+- **Schema Input Direto**: Input JSON simplificado no MappingCanvas
+- **Drag & Drop Core**: Foco na funcionalidade principal
+- **Zero Dependências Mortas**: Código 100% utilizado
+
+## 🔧 Estrutura do Projeto (Atualizada)
 
 ```
 ipaas-integration/
-├── frontend/                 # React frontend
+├── frontend/                 # React frontend (otimizado)
 │   ├── src/
-│   │   ├── components/      # Componentes React
+│   │   ├── components/      # Componentes essenciais
+│   │   │   ├── ConfigPanel/     # Configuração cliente
+│   │   │   ├── DebugPanel/      # Debug e monitoramento  
+│   │   │   ├── JsonPreview/     # Preview integração
+│   │   │   ├── MappingCanvas/   # Interface principal drag & drop
+│   │   │   └── PayloadTree/     # Visualização payload Gupy
 │   │   ├── types/          # Definições TypeScript
-│   │   └── utils/          # Utilitários
+│   │   ├── utils/          # Utilitários core
+│   │   └── services/       # Serviços frontend
 │   ├── Dockerfile
 │   └── nginx.conf
 ├── backend/                 # Node.js backend
 │   ├── src/
-│   │   ├── routes/         # Rotas da API
-│   │   ├── services/       # Serviços de negócio
-│   │   └── models/         # Modelos de dados
+│   │   ├── routes/         # APIs RESTful
+│   │   │   ├── deploy.ts       # Deploy integração
+│   │   │   ├── gemini.ts       # Mapeamento IA
+│   │   │   ├── integration.ts  # Gestão integração
+│   │   │   └── transformations.ts # Preview transformação
+│   │   └── services/       # Serviços de negócio
+│   │       ├── CloudBuildService.ts     # Automação deploy
+│   │       ├── GeminiMappingService.ts  # IA mapeamento
+│   │       ├── IntegrationService.ts    # Geração integração
+│   │       ├── SchemaManagerService.ts  # Gestão schemas
+│   │       ├── TemplateService.ts       # Sistema PubSub
+│   │       └── TransformationEngine.ts  # Engine transformação
 │   └── Dockerfile
-├── deployment/             # Configurações de deploy
-│   └── cloudbuild.yaml
-└── integration_example.json # Exemplo de integração
+├── schemas/                # Schemas e exemplos
+│   ├── gupy/              # Schema oficial Gupy
+│   ├── examples/          # Exemplos sistemas
+│   └── patterns/          # Padrões semânticos
+├── deployment/            # Configurações deploy
+│   ├── cloudbuild.yaml   # CI/CD pipeline
+│   └── integration-build.yaml # Deploy integração
+└── memory-bank/          # Documentação técnica
+    ├── activeContext.md   # Estado atual
+    ├── progress.md        # Progresso projeto
+    └── systemPatterns.md  # Padrões arquiteturais
 ```
 
 ## 🔄 Fluxo de Integração

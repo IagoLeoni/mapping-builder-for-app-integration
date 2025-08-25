@@ -776,7 +776,8 @@ export class TemplateService {
 
     for (const mapping of transformationMappings) {
       try {
-        const varName = this.generateVariableName(mapping.sourceField.name);
+        // ✅ USAR TASKID NO NOME DA VARIÁVEL PARA GARANTIR UNICIDADE
+        const varName = this.generateVariableName(mapping.sourceField.name, taskIdCounter);
         const inputPath = this.generateJsonnetPath(mapping.sourceField.path);
         
         // Gerar template Jsonnet AUTO-CONTIDO (sem imports externos)
@@ -798,7 +799,7 @@ export class TemplateService {
         transformationTasks.push(task);
         taskIdCounter++;
         
-        console.log(`✅ Gerada tarefa Jsonnet para ${mapping.sourceField.name}: ${mapping.transformation!.type}`);
+        console.log(`✅ Gerada tarefa Jsonnet para ${mapping.sourceField.name}: ${mapping.transformation!.type} - varName: ${varName}`);
       } catch (error) {
         console.error(`❌ Erro ao gerar tarefa para ${mapping.sourceField.name}:`, error);
       }
@@ -826,19 +827,32 @@ export class TemplateService {
     }
   }
 
-  // Gerar nome de variável para transformação
-  private static generateVariableName(fieldName: string): string {
+  // Gerar nome de variável para transformação com garantia de unicidade
+  private static generateVariableName(fieldName: string, uniqueId?: number): string {
     const normalizedName = fieldName.toLowerCase().replace(/[^a-z0-9]/g, '_');
-    return `transformed_mapping_${normalizedName}`;
+    const suffix = uniqueId ? `_${uniqueId}` : '';
+    return `transformed_mapping_${normalizedName}${suffix}`;
   }
 
-  // Gerar path Jsonnet
+  // Gerar path Jsonnet com verificação de estrutura body
   private static generateJsonnetPath(fieldPath: string): string {
     const pathParts = fieldPath.split('.');
     let jsonnetPath = 'gupyPayload';
-    pathParts.forEach(part => {
+    
+    // ✅ GARANTIR QUE O PATH INCLUA O body. SE NECESSÁRIO
+    // Se o path não começa com 'body', mas sabemos que deveria (baseado na estrutura Gupy)
+    let adjustedParts = pathParts;
+    if (pathParts[0] !== 'body' && !fieldPath.startsWith('body.')) {
+      // Assumir que o campo está dentro de body.data se não especificado
+      adjustedParts = ['body', 'data', ...pathParts];
+      console.log(`🔧 Path ajustado de "${fieldPath}" para "body.data.${fieldPath}"`);
+    }
+    
+    adjustedParts.forEach(part => {
       jsonnetPath += `["${part}"]`;
     });
+    
+    console.log(`📍 Path Jsonnet gerado: ${fieldPath} -> ${jsonnetPath}`);
     return jsonnetPath;
   }
 
@@ -849,64 +863,71 @@ export class TemplateService {
     transformation: TransformationConfig
   ): string {
     const gupyPayloadVar = 'local gupyPayload = std.extVar("gupyPayload");';
-    const inputVar = `local inputValue = ${inputPath};`;
+    
+    // ✅ VERIFICAÇÃO DE SEGURANÇA PARA PATHS NULOS/INDEFINIDOS
+    const safeInputPath = inputPath || 'gupyPayload["body"]["data"]["undefined"]';
+    const inputVar = `local inputValue = if std.objectHas(${safeInputPath.split('.')[0] || 'gupyPayload'}, "${safeInputPath.split('.').slice(1).join('"]["')}") then ${safeInputPath} else null;`;
+    
+    console.log(`🔧 Template Jsonnet gerado para ${targetVariable}:`);
+    console.log(`   📍 Input Path: ${safeInputPath}`);
+    console.log(`   🧩 Transformation: ${transformation.type}/${transformation.operation || 'default'}`);
 
     switch (transformation.type) {
       case 'format_document':
-        // Remove pontos, hífens e espaços
-        return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: std.strReplace(std.strReplace(std.strReplace(inputValue, ".", ""), "-", ""), " ", "") }`;
+        // Remove pontos, hífens e espaços - com verificação de nulo
+        return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.strReplace(std.strReplace(std.strReplace(std.toString(inputValue), ".", ""), "-", ""), " ", "") else "" }`;
 
       case 'name_split':
         if (transformation.operation === 'split_first_name') {
-          return `${gupyPayloadVar} ${inputVar} local parts = std.split(inputValue, " "); { ${targetVariable}: if std.length(parts) > 0 then parts[0] else "" }`;
+          return `${gupyPayloadVar} ${inputVar} local parts = if inputValue != null then std.split(std.toString(inputValue), " ") else []; { ${targetVariable}: if std.length(parts) > 0 then parts[0] else "" }`;
         } else if (transformation.operation === 'split_last_name') {
-          return `${gupyPayloadVar} ${inputVar} local parts = std.split(inputValue, " "); { ${targetVariable}: if std.length(parts) > 1 then std.join(" ", parts[1:]) else "" }`;
+          return `${gupyPayloadVar} ${inputVar} local parts = if inputValue != null then std.split(std.toString(inputValue), " ") else []; { ${targetVariable}: if std.length(parts) > 1 then std.join(" ", parts[1:]) else "" }`;
         }
         break;
 
       case 'phone_split':
         if (transformation.operation === 'extract_area_code') {
-          return `${gupyPayloadVar} ${inputVar} local cleanPhone = std.strReplace(std.strReplace(inputValue, "+55", ""), " ", ""); { ${targetVariable}: std.substr(cleanPhone, 0, 2) }`;
+          return `${gupyPayloadVar} ${inputVar} local cleanPhone = if inputValue != null then std.strReplace(std.strReplace(std.toString(inputValue), "+55", ""), " ", "") else ""; { ${targetVariable}: if std.length(cleanPhone) >= 2 then std.substr(cleanPhone, 0, 2) else "" }`;
         } else if (transformation.operation === 'extract_phone_number') {
-          return `${gupyPayloadVar} ${inputVar} local cleanPhone = std.strReplace(std.strReplace(inputValue, "+55", ""), " ", ""); { ${targetVariable}: std.substr(cleanPhone, 2, std.length(cleanPhone)) }`;
+          return `${gupyPayloadVar} ${inputVar} local cleanPhone = if inputValue != null then std.strReplace(std.strReplace(std.toString(inputValue), "+55", ""), " ", "") else ""; { ${targetVariable}: if std.length(cleanPhone) > 2 then std.substr(cleanPhone, 2, std.length(cleanPhone)) else "" }`;
         }
         break;
 
       case 'normalize':
         if (transformation.operation === 'upper_case') {
-          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: std.asciiUpper(inputValue) }`;
+          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.asciiUpper(std.toString(inputValue)) else "" }`;
         } else if (transformation.operation === 'lower_case') {
-          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: std.asciiLower(inputValue) }`;
+          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.asciiLower(std.toString(inputValue)) else "" }`;
         }
         break;
 
       case 'country_code':
-        // Conversão Brasil -> BRA
-        return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue == "Brasil" then "BRA" else if inputValue == "Brazil" then "BRA" else inputValue }`;
+        // Conversão Brasil -> BRA com verificação de nulo
+        return `${gupyPayloadVar} ${inputVar} local countryStr = if inputValue != null then std.toString(inputValue) else ""; { ${targetVariable}: if countryStr == "Brasil" then "BRA" else if countryStr == "Brazil" then "BRA" else countryStr }`;
 
       case 'gender_code':
-        // Conversão Male/Female -> M/F
-        return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue == "Male" then "M" else if inputValue == "Female" then "F" else inputValue }`;
+        // Conversão Male/Female -> M/F com verificação de nulo
+        return `${gupyPayloadVar} ${inputVar} local genderStr = if inputValue != null then std.toString(inputValue) else ""; { ${targetVariable}: if genderStr == "Male" then "M" else if genderStr == "Female" then "F" else genderStr }`;
 
       case 'concat':
         const separator = transformation.parameters?.separator || ' ';
-        return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: std.join("${separator}", if std.isArray(inputValue) then inputValue else [inputValue]) }`;
+        return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then (if std.isArray(inputValue) then std.join("${separator}", inputValue) else std.toString(inputValue)) else "" }`;
 
       case 'convert':
         if (transformation.operation === 'string_to_number') {
-          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: std.parseJson(inputValue) }`;
+          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then (if std.isString(inputValue) then std.parseJson(inputValue) else inputValue) else 0 }`;
         } else if (transformation.operation === 'number_to_string') {
-          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: std.toString(inputValue) }`;
+          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.toString(inputValue) else "" }`;
         }
         break;
 
       default:
-        // Transformação identidade (passthrough)
-        return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: inputValue }`;
+        // Transformação identidade (passthrough) com verificação de nulo
+        return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then inputValue else "" }`;
     }
 
     // Fallback para transformação identidade
-    return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: inputValue }`;
+    return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then inputValue else "" }`;
   }
 
   // Gerar template Jsonnet para um tipo específico de transformação

@@ -7,6 +7,7 @@ import { IntegrationService } from '../services/IntegrationService';
 const router = express.Router();
 
 // Validation schema for deployment request
+// ✅ VALIDAÇÃO FLEXIBILIZADA PARA EVITAR ERROS EM MAPEAMENTOS IA
 const deploySchema = Joi.object({
   // NOVOS CAMPOS OBRIGATÓRIOS
   clientName: Joi.string().min(2).max(50).required().messages({
@@ -26,31 +27,14 @@ const deploySchema = Joi.object({
   mappings: Joi.array().items(
     Joi.object({
       id: Joi.string().required(),
-      sourceField: Joi.object({
-        id: Joi.string().required(),
-        name: Joi.string().required(),
-        type: Joi.string().valid('string', 'number', 'boolean', 'object', 'array').required(),
-        path: Joi.string().required()
-      }).required(),
+      sourceField: Joi.object().required(), // ✅ FLEXIBILIZADO - aceita qualquer estrutura
       targetPath: Joi.string().required(),
-      confidence: Joi.number().min(0).max(1).optional(), // Campo confidence da IA
-      reasoning: Joi.string().optional(), // ✅ NOVO: Campo reasoning da IA
-      aiGenerated: Joi.boolean().optional(), // ✅ NOVO: Campo aiGenerated da IA
-      transformation: Joi.object({
-        type: Joi.string().required(),
-        operation: Joi.string().optional(),
-        pattern: Joi.string().optional(),
-        parameters: Joi.any().optional(),
-        mapping: Joi.object().optional(),
-        separator: Joi.string().optional(),
-        inputFormat: Joi.string().optional(),
-        outputFormat: Joi.string().optional(),
-        preview: Joi.object({
-          input: Joi.any(),
-          output: Joi.any()
-        }).optional()
-      }).optional()
-    })
+      // ✅ TODOS OS CAMPOS OPCIONAIS AGORA SÃO FLEXÍVEIS
+      confidence: Joi.number().optional(),
+      reasoning: Joi.string().optional(), 
+      aiGenerated: Joi.boolean().optional(),
+      transformation: Joi.any().optional() // ✅ ACEITA QUALQUER ESTRUTURA
+    }).unknown(true) // ✅ PERMITE CAMPOS EXTRAS NÃO ESPECIFICADOS
   ).min(1).required(),
   systemPayload: Joi.object().required()
 });

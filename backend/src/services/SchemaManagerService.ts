@@ -5,15 +5,15 @@ export class SchemaManagerService {
   private static schemasPath = path.join(__dirname, '../../../schemas');
 
   /**
-   * Carrega o schema padrão da Gupy (processado para compatibilidade)
+   * Carrega o schema padrão do sistema de origem (processado para compatibilidade)
    */
-  static async loadGupySchema(): Promise<any> {
+  static async loadSourceSchema(systemId: string = 'gupy'): Promise<any> {
     try {
-      const schemaPath = path.join(__dirname, '../../../schemas/gupy/gupy-full-schema.json');
+      const schemaPath = path.join(__dirname, `../../../schemas/source-systems/${systemId}/schema.json`);
       const schemaContent = await fs.readFile(schemaPath, 'utf-8');
       const rawSchema = JSON.parse(schemaContent);
       
-      console.log('📋 SchemaManagerService - Carregando schema Gupy...');
+      console.log(`📋 SchemaManagerService - Carregando schema do sistema: ${systemId}...`);
       
       // Processar schema para usar a mesma estrutura que o drag & drop
       let targetSchema = rawSchema;
@@ -24,14 +24,14 @@ export class SchemaManagerService {
         targetSchema = rawSchema.properties.body;
       }
       
-      console.log('✅ SchemaManagerService - Schema processado com sucesso');
+      console.log(`✅ SchemaManagerService - Schema do sistema ${systemId} processado com sucesso`);
       return {
         schema: this.processSchemaProperties(targetSchema.properties || {}),
         rawSchema: rawSchema
       };
     } catch (error) {
-      console.error('Erro ao carregar schema da Gupy:', error);
-      throw new Error('Falha ao carregar schema da Gupy');
+      console.error(`Erro ao carregar schema do sistema ${systemId}:`, error);
+      throw new Error(`Falha ao carregar schema do sistema ${systemId}`);
     }
   }
 
@@ -91,16 +91,16 @@ export class SchemaManagerService {
   }
 
   /**
-   * Carrega o payload de exemplo da Gupy
+   * Carrega o payload de exemplo do sistema de origem
    */
-  static async loadGupyExamplePayload(): Promise<any> {
+  static async loadSourceSystemExamplePayload(systemId: string = 'gupy'): Promise<any> {
     try {
-      const payloadPath = path.join(__dirname, '../../../schemas/gupy/gupy-example-payload.json');
+      const payloadPath = path.join(__dirname, `../../../schemas/source-systems/${systemId}/example.json`);
       const payloadContent = await fs.readFile(payloadPath, 'utf-8');
       return JSON.parse(payloadContent);
     } catch (error) {
-      console.error('Erro ao carregar payload de exemplo da Gupy:', error);
-      throw new Error('Falha ao carregar payload de exemplo da Gupy');
+      console.error(`Erro ao carregar payload de exemplo do sistema ${systemId}:`, error);
+      throw new Error(`Falha ao carregar payload de exemplo do sistema ${systemId}`);
     }
   }
 

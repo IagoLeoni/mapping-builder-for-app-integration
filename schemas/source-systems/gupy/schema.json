@@ -1,0 +1,230 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Gupy Pre-Employee Moved Webhook (Final Schema)",
+  "description": "Schema JSON completo para validar o payload do evento 'pre-employee.moved' da Gupy, incluindo todas as variações observadas (CLT, Estágio, Estrangeiro, Dependentes e Campos Customizados).",
+  "type": "object",
+  "required": [
+    "body"
+  ],
+  "properties": {
+    "params": {
+      "type": "object",
+      "description": "Parâmetros da URL, geralmente vazio."
+    },
+    "query": {
+      "type": "object",
+      "description": "Parâmetros de query da URL, geralmente vazio."
+    },
+    "body": {
+      "type": "object",
+      "required": [
+        "companyName",
+        "event",
+        "id",
+        "date",
+        "data",
+        "user"
+      ],
+      "properties": {
+        "companyName": {
+          "type": "string",
+          "description": "Nome da empresa que está contratando."
+        },
+        "event": {
+          "type": "string",
+          "description": "Tipo do evento do webhook.",
+          "enum": [
+            "pre-employee.moved"
+          ]
+        },
+        "id": {
+          "type": "string",
+          "format": "uuid",
+          "description": "ID único do evento."
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Data e hora em que o evento ocorreu."
+        },
+        "data": {
+          "type": "object",
+          "required": [
+            "job",
+            "application",
+            "candidate",
+            "admission",
+            "position"
+          ],
+          "properties": {
+            "job": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "name": { "type": "string" },
+                "type": { "type": "string" },
+                "code": { "type": "string" },
+                "department": { "type": "object" },
+                "role": { "type": "object" },
+                "branch": { "type": "object" },
+                "customFields": {
+                  "type": "array",
+                  "description": "Campos customizados relacionados à vaga. A estrutura do objeto 'value' é dinâmica.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string" },
+                      "title": { "type": "string" },
+                      "value": {
+                        "type": "object",
+                        "description": "Objeto com mapeamento dinâmico de chave-valor, onde as chaves são UUIDs das opções do campo.",
+                        "additionalProperties": true
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "application": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "status": { "type": "string" },
+                "currentStep": { "type": "object" }
+              }
+            },
+            "candidate": {
+              "type": "object",
+              "properties": {
+                "id": { "type": "integer" },
+                "name": { "type": "string" },
+                "lastName": { "type": "string" },
+                "email": { "type": "string", "format": "email" },
+                "identificationDocument": { "type": "string" },
+                "birthdate": { "type": "string", "format": "date" },
+                "addressStreet": { "type": "string" },
+                "addressCity": { "type": "string" },
+                "addressState": { "type": "string" },
+                "mobileNumber": { "type": "string" },
+                "phoneNumber": { "type": ["string", "null"] }
+              }
+            },
+            "admission": {
+              "type": "object",
+              "properties": {
+                "status": { "type": "string" },
+                "hiringDate": { "type": "string", "format": "date-time" },
+                "documentsTemplate": { "type": "object" },
+                "documents": {
+                  "type": "object",
+                  "properties": {
+                    "preEmployee": {
+                      "type": "array",
+                      "description": "Lista de documentos do pré-colaborador. O conteúdo varia conforme o tipo de contratação.",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": { "type": ["integer", "string"] },
+                          "name": { "type": "string" },
+                          "values": {
+                            "type": "object",
+                            "description": "Campos preenchidos para o documento. A estrutura é altamente dinâmica.",
+                            "additionalProperties": true
+                          },
+                          "validation": { "type": "object" },
+                          "missing": { "type": "boolean", "description": "Indica se o documento está faltando. Campo condicional." }
+                        }
+                      }
+                    }
+                  }
+                },
+                "dependents": {
+                  "type": "array",
+                  "description": "Lista de dependentes. Pode estar vazia.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "integer" },
+                      "name": { "type": "string" },
+                      "dependentTypeId": { "type": "string" },
+                      "documents": {
+                        "type": "array",
+                        "description": "Documentos específicos do dependente.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": { "type": "string" },
+                            "name": { "type": "string" },
+                            "values": {
+                              "type": "object",
+                              "description": "Campos preenchidos para o documento do dependente. Estrutura dinâmica.",
+                              "additionalProperties": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "position": {
+              "type": "object",
+              "properties": {
+                "positionId": { "type": "integer" },
+                "formGroupType": {
+                  "type": "string",
+                  "description": "Tipo de contratação. Ex: 'clt' para celetista, 'int' para estágio.",
+                  "enum": ["clt", "int"]
+                },
+                "paymentRecurrence": { "type": "string" },
+                "salary": {
+                  "type": "object",
+                  "properties": {
+                    "value": { "type": "number" },
+                    "currency": { "type": "string" }
+                  }
+                },
+                "integratingAgent": {
+                  "type": "string",
+                  "description": "Agente integrador (para estágios). Campo condicional."
+                },
+                "contractEndDate": {
+                  "type": ["string", "null"],
+                  "format": "date-time",
+                  "description": "Data de fim de contrato (para contratos com prazo determinado, como estágio). Campo condicional."
+                },
+                "customFields": {
+                  "type": "array",
+                  "description": "Campos customizados relacionados à contratação específica do candidato.",
+                  "items": {
+                    "type": "object",
+                    "required": ["id", "title", "value", "isIntegrated"],
+                    "properties": {
+                      "id": { "type": "string", "format": "uuid" },
+                      "title": { "type": "string" },
+                      "value": {
+                        "type": ["string", "number", "boolean", "null"],
+                        "description": "Valor do campo, que pode ser de múltiplos tipos primitivos."
+                      },
+                      "isIntegrated": { "type": "boolean" }
+                    }
+                  }
+                }
+              }
+            },
+            "source": { "type": "string" }
+          }
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "name": { "type": "string" },
+            "email": { "type": "string", "format": "email" }
+          }
+        }
+      }
+    }
+  }
+}

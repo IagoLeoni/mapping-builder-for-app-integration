@@ -162,12 +162,12 @@ export class TemplateService {
           "displayName": "systemEndpoint"
         },
         {
-          "key": "gupyPayload",
+          "key": "sourceSystemPayload",
           "dataType": "JSON_VALUE",
           "defaultValue": {
-            "jsonValue": "{\n  \"body\": {\n    \"companyName\": \"Minerva Foods\",\n    \"event\": \"pre-employee.moved\",\n    \"id\": \"49589201-dbb3-46b7-b2d6-4f3ec16ac742\",\n    \"date\": \"2025-07-03T13:22:51.239Z\",\n    \"data\": {\n      \"job\": {\n        \"departmentCode\": \"40000605\",\n        \"roleCode\": \"35251270\",\n        \"branchCode\": null,\n        \"customFields\": [{\n          \"id\": \"583d1add-a920-4044-a570-7121e371cd1c\",\n          \"title\": \"Qual o seu idioma? / ¿Cuál es tu idioma? / What is your language?\",\n          \"value\": {\n            \"0b88a80f-296c-404d-88b9-10246fa099ba\": \"Seleção Externa (apenas candidatos externo)\",\n            \"27545cca-6298-47a2-99d0-04cf34d4f929\": \"AA00010137-CORTES\",\n            \"35329ad7-22c2-427b-9553-01e40ea63c68\": [],\n            \"575e6e7b-4b85-405a-834c-2c8f7f2c1f4a\": \"Escala 6x1 diurno\",\n            \"67134757-f466-4d2f-b920-7a3bb96a543e\": false,\n            \"f1924119-959d-42bd-9d05-60cc255ff3ad\": true,\n            \"583d1add-a920-4044-a570-7121e371cd1c__value\": \"Português\"\n          }\n        }],\n        \"id\": 9282348.0,\n        \"name\": \"VAGA TESTE INTEGRAÇÃO - Auxiliar de Produção\",\n        \"type\": \"vacancy_type_effective\",\n        \"department\": {\n          \"id\": 726936.0,\n          \"code\": \"40000605\",\n          \"name\": \"MIUDOS DIURNO\",\n          \"similarity\": \"operations\"\n        },\n        \"role\": {\n          \"id\": 1304055.0,\n          \"code\": \"35251270\",\n          \"name\": \"35251270 - AUXILIAR PRODUCAO\",\n          \"similarity\": \"auxiliary\"\n        },\n        \"branch\": {\n          \"id\": 1049440.0,\n          \"code\": null,\n          \"name\": \"BARRETOS - 09.104.182/0001-15 > MINERVA FINE FOODS - BARRETOS > COUROS - MINERVA > DIRETORIA PROCESSADOS\"\n        },\n        \"code\": \"77785-9282348\"\n      },\n      \"application\": {\n        \"id\": 5.7448886E8,\n        \"score\": 36.34942587268007,\n        \"partnerName\": \"gupy_public_page\",\n        \"status\": \"hired\",\n        \"tags\": [\"tagHired\"],\n        \"currentStep\": {\n          \"id\": 5.4392498E7,\n          \"name\": \"Contratação\",\n          \"type\": \"final\"\n        },\n        \"preHiringInformation\": {\n        }\n      },\n      \"candidate\": {\n        \"name\": \"Erica\",\n        \"lastName\": \"Brugognolle\",\n        \"email\": \"ericabru@hotmail.com\",\n        \"identificationDocument\": \"26962277806\",\n        \"countryOfOrigin\": \"BR\",\n        \"birthdate\": \"1979-05-31\",\n        \"addressZipCode\": \"01521-000\",\n        \"addressStreet\": \"Rua Cesário Ramalho\",\n        \"addressNumber\": \"237\",\n        \"addressCity\": \"São Paulo\",\n        \"addressState\": \"São Paulo\",\n        \"addressStateShortName\": \"SP\",\n        \"addressCountry\": \"Brasil\",\n        \"addressCountryShortName\": \"BR\",\n        \"mobileNumber\": \"+5511986637567\",\n        \"phoneNumber\": \"+551138050155\",\n        \"schooling\": \"post_graduate\",\n        \"schoolingStatus\": \"complete\",\n        \"disabilities\": false,\n        \"id\": 256080.0,\n        \"gender\": \"Female\"\n      },\n      \"benefitsEnabled\": true,\n      \"benefits\": {\n        \"contracts\": [],\n        \"transportVoucher\": {\n          \"id\": null,\n          \"title\": null,\n          \"type\": null,\n          \"needSignature\": null,\n          \"description\": null,\n          \"termAndCondition\": null,\n          \"allowAdhere\": false,\n          \"reasonForNotWanting\": null,\n          \"modality\": [],\n          \"amountDay\": null,\n          \"itinerary\": null\n        },\n        \"dentalPlan\": {\n          \"id\": 277901.0,\n          \"title\": \"Plano odontológico - Todos cargos\",\n          \"type\": \"mandatory\",\n          \"needSignature\": null,\n          \"description\": \"<p>TESTE</p>\",\n          \"termAndCondition\": null,\n          \"allowAdhere\": true,\n          \"includeDependents\": null,\n          \"dependents\": []\n        },\n        \"healthAssurance\": {\n          \"id\": 277902.0,\n          \"title\": \"Plano de saúde - Analistas e Coordenadores\",\n          \"type\": \"mandatory\",\n          \"needSignature\": null,\n          \"description\": \"<p>TESTE</p>\",\n          \"termAndCondition\": null,\n          \"allowAdhere\": true,\n          \"includeDependents\": null,\n          \"dependents\": []\n        },\n        \"lifeAssurance\": {\n          \"id\": 277900.0,\n          \"title\": \"Seguro de vida - Demais cargos \",\n          \"type\": \"optional\",\n          \"needSignature\": null,\n          \"description\": \"<p>No caso de não haver cônjuge, não preencher o campo: Inclusão do cônjuge.</p>\",\n          \"termAndCondition\": null,\n          \"allowAdhere\": true,\n          \"beneficiaries\": []\n        },\n        \"foodAndMeal\": {\n          \"id\": null,\n          \"title\": null,\n          \"type\": null,\n          \"needSignature\": null,\n          \"description\": null,\n          \"termAndCondition\": null,\n          \"allowAdhere\": false,\n          \"offerOptions\": null,\n          \"observation1\": null,\n          \"observation2\": null\n        },\n        \"other\": []\n      },\n      \"admission\": {\n        \"status\": \"c40c64d6-7890-4608-ae5b-c7ce1711ea9a\",\n        \"admissionDeadline\": \"2025-06-27T03:00:00.000Z\",\n        \"hiringDate\": \"2025-06-30T03:00:00.000Z\",\n        \"documentsTemplate\": {\n          \"id\": 52807.0,\n          \"name\": \"Admissão CLT\"\n        },\n        \"documents\": [{\n          \"id\": 41.0,\n          \"name\": \"Informações pessoais\",\n          \"values\": {\n            \"sexo\": \"Feminino\",\n            \"etnia\": \"Branca\",\n            \"deficiente\": \"Não\",\n            \"dependentes\": [\"Mariana Brugognolle\", \"Malu Brugognolle\"],\n            \"estado-civil\": \"Solteiro(a)\",\n            \"nacionalidade\": \"Brasil\",\n            \"data-de-nascimento\": \"1979-05-31T03:00:00.000Z\",\n            \"uniao-estavel\": \"Não\",\n            \"documento-identificacao\": \"Carteira de Identidade (RG)\"\n          },\n          \"validation\": {\n            \"status\": \"APPROVED\",\n            \"validatedAt\": \"2025-06-20T14:56:20.427Z\",\n            \"isAutomaticallyValidated\": false,\n            \"cannotValidate\": true\n          }\n        }]\n      },\n      \"position\": {\n        \"positionId\": 1156278.0,\n        \"formGroupType\": \"clt\",\n        \"paymentRecurrence\": \"mensalista\",\n        \"customFields\": [{\n          \"id\": \"1608e91d-599f-455f-ac23-41103fabbc9d\",\n          \"title\": \"Autorização de Aprendiz\",\n          \"value\": false,\n          \"isIntegrated\": true\n        }],\n        \"branch\": {\n          \"id\": 1049440.0,\n          \"code\": \"\",\n          \"label\": \"BARRETOS - 09.104.182/0001-15 > MINERVA FINE FOODS - BARRETOS > COUROS - MINERVA > DIRETORIA PROCESSADOS\"\n        },\n        \"department\": {\n          \"id\": 726936.0,\n          \"code\": \"40000605\",\n          \"name\": \"MIUDOS DIURNO\"\n        },\n        \"role\": {\n          \"id\": 1304055.0,\n          \"code\": \"35251270\",\n          \"name\": \"35251270 - AUXILIAR PRODUCAO\"\n        },\n        \"salary\": {\n          \"value\": 3000.0,\n          \"currency\": \"R$\"\n        },\n        \"costCenter\": null,\n        \"workShift\": null\n      },\n      \"source\": \"ats\",\n      \"isDirectInsertion\": false\n    },\n    \"user\": {\n      \"id\": 359236.0,\n      \"name\": \"Maria Eduarda da Silva Joaquim\",\n      \"email\": \"mariaeduarda.joaquim@gupy.com.br\"\n    }\n  }\n}"
+            "jsonValue": "{\n  \"companyName\": \"Example Company\",\n  \"event\": \"employee.hired\",\n  \"id\": \"12345678-abcd-1234-abcd-123456789012\",\n  \"date\": \"2025-01-15T10:30:00.000Z\",\n  \"employee\": {\n    \"id\": \"EMP001\",\n    \"personalInfo\": {\n      \"name\": \"John\",\n      \"lastName\": \"Doe\",\n      \"email\": \"john.doe@company.com\",\n      \"identificationDocument\": \"123.456.789-00\",\n      \"birthdate\": \"1990-05-15\",\n      \"gender\": \"Male\",\n      \"nationality\": \"Brazil\"\n    },\n    \"contactInfo\": {\n      \"mobileNumber\": \"+5511999999999\",\n      \"phoneNumber\": \"+5511888888888\",\n      \"address\": {\n        \"street\": \"Main Street\",\n        \"number\": \"123\",\n        \"city\": \"São Paulo\",\n        \"state\": \"São Paulo\",\n        \"zipCode\": \"01000-000\",\n        \"country\": \"Brasil\"\n      }\n    },\n    \"jobInfo\": {\n      \"department\": {\n        \"code\": \"TECH001\",\n        \"name\": \"Technology\"\n      },\n      \"role\": {\n        \"code\": \"DEV001\",\n        \"name\": \"Software Developer\"\n      },\n      \"hiringDate\": \"2025-01-15T00:00:00.000Z\",\n      \"salary\": {\n        \"value\": 5000.0,\n        \"currency\": \"BRL\"\n      }\n    }\n  }\n}"
           },
-          "displayName": "gupyPayload",
+          "displayName": "sourceSystemPayload",
           "inputOutputType": "IN"
         },
         {
@@ -545,7 +545,7 @@ export class TemplateService {
         "template": {
           "key": "template",
           "value": {
-            "stringValue": "local gupyPayload = std.extVar(\"gupyPayload\"); local systemPayload = std.extVar(\"systemPayload\"); { pubsub_message_string: std.manifestJsonEx(systemPayload, \"    \") }"
+            "stringValue": "local sourceSystemPayload = std.extVar(\"sourceSystemPayload\"); local systemPayload = std.extVar(\"systemPayload\"); { pubsub_message_string: std.manifestJsonEx(systemPayload, \"    \") }"
           }
         }
       },
@@ -690,41 +690,48 @@ export class TemplateService {
   }>): any {
     const transformedPayload: any = {};
     
-    // Payload de exemplo da Gupy para aplicar transformações (com wrapper body)
-    const gupyExamplePayload = {
-      body: {
-        companyName: "Minerva Foods",
-        event: "pre-employee.moved",
-        id: "49589201-dbb3-46b7-b2d6-4f3ec16ac742",
-        date: "2025-07-03T13:22:51.239Z",
-        data: {
-          job: {
-            departmentCode: "40000605",
-            roleCode: "35251270",
-            branchCode: null,
-            name: "Developer",
-            department: {
-              name: "Technology",
-              code: "40000605"
-            }
+    // Payload de exemplo genérico para aplicar transformações (mantendo compatibilidade com estrutura existente)
+    const sourceSystemExamplePayload = {
+      companyName: "Example Company",
+      event: "employee.hired",
+      id: "12345678-abcd-1234-abcd-123456789012", 
+      date: "2025-01-15T10:30:00.000Z",
+      employee: {
+        id: "EMP001",
+        personalInfo: {
+          name: "John",
+          lastName: "Doe",
+          email: "john.doe@company.com",
+          identificationDocument: "123.456.789-00",
+          birthdate: "1990-05-15",
+          gender: "Male",
+          nationality: "Brazil"
+        },
+        contactInfo: {
+          mobileNumber: "+5511999999999",
+          phoneNumber: "+5511888888888",
+          address: {
+            street: "Main Street",
+            number: "123",
+            city: "São Paulo",
+            state: "São Paulo",
+            zipCode: "01000-000",
+            country: "Brasil"
+          }
+        },
+        jobInfo: {
+          department: {
+            code: "TECH001",
+            name: "Technology"
           },
-          candidate: {
-            name: "John",
-            lastName: "Doe",
-            email: "john.doe177@gmail.com",
-            identificationDocument: "123.456.789-00",
-            mobileNumber: "+5511999990000",
-            addressCity: "São Paulo",
-            addressState: "São Paulo",
-            addressCountry: "Brasil",
-            addressZipCode: "01414-905",
-            gender: "Male"
+          role: {
+            code: "DEV001", 
+            name: "Software Developer"
           },
-          admission: {
-            hiringDate: "2019-06-19T00:00:00.000Z",
-            position: {
-              salary: { value: 1250.5 }
-            }
+          hiringDate: "2025-01-15T00:00:00.000Z",
+          salary: {
+            value: 5000.0,
+            currency: "BRL"
           }
         }
       }
@@ -733,7 +740,7 @@ export class TemplateService {
     for (const mapping of mappings) {
       try {
         // Obter valor do campo fonte
-        const sourceValue = this.getValueByPath(gupyExamplePayload, mapping.sourceField.path);
+        const sourceValue = this.getValueByPath(sourceSystemExamplePayload, mapping.sourceField.path);
         
         if (sourceValue !== undefined) {
           let transformedValue = sourceValue;
@@ -834,21 +841,14 @@ export class TemplateService {
     return `transformed_mapping_${normalizedName}${suffix}`;
   }
 
-  // Gerar path Jsonnet com verificação de estrutura body
+  // Gerar path Jsonnet para sistema fonte genérico
   private static generateJsonnetPath(fieldPath: string): string {
     const pathParts = fieldPath.split('.');
-    let jsonnetPath = 'gupyPayload';
+    let jsonnetPath = 'sourceSystemPayload';
     
-    // ✅ GARANTIR QUE O PATH INCLUA O body. SE NECESSÁRIO
-    // Se o path não começa com 'body', mas sabemos que deveria (baseado na estrutura Gupy)
-    let adjustedParts = pathParts;
-    if (pathParts[0] !== 'body' && !fieldPath.startsWith('body.')) {
-      // Assumir que o campo está dentro de body.data se não especificado
-      adjustedParts = ['body', 'data', ...pathParts];
-      console.log(`🔧 Path ajustado de "${fieldPath}" para "body.data.${fieldPath}"`);
-    }
-    
-    adjustedParts.forEach(part => {
+    // Para sistemas genéricos, usar os paths conforme fornecidos
+    // Não assumir estrutura específica de nenhum sistema
+    pathParts.forEach(part => {
       jsonnetPath += `["${part}"]`;
     });
     
@@ -862,11 +862,11 @@ export class TemplateService {
     targetVariable: string,
     transformation: TransformationConfig
   ): string {
-    const gupyPayloadVar = 'local gupyPayload = std.extVar("gupyPayload");';
+    const sourceSystemPayloadVar = 'local sourceSystemPayload = std.extVar("sourceSystemPayload");';
     
     // ✅ VERIFICAÇÃO DE SEGURANÇA PARA PATHS NULOS/INDEFINIDOS
-    const safeInputPath = inputPath || 'gupyPayload["body"]["data"]["undefined"]';
-    const inputVar = `local inputValue = if std.objectHas(${safeInputPath.split('.')[0] || 'gupyPayload'}, "${safeInputPath.split('.').slice(1).join('"]["')}") then ${safeInputPath} else null;`;
+    const safeInputPath = inputPath || 'sourceSystemPayload["undefined"]';
+    const inputVar = `local inputValue = if std.objectHas(${safeInputPath.split('.')[0] || 'sourceSystemPayload'}, "${safeInputPath.split('.').slice(1).join('"]["')}") then ${safeInputPath} else null;`;
     
     console.log(`🔧 Template Jsonnet gerado para ${targetVariable}:`);
     console.log(`   📍 Input Path: ${safeInputPath}`);
@@ -875,59 +875,59 @@ export class TemplateService {
     switch (transformation.type) {
       case 'format_document':
         // Remove pontos, hífens e espaços - com verificação de nulo
-        return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.strReplace(std.strReplace(std.strReplace(std.toString(inputValue), ".", ""), "-", ""), " ", "") else "" }`;
+        return `${sourceSystemPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.strReplace(std.strReplace(std.strReplace(std.toString(inputValue), ".", ""), "-", ""), " ", "") else "" }`;
 
       case 'name_split':
         if (transformation.operation === 'split_first_name') {
-          return `${gupyPayloadVar} ${inputVar} local parts = if inputValue != null then std.split(std.toString(inputValue), " ") else []; { ${targetVariable}: if std.length(parts) > 0 then parts[0] else "" }`;
+          return `${sourceSystemPayloadVar} ${inputVar} local parts = if inputValue != null then std.split(std.toString(inputValue), " ") else []; { ${targetVariable}: if std.length(parts) > 0 then parts[0] else "" }`;
         } else if (transformation.operation === 'split_last_name') {
-          return `${gupyPayloadVar} ${inputVar} local parts = if inputValue != null then std.split(std.toString(inputValue), " ") else []; { ${targetVariable}: if std.length(parts) > 1 then std.join(" ", parts[1:]) else "" }`;
+          return `${sourceSystemPayloadVar} ${inputVar} local parts = if inputValue != null then std.split(std.toString(inputValue), " ") else []; { ${targetVariable}: if std.length(parts) > 1 then std.join(" ", parts[1:]) else "" }`;
         }
         break;
 
       case 'phone_split':
         if (transformation.operation === 'extract_area_code') {
-          return `${gupyPayloadVar} ${inputVar} local cleanPhone = if inputValue != null then std.strReplace(std.strReplace(std.toString(inputValue), "+55", ""), " ", "") else ""; { ${targetVariable}: if std.length(cleanPhone) >= 2 then std.substr(cleanPhone, 0, 2) else "" }`;
+          return `${sourceSystemPayloadVar} ${inputVar} local cleanPhone = if inputValue != null then std.strReplace(std.strReplace(std.toString(inputValue), "+55", ""), " ", "") else ""; { ${targetVariable}: if std.length(cleanPhone) >= 2 then std.substr(cleanPhone, 0, 2) else "" }`;
         } else if (transformation.operation === 'extract_phone_number') {
-          return `${gupyPayloadVar} ${inputVar} local cleanPhone = if inputValue != null then std.strReplace(std.strReplace(std.toString(inputValue), "+55", ""), " ", "") else ""; { ${targetVariable}: if std.length(cleanPhone) > 2 then std.substr(cleanPhone, 2, std.length(cleanPhone)) else "" }`;
+          return `${sourceSystemPayloadVar} ${inputVar} local cleanPhone = if inputValue != null then std.strReplace(std.strReplace(std.toString(inputValue), "+55", ""), " ", "") else ""; { ${targetVariable}: if std.length(cleanPhone) > 2 then std.substr(cleanPhone, 2, std.length(cleanPhone)) else "" }`;
         }
         break;
 
       case 'normalize':
         if (transformation.operation === 'upper_case') {
-          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.asciiUpper(std.toString(inputValue)) else "" }`;
+          return `${sourceSystemPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.asciiUpper(std.toString(inputValue)) else "" }`;
         } else if (transformation.operation === 'lower_case') {
-          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.asciiLower(std.toString(inputValue)) else "" }`;
+          return `${sourceSystemPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.asciiLower(std.toString(inputValue)) else "" }`;
         }
         break;
 
       case 'country_code':
         // Conversão Brasil -> BRA com verificação de nulo
-        return `${gupyPayloadVar} ${inputVar} local countryStr = if inputValue != null then std.toString(inputValue) else ""; { ${targetVariable}: if countryStr == "Brasil" then "BRA" else if countryStr == "Brazil" then "BRA" else countryStr }`;
+        return `${sourceSystemPayloadVar} ${inputVar} local countryStr = if inputValue != null then std.toString(inputValue) else ""; { ${targetVariable}: if countryStr == "Brasil" then "BRA" else if countryStr == "Brazil" then "BRA" else countryStr }`;
 
       case 'gender_code':
         // Conversão Male/Female -> M/F com verificação de nulo
-        return `${gupyPayloadVar} ${inputVar} local genderStr = if inputValue != null then std.toString(inputValue) else ""; { ${targetVariable}: if genderStr == "Male" then "M" else if genderStr == "Female" then "F" else genderStr }`;
+        return `${sourceSystemPayloadVar} ${inputVar} local genderStr = if inputValue != null then std.toString(inputValue) else ""; { ${targetVariable}: if genderStr == "Male" then "M" else if genderStr == "Female" then "F" else genderStr }`;
 
       case 'concat':
         const separator = transformation.parameters?.separator || ' ';
-        return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then (if std.isArray(inputValue) then std.join("${separator}", inputValue) else std.toString(inputValue)) else "" }`;
+        return `${sourceSystemPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then (if std.isArray(inputValue) then std.join("${separator}", inputValue) else std.toString(inputValue)) else "" }`;
 
       case 'convert':
         if (transformation.operation === 'string_to_number') {
-          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then (if std.isString(inputValue) then std.parseJson(inputValue) else inputValue) else 0 }`;
+          return `${sourceSystemPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then (if std.isString(inputValue) then std.parseJson(inputValue) else inputValue) else 0 }`;
         } else if (transformation.operation === 'number_to_string') {
-          return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.toString(inputValue) else "" }`;
+          return `${sourceSystemPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then std.toString(inputValue) else "" }`;
         }
         break;
 
       default:
         // Transformação identidade (passthrough) com verificação de nulo
-        return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then inputValue else "" }`;
+        return `${sourceSystemPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then inputValue else "" }`;
     }
 
     // Fallback para transformação identidade
-    return `${gupyPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then inputValue else "" }`;
+    return `${sourceSystemPayloadVar} ${inputVar} { ${targetVariable}: if inputValue != null then inputValue else "" }`;
   }
 
   // Gerar template Jsonnet para um tipo específico de transformação
@@ -950,24 +950,24 @@ export class TemplateService {
       // Gerar regra de transformação baseada no tipo
       switch (transformation.type) {
         case 'format_document':
-          return `"${escapedTargetPath}": std.strReplace(std.strReplace(gupyPayload.${sourcePath}, ".", ""), "-", "")`;
+          return `"${escapedTargetPath}": std.strReplace(std.strReplace(sourceSystemPayload.${sourcePath}, ".", ""), "-", "")`;
         
         case 'normalize':
           if (transformation.operation === 'upper_case') {
-            return `"${escapedTargetPath}": std.asciiUpper(gupyPayload.${sourcePath})`;
+            return `"${escapedTargetPath}": std.asciiUpper(sourceSystemPayload.${sourcePath})`;
           }
-          return `"${escapedTargetPath}": gupyPayload.${sourcePath}`;
+          return `"${escapedTargetPath}": sourceSystemPayload.${sourcePath}`;
           
         case 'phone_split':
-          return `"${escapedTargetPath}": std.substr(std.strReplace(gupyPayload.${sourcePath}, "+55", ""), 0, 2)`;
+          return `"${escapedTargetPath}": std.substr(std.strReplace(sourceSystemPayload.${sourcePath}, "+55", ""), 0, 2)`;
           
         default:
-          return `"${escapedTargetPath}": gupyPayload.${sourcePath}`;
+          return `"${escapedTargetPath}": sourceSystemPayload.${sourcePath}`;
       }
     }).filter(rule => rule).join(', ');
 
     // Template Jsonnet válido sem quebras de linha problemáticas
-    return `local gupyPayload = std.extVar('gupyPayload'); { ${transformationRules} }`;
+    return `local sourceSystemPayload = std.extVar('sourceSystemPayload'); { ${transformationRules} }`;
   }
 
   // Utilitários para manipular objetos por path

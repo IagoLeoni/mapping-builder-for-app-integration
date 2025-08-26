@@ -34,7 +34,7 @@ export class GeminiMappingService {
   /**
    * Gera mapeamentos automáticos usando Gemini AI
    */
-  async generateMappings(clientSchema: any, inputType: 'schema' | 'payload' = 'schema'): Promise<MappingConnection[]> {
+  async generateMappings(clientSchema: any, inputType: 'schema' | 'payload' = 'schema', sourceSystemId: string = 'gupy'): Promise<MappingConnection[]> {
     try {
       // Validar schema do cliente
       const validation = SchemaManagerService.validateClientSchema(clientSchema);
@@ -43,22 +43,22 @@ export class GeminiMappingService {
       }
 
       // Carregar schemas de referência
-      const gupySchema = await SchemaManagerService.loadGupySchema();
-      const gupyExamplePayload = await SchemaManagerService.loadGupyExamplePayload();
+      const sourceSchema = await SchemaManagerService.loadSourceSchema(sourceSystemId);
+      const sourceExamplePayload = await SchemaManagerService.loadSourceSystemExamplePayload(sourceSystemId);
       const semanticPatterns = await SchemaManagerService.loadSemanticPatterns();
 
       // Extrair caminhos dos schemas
-      const gupyPaths = SchemaManagerService.extractFieldPaths(gupySchema.schema);
+      const sourcePaths = SchemaManagerService.extractFieldPaths(sourceSchema.schema);
       const clientPaths = SchemaManagerService.extractFieldPaths(clientSchema);
 
-      console.log('🤖 Gupy paths:', gupyPaths);
+      console.log(`🤖 ${sourceSystemId} paths:`, sourcePaths);
       console.log('🤖 Client paths:', clientPaths);
 
       // Tentar usar Gemini API se disponível, senão usar algoritmo simples
       if (process.env.GEMINI_API_KEY) {
         console.log('🤖 Usando Gemini API para gerar mapeamentos...');
         try {
-          const mappings = await this.generateGeminiMappings(gupySchema, gupyExamplePayload, clientSchema, semanticPatterns);
+          const mappings = await this.generateGeminiMappings(sourceSchema, sourceExamplePayload, clientSchema, semanticPatterns, sourceSystemId);
           return mappings;
         } catch (geminiError) {
           console.warn('⚠️ Falha no Gemini API, usando algoritmo simples:', geminiError);
@@ -68,7 +68,7 @@ export class GeminiMappingService {
         console.log('🤖 GEMINI_API_KEY não configurada, usando algoritmo simples...');
       }
 
-      const mappings = this.generateSimpleMappings(gupySchema.schema, clientPaths, semanticPatterns);
+      const mappings = this.generateSimpleMappings(sourceSchema.schema, clientPaths, semanticPatterns, sourceSystemId);
       return mappings;
     } catch (error) {
       console.error('Error generating mappings:', error);
@@ -80,33 +80,34 @@ export class GeminiMappingService {
    * Gera mapeamentos usando lógica simples (fallback enquanto não temos Gemini)
    */
   private generateSimpleMappings(
-    gupySchema: any, 
+    sourceSchema: any, 
     clientPaths: string[], 
-    semanticPatterns: any
+    semanticPatterns: any,
+    sourceSystemId: string = 'gupy'
   ): MappingConnection[] {
     const mappings: MappingConnection[] = [];
 
-    // Mapear cada campo do schema Gupy
-    for (const [gupyFieldPath, gupyFieldInfo] of Object.entries(gupySchema)) {
-      const fieldInfo = gupyFieldInfo as any;
+    // Mapear cada campo do schema do sistema de origem
+    for (const [sourceFieldPath, sourceFieldInfo] of Object.entries(sourceSchema)) {
+      const fieldInfo = sourceFieldInfo as any;
       const semanticTags = fieldInfo.semanticTags || [];
 
       // Procurar correspondências nos caminhos do cliente
       for (const clientPath of clientPaths) {
-        const confidence = this.calculateConfidence(gupyFieldPath, clientPath, semanticTags, semanticPatterns);
+        const confidence = this.calculateConfidence(sourceFieldPath, clientPath, semanticTags, semanticPatterns, sourceSystemId);
         
         if (confidence >= semanticPatterns.confidence_rules.minimum_confidence) {
           mappings.push({
             id: GeminiMappingService.generateId(),
             sourceField: {
               id: GeminiMappingService.generateId(),
-              name: gupyFieldPath.split('.').pop() || gupyFieldPath,
+              name: sourceFieldPath.split('.').pop() || sourceFieldPath,
               type: fieldInfo.type || 'string',
-              path: gupyFieldPath
+              path: sourceFieldPath
             },
             targetPath: clientPath,
             confidence,
-            reasoning: this.generateReasoning(gupyFieldPath, clientPath, confidence),
+            reasoning: this.generateReasoning(sourceFieldPath, clientPath, confidence, sourceSystemId),
             aiGenerated: true
           });
         }
@@ -125,16 +126,17 @@ export class GeminiMappingService {
    * Calcula a confiança de um mapeamento
    */
   private calculateConfidence(
-    gupyPath: string, 
+    sourcePath: string, 
     clientPath: string, 
     semanticTags: string[], 
-    patterns: any
+    patterns: any,
+    sourceSystemId: string = 'gupy'
   ): number {
-    const gupyField = gupyPath.split('.').pop()?.toLowerCase() || '';
+    const sourceField = sourcePath.split('.').pop()?.toLowerCase() || '';
     const clientField = clientPath.split('.').pop()?.toLowerCase() || '';
 
     // Match exato
-    if (gupyField === clientField) {
+    if (sourceField === clientField) {
       return patterns.confidence_rules.exact_match;
     }
 
@@ -148,10 +150,10 @@ export class GeminiMappingService {
     // Match por padrões semânticos
     for (const [patternName, variations] of Object.entries(patterns.patterns)) {
       const variationList = variations as string[];
-      const gupyInPattern = variationList.some(v => v.toLowerCase() === gupyField);
+      const sourceInPattern = variationList.some(v => v.toLowerCase() === sourceField);
       const clientInPattern = variationList.some(v => v.toLowerCase() === clientField);
       
-      if (gupyInPattern && clientInPattern) {
+      if (sourceInPattern && clientInPattern) {
         return patterns.confidence_rules.similar_name;
       }
     }
@@ -159,21 +161,21 @@ export class GeminiMappingService {
     // Match hierárquico (ex: candidate.name → person.nome)
     for (const [containerType, containers] of Object.entries(patterns.hierarchical_patterns)) {
       const containerList = containers as string[];
-      const gupyContainer = gupyPath.split('.').find(part => 
+      const sourceContainer = sourcePath.split('.').find(part => 
         containerList.some(c => c.toLowerCase() === part.toLowerCase())
       );
       const clientContainer = clientPath.split('.').find(part => 
         containerList.some(c => c.toLowerCase() === part.toLowerCase())
       );
       
-      if (gupyContainer && clientContainer) {
+      if (sourceContainer && clientContainer) {
         // Se estão no mesmo tipo de container, aumenta a confiança
         for (const [patternName, variations] of Object.entries(patterns.patterns)) {
           const variationList = variations as string[];
-          const gupyInPattern = variationList.some(v => gupyField.includes(v.toLowerCase()));
+          const sourceInPattern = variationList.some(v => sourceField.includes(v.toLowerCase()));
           const clientInPattern = variationList.some(v => clientField.includes(v.toLowerCase()));
           
-          if (gupyInPattern && clientInPattern) {
+          if (sourceInPattern && clientInPattern) {
             return patterns.confidence_rules.hierarchical_match;
           }
         }
@@ -181,7 +183,7 @@ export class GeminiMappingService {
     }
 
     // Match parcial (substring)
-    if (gupyField.includes(clientField) || clientField.includes(gupyField)) {
+    if (sourceField.includes(clientField) || clientField.includes(sourceField)) {
       return patterns.confidence_rules.partial_match;
     }
 
@@ -191,18 +193,18 @@ export class GeminiMappingService {
   /**
    * Gera explicação do mapeamento
    */
-  private generateReasoning(gupyPath: string, clientPath: string, confidence: number): string {
-    const gupyField = gupyPath.split('.').pop() || gupyPath;
+  private generateReasoning(sourcePath: string, clientPath: string, confidence: number, sourceSystemId: string = 'gupy'): string {
+    const sourceField = sourcePath.split('.').pop() || sourcePath;
     const clientField = clientPath.split('.').pop() || clientPath;
 
     if (confidence >= 95) {
-      return `Match semântico forte: "${gupyField}" → "${clientField}"`;
+      return `Match semântico forte: "${sourceField}" → "${clientField}"`;
     } else if (confidence >= 85) {
-      return `Match semântico: "${gupyField}" → "${clientField}" (padrão reconhecido)`;
+      return `Match semântico: "${sourceField}" → "${clientField}" (padrão reconhecido)`;
     } else if (confidence >= 80) {
-      return `Match hierárquico: "${gupyPath}" → "${clientPath}" (mesmo contexto)`;
+      return `Match hierárquico: "${sourcePath}" → "${clientPath}" (mesmo contexto)`;
     } else {
-      return `Match parcial: "${gupyField}" → "${clientField}" (similaridade detectada)`;
+      return `Match parcial: "${sourceField}" → "${clientField}" (similaridade detectada)`;
     }
   }
 
@@ -210,17 +212,18 @@ export class GeminiMappingService {
    * Gera mapeamentos usando Gemini 2.0 Flash - Single Shot para todos os campos
    */
   private async generateGeminiMappings(
-    gupySchema: any,
-    gupyExamplePayload: any,
+    sourceSchema: any,
+    sourceExamplePayload: any,
     clientSchema: any,
-    semanticPatterns: any
+    semanticPatterns: any,
+    sourceSystemId: string = 'gupy'
   ): Promise<MappingConnection[]> {
     try {
       const clientFieldCount = this.countFields(clientSchema);
       console.log(`🚀 Gemini 2.0 Flash - Processando TODOS os ${clientFieldCount} campos em uma única chamada!`);
       
       // Com Gemini 2.0 Flash (1M tokens input), processamos tudo de uma vez
-      const prompt = this.buildComprehensivePrompt(gupySchema, gupyExamplePayload, clientSchema, semanticPatterns);
+      const prompt = this.buildComprehensivePrompt(sourceSchema, sourceExamplePayload, clientSchema, semanticPatterns);
       const response = await this.callGeminiAPI(prompt);
       
       // Parse da resposta do Gemini

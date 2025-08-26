@@ -1,0 +1,50 @@
+{
+  "task": "GenericConnectorTask",
+  "taskId": "{{TASK_ID}}",
+  "parameters": {
+    "connectionName": {
+      "key": "connectionName",
+      "value": {
+        "stringValue": "{{PUBSUB_CONNECTION}}"
+      }
+    },
+    "actionName": {
+      "key": "actionName", 
+      "value": {
+        "stringValue": "publishMessage"
+      }
+    },
+    "operation": {
+      "key": "operation",
+      "value": {
+        "stringValue": "EXECUTE_ACTION"
+      }
+    },
+    "connectionVersion": {
+      "key": "connectionVersion",
+      "value": {
+        "stringValue": "{{CONNECTION_VERSION}}"
+      }
+    },
+    "connectorInputPayload": {
+      "key": "connectorInputPayload",
+      "value": {
+        "stringValue": "$`Task_{{TASK_ID}}_connectorInputPayload`$"
+      }
+    },
+    "connectorOutputPayload": {
+      "key": "connectorOutputPayload",
+      "value": {
+        "stringValue": "$`Task_{{TASK_ID}}_connectorOutputPayload`$"
+      }
+    }
+  },
+  "nextTasks": [],
+  "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+  "displayName": "{{DISPLAY_NAME}}",
+  "externalTaskType": "NORMAL_TASK",
+  "position": {
+    "x": "{{POSITION_X}}",
+    "y": "{{POSITION_Y}}"
+  }
+}

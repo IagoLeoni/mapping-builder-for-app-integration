@@ -1,8 +1,8 @@
-// Schema oficial da Gupy - carregado dinamicamente do backend
-let GUPY_SCHEMA_CACHE: Record<string, { type: string; required: boolean }> | null = null;
+// Schema oficial do sistema de origem - carregado dinamicamente do backend
+let SOURCE_SCHEMA_CACHE: Record<string, { type: string; required: boolean }> | null = null;
 
 // Fallback schema (versão simplificada para casos offline)
-const FALLBACK_GUPY_SCHEMA: Record<string, { type: string; required: boolean }> = {
+const FALLBACK_SOURCE_SCHEMA: Record<string, { type: string; required: boolean }> = {
   companyName: { type: 'string', required: false },
   id: { type: 'string', required: true },
   event: { type: 'string', required: true },
@@ -22,16 +22,16 @@ const FALLBACK_GUPY_SCHEMA: Record<string, { type: string; required: boolean }> 
 };
 
 /**
- * Carrega o schema oficial da Gupy do backend
+ * Carrega o schema oficial do sistema de origem do backend
  */
-async function loadGupySchema(): Promise<Record<string, { type: string; required: boolean }>> {
-  if (GUPY_SCHEMA_CACHE) {
-    return GUPY_SCHEMA_CACHE;
+async function loadSourceSchema(): Promise<Record<string, { type: string; required: boolean }>> {
+  if (SOURCE_SCHEMA_CACHE) {
+    return SOURCE_SCHEMA_CACHE;
   }
 
   try {
-    console.log('🔍 Carregando schema oficial da Gupy...');
-    const response = await fetch('http://localhost:8080/api/gemini/gupy-schema');
+    console.log('🔍 Carregando schema oficial do sistema de origem...');
+    const response = await fetch('http://localhost:8080/api/gemini/source-schema');
     
     if (!response.ok) {
       throw new Error(`Erro ao carregar schema: ${response.status}`);
@@ -42,18 +42,18 @@ async function loadGupySchema(): Promise<Record<string, { type: string; required
     // Extrair campos do schema oficial em formato de paths
     const extractedSchema = extractSchemaFields(schemaData);
     
-    GUPY_SCHEMA_CACHE = extractedSchema;
+    SOURCE_SCHEMA_CACHE = extractedSchema;
     console.log(`✅ Schema oficial carregado: ${Object.keys(extractedSchema).length} campos`);
     
     return extractedSchema;
   } catch (error) {
     console.warn('⚠️ Falha ao carregar schema oficial, usando fallback:', error);
-    return FALLBACK_GUPY_SCHEMA;
+    return FALLBACK_SOURCE_SCHEMA;
   }
 }
 
 /**
- * Extrai campos do schema oficial da Gupy para formato de paths planos
+ * Extrai campos do schema oficial do sistema de origem para formato de paths planos
  */
 function extractSchemaFields(schemaData: any): Record<string, { type: string; required: boolean }> {
   const fields: Record<string, { type: string; required: boolean }> = {};
@@ -124,7 +124,7 @@ function extractDataFields(properties: any, prefix: string, fields: Record<strin
   });
 }
 
-export interface GupyValidationError {
+export interface SourceSystemValidationError {
   field: string;
   error: 'missing' | 'wrong_type' | 'invalid_format';
   expected?: string;
@@ -132,10 +132,10 @@ export interface GupyValidationError {
   message: string;
 }
 
-export interface GupyValidationResult {
+export interface SourceSystemValidationResult {
   isValid: boolean;
-  errors: GupyValidationError[];
-  warnings: GupyValidationError[];
+  errors: SourceSystemValidationError[];
+  warnings: SourceSystemValidationError[];
   missingFields: string[];
   extraFields: string[];
   fieldCount: {
@@ -148,9 +148,9 @@ export interface GupyValidationResult {
   confidence: number; // 0-100%
 }
 
-export async function validateGupyPayload(payload: any): Promise<GupyValidationResult> {
-  const errors: GupyValidationError[] = [];
-  const warnings: GupyValidationError[] = [];
+export async function validateSourceSystemPayload(payload: any): Promise<SourceSystemValidationResult> {
+  const errors: SourceSystemValidationError[] = [];
+  const warnings: SourceSystemValidationError[] = [];
   const missingFields: string[] = [];
   const extraFields: string[] = [];
   
@@ -158,7 +158,7 @@ export async function validateGupyPayload(payload: any): Promise<GupyValidationR
   let invalidFields = 0;
 
   // Carregar schema oficial
-  const GUPY_SCHEMA = await loadGupySchema();
+  const SOURCE_SCHEMA = await loadSourceSchema();
 
   // Helper para obter valor de path aninhado
   const getNestedValue = (obj: any, path: string): any => {
@@ -174,7 +174,7 @@ export async function validateGupyPayload(payload: any): Promise<GupyValidationR
   };
 
   // Verificar campos obrigatórios
-  Object.entries(GUPY_SCHEMA).forEach(([fieldPath, schema]) => {
+  Object.entries(SOURCE_SCHEMA).forEach(([fieldPath, schema]) => {
     const value = getNestedValue(payload, fieldPath);
     const hasValue = value !== undefined && value !== null;
 
@@ -248,7 +248,7 @@ export async function validateGupyPayload(payload: any): Promise<GupyValidationR
       if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
         findExtraFields(value, fullPath);
       } else {
-        if (!(fullPath in GUPY_SCHEMA)) {
+        if (!(fullPath in SOURCE_SCHEMA)) {
           extraFields.push(fullPath);
         }
       }
@@ -287,7 +287,7 @@ export async function validateGupyPayload(payload: any): Promise<GupyValidationR
   let relevantFields = 0;
   let foundFields = 0;
   
-  Object.entries(GUPY_SCHEMA).forEach(([fieldPath, schema]) => {
+  Object.entries(SOURCE_SCHEMA).forEach(([fieldPath, schema]) => {
     // Se payload tem body wrapper, só contar campos body.*
     // Se não tem, só contar campos sem body.*
     if (hasBodyWrapper && fieldPath.startsWith('body.')) {
@@ -324,7 +324,7 @@ export async function validateGupyPayload(payload: any): Promise<GupyValidationR
   };
 }
 
-export function getGupyExamplePayload(): any {
+export function getSourceSystemExamplePayload(): any {
   return {
     companyName: "ACME",
     id: "24e99765-8583-4be5-87ae-489c86642964",

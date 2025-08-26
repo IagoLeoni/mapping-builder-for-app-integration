@@ -176,7 +176,7 @@ export class IntegrationService {
         }
         
         const lastPart = pathParts[pathParts.length - 1];
-        current[lastPart] = `$gupyPayload.${mapping.sourceField.path}$`;
+        current[lastPart] = `$sourcePayload.${mapping.sourceField.path}$`;
       });
 
       // Processar transformações (se houver)
@@ -304,7 +304,7 @@ export class IntegrationService {
     
     return `local f = import "functions";
 
-local gupyPayload = f.extVar("gupyPayload");
+local sourcePayload = f.extVar("sourcePayload");
 local inputValue = ${inputPath};
 
 local transformValue(value) = (
@@ -320,7 +320,7 @@ ${mappingRules}
   private generateDateFormatJsonnet(varName: string, inputPath: string, transformation: any): string {
     return `local f = import "functions";
 
-local gupyPayload = f.extVar("gupyPayload");
+local sourcePayload = f.extVar("sourcePayload");
 local inputValue = ${inputPath};
 
 local transformDate(dateStr) = (
@@ -337,7 +337,7 @@ local transformDate(dateStr) = (
     
     return `local f = import "functions";
 
-local gupyPayload = f.extVar("gupyPayload");
+local sourcePayload = f.extVar("sourcePayload");
 local inputValue = ${inputPath};
 
 local transformExpression(value) = (
@@ -358,7 +358,7 @@ local transformExpression(value) = (
     
     return `local f = import "functions";
 
-local gupyPayload = f.extVar("gupyPayload");
+local sourcePayload = f.extVar("sourcePayload");
 local inputValue = ${inputPath};
 
 local transformConditional(value) = (
@@ -373,73 +373,73 @@ ${conditions}
 
   // Métodos para gerar templates Jsonnet das transformações da IA (AUTO-CONTIDOS - SEM IMPORTS)
   private generateFormatDocumentJsonnet(varName: string, inputPath: string, transformation: any): string {
-    return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: std.strReplace(std.strReplace(std.strReplace(inputValue, ".", ""), "-", ""), " ", "") }`;
+    return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: std.strReplace(std.strReplace(std.strReplace(inputValue, ".", ""), "-", ""), " ", "") }`;
   }
 
   private generatePhoneSplitJsonnet(varName: string, inputPath: string, transformation: any): string {
     const operation = transformation.operation || 'extract_area_code';
     if (operation === 'extract_area_code') {
-      return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; local cleanPhone = std.strReplace(std.strReplace(inputValue, "+55", ""), " ", ""); { ${varName}: std.substr(cleanPhone, 0, 2) }`;
+      return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; local cleanPhone = std.strReplace(std.strReplace(inputValue, "+55", ""), " ", ""); { ${varName}: std.substr(cleanPhone, 0, 2) }`;
     } else if (operation === 'extract_phone_number') {
-      return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; local cleanPhone = std.strReplace(std.strReplace(inputValue, "+55", ""), " ", ""); { ${varName}: std.substr(cleanPhone, 2, std.length(cleanPhone)) }`;
+      return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; local cleanPhone = std.strReplace(std.strReplace(inputValue, "+55", ""), " ", ""); { ${varName}: std.substr(cleanPhone, 2, std.length(cleanPhone)) }`;
     }
-    return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: inputValue }`;
+    return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: inputValue }`;
   }
 
   private generateNameSplitJsonnet(varName: string, inputPath: string, transformation: any): string {
     const operation = transformation.operation || 'split_first_name';
     if (operation === 'split_first_name') {
-      return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; local parts = std.split(inputValue, " "); { ${varName}: if std.length(parts) > 0 then parts[0] else "" }`;
+      return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; local parts = std.split(inputValue, " "); { ${varName}: if std.length(parts) > 0 then parts[0] else "" }`;
     } else if (operation === 'split_last_name') {
-      return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; local parts = std.split(inputValue, " "); { ${varName}: if std.length(parts) > 1 then std.join(" ", parts[1:]) else "" }`;
+      return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; local parts = std.split(inputValue, " "); { ${varName}: if std.length(parts) > 1 then std.join(" ", parts[1:]) else "" }`;
     }
-    return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: inputValue }`;
+    return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: inputValue }`;
   }
 
   private generateNormalizeJsonnet(varName: string, inputPath: string, transformation: any): string {
     const operation = transformation.operation || 'lower_case';
     if (operation === 'upper_case') {
-      return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: std.asciiUpper(inputValue) }`;
+      return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: std.asciiUpper(inputValue) }`;
     } else if (operation === 'lower_case') {
-      return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: std.asciiLower(inputValue) }`;
+      return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: std.asciiLower(inputValue) }`;
     }
-    return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: inputValue }`;
+    return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: inputValue }`;
   }
 
   private generateCountryCodeJsonnet(varName: string, inputPath: string, transformation: any): string {
-    return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: if inputValue == "Brasil" then "BRA" else if inputValue == "Brazil" then "BRA" else if inputValue == "BR" then "BRA" else inputValue }`;
+    return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: if inputValue == "Brasil" then "BRA" else if inputValue == "Brazil" then "BRA" else if inputValue == "BR" then "BRA" else inputValue }`;
   }
 
   private generateGenderCodeJsonnet(varName: string, inputPath: string, transformation: any): string {
-    return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: if inputValue == "Male" then "M" else if inputValue == "Female" then "F" else if inputValue == "Masculino" then "M" else if inputValue == "Feminino" then "F" else inputValue }`;
+    return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: if inputValue == "Male" then "M" else if inputValue == "Female" then "F" else if inputValue == "Masculino" then "M" else if inputValue == "Feminino" then "F" else inputValue }`;
   }
 
   private generateCodeLookupJsonnet(varName: string, inputPath: string, transformation: any): string {
-    return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: inputValue }`;
+    return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: inputValue }`;
   }
 
   private generateConcatJsonnet(varName: string, inputPath: string, transformation: any): string {
     const separator = transformation.separator || ' ';
-    return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: std.join("${separator}", if std.isArray(inputValue) then inputValue else [inputValue]) }`;
+    return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: std.join("${separator}", if std.isArray(inputValue) then inputValue else [inputValue]) }`;
   }
 
   private generateSplitJsonnet(varName: string, inputPath: string, transformation: any): string {
     const separator = transformation.separator || ' ';
-    return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: std.split(inputValue, "${separator}") }`;
+    return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: std.split(inputValue, "${separator}") }`;
   }
 
   private generateConvertJsonnet(varName: string, inputPath: string, transformation: any): string {
     const operation = transformation.operation || 'string_conversion';
     if (operation === 'string_to_number') {
-      return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: std.parseJson(inputValue) }`;
+      return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: std.parseJson(inputValue) }`;
     } else if (operation === 'number_to_string') {
-      return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: std.toString(inputValue) }`;
+      return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: std.toString(inputValue) }`;
     }
-    return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: inputValue }`;
+    return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: inputValue }`;
   }
 
   private generateFormatDateJsonnet(varName: string, inputPath: string, transformation: any): string {
-    return `local gupyPayload = std.extVar("gupyPayload"); local inputValue = ${inputPath}; { ${varName}: std.substr(inputValue, 0, 10) }`;
+    return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: std.substr(inputValue, 0, 10) }`;
   }
 
   // Métodos auxiliares
@@ -450,7 +450,7 @@ ${conditions}
 
   private generateJsonnetPath(fieldPath: string): string {
     const pathParts = fieldPath.split('.');
-    let jsonnetPath = 'gupyPayload';
+    let jsonnetPath = 'sourcePayload';
     pathParts.forEach(part => {
       jsonnetPath += `["${part}"]`;
     });

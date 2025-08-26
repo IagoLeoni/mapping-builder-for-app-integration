@@ -1,23 +1,34 @@
-# Templates Directory
+# Templates Directory - Universal System Support
 
-Este diretório contém todos os templates utilizados para gerar integrações do Application Integration do Google Cloud.
+Este diretório contém todos os templates utilizados para gerar integrações do Application Integration do Google Cloud com **suporte universal a qualquer sistema origem**.
 
-## Estrutura
+## Estrutura System-Agnostic
 
 ```
 templates/
-├── integration/           # Templates de integração
+├── universal/              # Templates universais (qualquer sistema origem)
 │   ├── base-integration.json
-│   └── tasks/            # Templates de tarefas
-│       ├── field-mapping-task.json
-│       ├── rest-task.json
-│       ├── email-task.json
-│       └── jsonnet-mapper-task.json
-└── transformations/      # Templates de transformação Jsonnet
-    ├── value-mapping.jsonnet
-    ├── date-format.jsonnet
-    ├── expression.jsonnet
-    └── conditional.jsonnet
+│   ├── tasks/
+│   │   ├── field-mapping-task.json
+│   │   ├── rest-task.json
+│   │   ├── pubsub-dlq-task.json      # Nova tarefa PubSub DLQ
+│   │   └── jsonnet-mapper-task.json
+│   └── transformations/
+│       ├── value-mapping.jsonnet
+│       ├── date-format.jsonnet
+│       ├── name-split.jsonnet         # Novo: divisão de nomes
+│       ├── phone-split.jsonnet        # Novo: divisão de telefones
+│       ├── document-format.jsonnet    # Novo: formatação documentos
+│       └── country-code.jsonnet       # Novo: conversão códigos país
+├── source-systems/         # Templates específicos por sistema origem
+│   ├── gupy/              # Templates específicos Gupy (backward compatibility)
+│   ├── salesforce/        # Templates específicos Salesforce
+│   └── workday/           # Templates específicos Workday
+└── target-systems/        # Templates específicos por sistema destino
+    ├── generic/           # Templates genéricos
+    ├── salesforce/        # Templates específicos Salesforce
+    ├── workday/           # Templates específicos Workday
+    └── sap/              # Templates específicos SAP
 ```
 
 ## Templates de Integração

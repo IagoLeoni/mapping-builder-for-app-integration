@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Salesforce Contact Schema",
+  "description": "Schema for Salesforce Contact object used as source system",
+  "properties": {
+    "Id": {
+      "type": "string",
+      "description": "Unique Salesforce record ID"
+    },
+    "FirstName": {
+      "type": "string",
+      "description": "Contact's first name"
+    },
+    "LastName": {
+      "type": "string",
+      "description": "Contact's last name"
+    },
+    "Email": {
+      "type": "string",
+      "format": "email",
+      "description": "Contact's email address"
+    },
+    "Phone": {
+      "type": "string",
+      "description": "Contact's phone number"
+    },
+    "MobilePhone": {
+      "type": "string",
+      "description": "Contact's mobile phone number"
+    },
+    "MailingAddress": {
+      "type": "object",
+      "properties": {
+        "MailingStreet": {
+          "type": "string",
+          "description": "Street address"
+        },
+        "MailingCity": {
+          "type": "string",
+          "description": "City"
+        },
+        "MailingState": {
+          "type": "string",
+          "description": "State or province"
+        },
+        "MailingPostalCode": {
+          "type": "string",
+          "description": "Postal code"
+        },
+        "MailingCountry": {
+          "type": "string",
+          "description": "Country"
+        }
+      }
+    },
+    "Account": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "string",
+          "description": "Account ID"
+        },
+        "Name": {
+          "type": "string",
+          "description": "Account name"
+        },
+        "Industry": {
+          "type": "string",
+          "description": "Account industry"
+        }
+      }
+    },
+    "Department": {
+      "type": "string",
+      "description": "Contact's department"
+    },
+    "Title": {
+      "type": "string",
+      "description": "Contact's job title"
+    },
+    "Birthdate": {
+      "type": "string",
+      "format": "date",
+      "description": "Contact's birthdate"
+    },
+    "CreatedDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Record creation date"
+    },
+    "LastModifiedDate": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last modification date"
+    }
+  },
+  "required": ["Id", "LastName"]
+}

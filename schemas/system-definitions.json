@@ -1,0 +1,206 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "iPaaS Integration Builder - System Definitions",
+  "description": "Centralized metadata for all supported source and target systems",
+  "version": "2.0.0",
+  "lastUpdated": "2025-08-25",
+  
+  "sourceSystemsConfig": {
+    "gupy": {
+      "systemId": "gupy",
+      "displayName": "Gupy HR Platform",
+      "category": "HR",
+      "description": "Brazilian HR and recruitment platform",
+      "icon": "🇧🇷",
+      "schemaPath": "source-systems/gupy/schema.json",
+      "examplePath": "source-systems/gupy/example.json",
+      "apiEndpoint": "/api/gemini/gupy-payload-structure",
+      "status": "active",
+      "supportedEvents": [
+        "pre-employee.moved",
+        "employee.hired",
+        "employee.terminated"
+      ],
+      "documentation": "https://developers.gupy.com.br/",
+      "authType": "webhook",
+      "commonFields": [
+        "data.candidate.name",
+        "data.candidate.email",
+        "data.candidate.identificationDocument",
+        "data.job.name",
+        "data.admission.hiringDate"
+      ]
+    },
+    
+    "salesforce": {
+      "systemId": "salesforce",
+      "displayName": "Salesforce CRM",
+      "category": "CRM",
+      "description": "Leading cloud-based CRM platform",
+      "icon": "☁️",
+      "schemaPath": "source-systems/salesforce/schema.json",
+      "examplePath": "source-systems/salesforce/example.json",
+      "apiEndpoint": "/api/systems/salesforce/payload-structure",
+      "status": "beta",
+      "supportedEvents": [
+        "contact.created",
+        "contact.updated",
+        "account.created"
+      ],
+      "documentation": "https://developer.salesforce.com/",
+      "authType": "oauth2",
+      "commonFields": [
+        "FirstName",
+        "LastName",
+        "Email",
+        "Account.Name",
+        "Title"
+      ]
+    },
+    
+    "workday": {
+      "systemId": "workday",
+      "displayName": "Workday HCM",
+      "category": "HR",
+      "description": "Enterprise human capital management platform",
+      "icon": "🏢",
+      "schemaPath": "source-systems/workday/schema.json",
+      "examplePath": "source-systems/workday/example.json",
+      "apiEndpoint": "/api/systems/workday/payload-structure",
+      "status": "planned",
+      "supportedEvents": [
+        "worker.hired",
+        "worker.terminated",
+        "worker.updated"
+      ],
+      "documentation": "https://community.workday.com/",
+      "authType": "soap",
+      "commonFields": [
+        "Personal_Data.Name_Data.Legal_Name.Name_Detail_Data.First_Name",
+        "Personal_Data.Name_Data.Legal_Name.Name_Detail_Data.Last_Name",
+        "Personal_Data.Contact_Data.Email_Address_Data[0].Email_Address",
+        "Employment_Data.Position_Data[0].Position_Title"
+      ]
+    }
+  },
+
+  "targetSystemsConfig": {
+    "generic": {
+      "systemId": "generic",
+      "displayName": "Generic REST API",
+      "category": "API",
+      "description": "Generic target system for REST API endpoints",
+      "icon": "🔗",
+      "schemaPath": "target-systems/generic/schema.json",
+      "status": "active",
+      "documentation": "User-defined schema",
+      "authType": "configurable"
+    },
+    
+    "salesforce": {
+      "systemId": "salesforce",
+      "displayName": "Salesforce (Target)",
+      "category": "CRM",
+      "description": "Salesforce as integration target",
+      "icon": "☁️",
+      "schemaPath": "target-systems/salesforce/schema.json",
+      "status": "planned",
+      "documentation": "https://developer.salesforce.com/docs/api-explorer/",
+      "authType": "oauth2"
+    },
+    
+    "workday": {
+      "systemId": "workday",
+      "displayName": "Workday (Target)",
+      "category": "HR",
+      "description": "Workday as integration target",
+      "icon": "🏢",
+      "schemaPath": "target-systems/workday/schema.json",
+      "status": "planned",
+      "documentation": "https://community.workday.com/",
+      "authType": "soap"
+    },
+    
+    "sap": {
+      "systemId": "sap",
+      "displayName": "SAP ERP",
+      "category": "ERP",
+      "description": "SAP enterprise resource planning system",
+      "icon": "🏭",
+      "schemaPath": "target-systems/sap/schema.json",
+      "status": "planned",
+      "documentation": "https://developers.sap.com/",
+      "authType": "basic"
+    }
+  },
+
+  "systemCategories": {
+    "HR": {
+      "displayName": "Human Resources",
+      "description": "HR management and recruitment systems",
+      "icon": "👥"
+    },
+    "CRM": {
+      "displayName": "Customer Relationship Management",
+      "description": "Customer data and sales management systems",
+      "icon": "💼"
+    },
+    "ERP": {
+      "displayName": "Enterprise Resource Planning",
+      "description": "Business process management systems",
+      "icon": "🏭"
+    },
+    "API": {
+      "displayName": "Generic APIs",
+      "description": "REST and other API endpoints",
+      "icon": "🔗"
+    }
+  },
+
+  "transformationSupport": {
+    "universalTransformations": [
+      "format_document",
+      "name_split", 
+      "phone_split",
+      "country_code",
+      "gender_code",
+      "date_format",
+      "concat",
+      "normalize"
+    ],
+    "systemSpecificTransformations": {
+      "gupy": [
+        "gupy_document_format",
+        "gupy_phone_split",
+        "gupy_department_lookup"
+      ],
+      "salesforce": [
+        "sf_picklist_mapping",
+        "sf_id_format"
+      ],
+      "workday": [
+        "wd_worker_id_format",
+        "wd_organization_lookup"
+      ]
+    }
+  },
+
+  "deploymentConfig": {
+    "supportedDestinations": [
+      "google-cloud-application-integration",
+      "zapier",
+      "microsoft-power-automate"
+    ],
+    "defaultDestination": "google-cloud-application-integration"
+  },
+
+  "metadata": {
+    "createdBy": "iPaaS Integration Builder",
+    "purpose": "System agnosticism transformation - Phase 3 completion",
+    "totalSourceSystems": 3,
+    "totalTargetSystems": 4,
+    "activeSystems": 1,
+    "betaSystems": 1,
+    "plannedSystems": 5
+  }
+}

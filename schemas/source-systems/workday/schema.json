@@ -1,0 +1,238 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "Workday Worker Schema",
+  "description": "Schema for Workday Worker object used as source system",
+  "properties": {
+    "Worker_ID": {
+      "type": "string",
+      "description": "Unique Workday worker identifier"
+    },
+    "Personal_Data": {
+      "type": "object",
+      "properties": {
+        "Name_Data": {
+          "type": "object",
+          "properties": {
+            "Legal_Name": {
+              "type": "object",
+              "properties": {
+                "Name_Detail_Data": {
+                  "type": "object",
+                  "properties": {
+                    "First_Name": {
+                      "type": "string",
+                      "description": "Worker's first name"
+                    },
+                    "Last_Name": {
+                      "type": "string",
+                      "description": "Worker's last name"
+                    },
+                    "Middle_Name": {
+                      "type": "string",
+                      "description": "Worker's middle name"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Contact_Data": {
+          "type": "object",
+          "properties": {
+            "Address_Data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Address_Line_Data": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "Municipality": {
+                    "type": "string",
+                    "description": "City"
+                  },
+                  "Country_Region_Descriptor": {
+                    "type": "string",
+                    "description": "State or region"
+                  },
+                  "Postal_Code": {
+                    "type": "string",
+                    "description": "Postal code"
+                  },
+                  "Country_Reference": {
+                    "type": "object",
+                    "properties": {
+                      "Country_Name": {
+                        "type": "string",
+                        "description": "Country name"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "Email_Address_Data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Email_Address": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email address"
+                  },
+                  "Usage_Data": {
+                    "type": "object",
+                    "properties": {
+                      "Type_Data": {
+                        "type": "object",
+                        "properties": {
+                          "Primary": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "Phone_Data": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Phone_Number": {
+                    "type": "string",
+                    "description": "Phone number"
+                  },
+                  "Phone_Device_Type": {
+                    "type": "string",
+                    "description": "Type of phone (Mobile, Work, etc.)"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Birth_Date": {
+          "type": "string",
+          "format": "date",
+          "description": "Worker's birth date"
+        },
+        "Gender_Reference": {
+          "type": "object",
+          "properties": {
+            "Gender_Name": {
+              "type": "string",
+              "description": "Gender"
+            }
+          }
+        }
+      }
+    },
+    "Employment_Data": {
+      "type": "object",
+      "properties": {
+        "Worker_Status_Data": {
+          "type": "object",
+          "properties": {
+            "Active": {
+              "type": "boolean",
+              "description": "Whether worker is active"
+            },
+            "Hire_Date": {
+              "type": "string",
+              "format": "date",
+              "description": "Hire date"
+            }
+          }
+        },
+        "Position_Data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Position_Title": {
+                "type": "string",
+                "description": "Job title"
+              },
+              "Business_Title": {
+                "type": "string",
+                "description": "Business title"
+              },
+              "Position_ID": {
+                "type": "string",
+                "description": "Position identifier"
+              },
+              "Job_Profile_Summary_Data": {
+                "type": "object",
+                "properties": {
+                  "Job_Profile_Name": {
+                    "type": "string",
+                    "description": "Job profile name"
+                  },
+                  "Job_Family_Name": {
+                    "type": "string",
+                    "description": "Job family"
+                  }
+                }
+              },
+              "Organization_Data": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "Organization_Name": {
+                      "type": "string",
+                      "description": "Organization/Department name"
+                    },
+                    "Organization_Type": {
+                      "type": "string",
+                      "description": "Type of organization"
+                    },
+                    "Organization_Code": {
+                      "type": "string",
+                      "description": "Organization code"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Compensation_Data": {
+      "type": "object",
+      "properties": {
+        "Compensation_Elements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Compensation_Element_Name": {
+                "type": "string",
+                "description": "Type of compensation"
+              },
+              "Compensation_Element_Value": {
+                "type": "number",
+                "description": "Compensation amount"
+              },
+              "Currency_Code": {
+                "type": "string",
+                "description": "Currency"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["Worker_ID", "Personal_Data"]
+}

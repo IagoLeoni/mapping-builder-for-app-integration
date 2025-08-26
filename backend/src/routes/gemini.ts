@@ -6,24 +6,27 @@ const router = express.Router();
 
 /**
  * POST /api/gemini/generate-mappings
- * Gera mapeamentos automáticos usando IA
+ * Gera mapeamentos automáticos usando IA (Universal System Support)
  */
 router.post('/generate-mappings', async (req, res) => {
   try {
-    const { clientSchema, inputType = 'schema' } = req.body;
+    const { clientSchema, inputType = 'schema', sourceSystemId = 'gupy' } = req.body;
     
     if (!clientSchema) {
       return res.status(400).json({ error: 'clientSchema é obrigatório' });
     }
 
+    console.log(`🤖 Gerando mapeamentos para sistema origem: ${sourceSystemId}`);
+
     const geminiService = new GeminiMappingService();
-    const mappings = await geminiService.generateMappings(clientSchema, inputType);
+    const mappings = await geminiService.generateMappings(clientSchema, inputType, sourceSystemId);
     
     res.json({
       success: true,
       mappings,
       count: mappings.length,
-      inputType
+      inputType,
+      sourceSystemId
     });
   } catch (error) {
     console.error('Erro ao gerar mapeamentos:', error);
@@ -34,12 +37,42 @@ router.post('/generate-mappings', async (req, res) => {
 });
 
 /**
- * GET /api/gemini/gupy-schema
+ * GET /api/gemini/source-schema/:systemId?
+ * Retorna o schema do sistema origem (Universal System Support)
+ * @param systemId - ID do sistema origem (default: 'gupy')
+ */
+router.get('/source-schema/:systemId?', async (req, res) => {
+  try {
+    const systemId = req.params.systemId || 'gupy';
+    
+    console.log(`📊 Carregando schema do sistema origem: ${systemId}`);
+    
+    const schema = await SchemaManagerService.loadSourceSchema(systemId);
+    res.json({
+      success: true,
+      schema,
+      systemId,
+      loadedAt: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error(`Error loading schema for system ${req.params.systemId || 'gupy'}:`, error);
+    res.status(500).json({ 
+      success: false,
+      error: `Erro ao carregar schema do sistema ${req.params.systemId || 'gupy'}`,
+      systemId: req.params.systemId || 'gupy'
+    });
+  }
+});
+
+/**
+ * GET /api/gemini/gupy-schema (Legacy endpoint - mantido para backward compatibility)
  * Retorna o schema padrão da Gupy
  */
 router.get('/gupy-schema', async (req, res) => {
   try {
-    const schema = await SchemaManagerService.loadGupySchema();
+    console.log('📊 [LEGACY] Carregando schema da Gupy via endpoint legacy');
+    
+    const schema = await SchemaManagerService.loadSourceSchema('gupy');
     res.json(schema);
   } catch (error) {
     console.error('Error loading Gupy schema:', error);
@@ -112,26 +145,49 @@ router.post('/validate-schema', async (req, res) => {
 
 /**
  * POST /api/gemini/payload-comparison
- * Gera mapeamentos usando equiparação de payloads
+ * Gera mapeamentos usando equiparação de payloads (Universal System Support)
  */
 router.post('/payload-comparison', async (req, res) => {
   try {
-    const { gupyPayload, systemPayload } = req.body;
+    // Suporte universal: aceita tanto formato novo quanto legacy
+    const { 
+      sourcePayload, 
+      targetPayload, 
+      sourceSystemId = 'gupy',
+      // Legacy support
+      gupyPayload, 
+      systemPayload 
+    } = req.body;
 
-    if (!gupyPayload || !systemPayload) {
+    // Determinar payloads a usar (novo formato tem prioridade)
+    const finalSourcePayload = sourcePayload || gupyPayload;
+    const finalTargetPayload = targetPayload || systemPayload;
+
+    if (!finalSourcePayload || !finalTargetPayload) {
       return res.status(400).json({
-        error: 'gupyPayload e systemPayload são obrigatórios'
+        error: 'sourcePayload e targetPayload são obrigatórios (ou gupyPayload/systemPayload para compatibilidade)',
+        supportedFormats: {
+          new: 'sourcePayload, targetPayload, sourceSystemId',
+          legacy: 'gupyPayload, systemPayload'
+        }
       });
     }
 
+    console.log(`📋 Iniciando equiparação de payloads para sistema origem: ${sourceSystemId}`);
+
     const geminiService = new GeminiMappingService();
-    const mappings = await geminiService.generatePayloadComparisonMappings(gupyPayload, systemPayload);
+    // TODO: Atualizar GeminiMappingService para aceitar sourceSystemId como terceiro parâmetro
+    const mappings = await geminiService.generatePayloadComparisonMappings(
+      finalSourcePayload, 
+      finalTargetPayload
+    );
 
     res.json({
       success: true,
       mappings,
       count: mappings.length,
       method: 'payload-comparison',
+      sourceSystemId,
       timestamp: new Date().toISOString()
     });
 
@@ -181,13 +237,76 @@ router.post('/generate-schema', async (req, res) => {
   }
 });
 
-// Novo endpoint para carregar estrutura do payload Gupy para drag & drop
+/**
+ * GET /api/gemini/source-payload-structure/:systemId?
+ * Carrega estrutura do payload do sistema origem para drag & drop (Universal System Support)
+ * @param systemId - ID do sistema origem (default: 'gupy')
+ */
+router.get('/source-payload-structure/:systemId?', async (req, res) => {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    
+    const systemId = req.params.systemId || 'gupy';
+    
+    console.log(`📄 Carregando estrutura do payload do sistema: ${systemId}`);
+    
+    // Determinar caminho baseado na nova estrutura de schemas
+    let schemaPath: string;
+    if (systemId === 'gupy') {
+      // Backward compatibility - schema Gupy permanece no local antigo
+      schemaPath = path.join(__dirname, '../../../schemas/gupy/gupy-full-schema.json');
+    } else {
+      // Novos sistemas usam a estrutura source-systems/
+      schemaPath = path.join(__dirname, `../../../schemas/source-systems/${systemId}/schema.json`);
+    }
+    
+    if (!fs.existsSync(schemaPath)) {
+      return res.status(404).json({
+        success: false,
+        error: `Schema oficial do sistema ${systemId} não encontrado`,
+        systemId,
+        searchedPath: schemaPath
+      });
+    }
+    
+    const schemaContent = fs.readFileSync(schemaPath, 'utf-8');
+    const schema = JSON.parse(schemaContent);
+    
+    // Converter schema JSON Draft-07 para estrutura de payload
+    const payloadStructure = convertSchemaToPayloadStructure(schema);
+    
+    console.log(`✅ Estrutura do payload ${systemId} carregada com sucesso`);
+    
+    res.json({
+      success: true,
+      payloadStructure,
+      fieldCount: countFields(payloadStructure),
+      systemId,
+      source: `${systemId} schema`,
+      loadedAt: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error(`❌ Erro ao carregar estrutura do payload ${req.params.systemId || 'gupy'}:`, error);
+    res.status(500).json({
+      success: false,
+      error: 'Erro interno do servidor',
+      systemId: req.params.systemId || 'gupy',
+      details: error instanceof Error ? error.message : 'Erro desconhecido'
+    });
+  }
+});
+
+/**
+ * GET /api/gemini/gupy-payload-structure (Legacy endpoint - mantido para backward compatibility)
+ * Carrega estrutura do payload Gupy para drag & drop
+ */
 router.get('/gupy-payload-structure', async (req, res) => {
   try {
     const fs = require('fs');
     const path = require('path');
     
-    console.log('📄 Carregando estrutura oficial do payload Gupy...');
+    console.log('📄 [LEGACY] Carregando estrutura oficial do payload Gupy...');
     
     const schemaPath = path.join(__dirname, '../../../schemas/gupy/gupy-full-schema.json');
     

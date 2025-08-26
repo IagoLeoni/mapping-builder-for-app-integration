@@ -13,7 +13,7 @@ Construir uma plataforma de integração visual que serve como uma interface **"
 - **Pronto para Produção**: Sistema totalmente funcional com CI/CD e monitoramento
 
 ### Requisitos Centrais
-- **Sistema de Origem**: Webhooks da plataforma Gupy HR 
+- **Sistema de Origem**: Webhooks de plataformas HR/RH 
 - **Sistemas de Destino**: Sistemas HR/ERP dos clientes (Salesforce, Workday, APIs genéricas)
 - **Transformações**: Detecção e aplicação automática de transformações de dados
 - **Deployment**: Deployment automatizado para Google Cloud Application Integration
@@ -45,16 +45,16 @@ Construir uma plataforma de integração visual que serve como uma interface **"
 - **Fluxo do Usuário**: Fluxo completo assistente → mapeamento → deployment
 
 ## 🎯 Usuários-Alvo
-- **Equipes de Tecnologia de RH**: Configurando integrações entre Gupy e sistemas internos
+- **Equipes de Tecnologia de RH**: Configurando integrações entre sistemas HR e sistemas internos
 - **Integradores de Sistema**: Configurando fluxos de dados para clientes
 - **Usuários de Negócio**: Equipe não-técnica que precisa modificar mapeamentos
 
 ## 🔄 Fluxo de Integração
 1. Cliente configura email e endpoint
-2. Cliente mapeia campos Gupy → Campos do Sistema (manual ou assistido por IA)
+2. Cliente mapeia campos Sistema Origem → Campos do Sistema Destino (manual ou assistido por IA)
 3. Sistema gera JSON de integração do Google Cloud
 4. Deployment automático via Cloud Build
-5. Gupy envia webhook → Integração processa → Sistema do cliente recebe dados
+5. Sistema origem envia webhook → Integração processa → Sistema do cliente recebe dados
 6. Tratamento de erros via notificações por email
 
 ## 📋 Status Atual da Implementação

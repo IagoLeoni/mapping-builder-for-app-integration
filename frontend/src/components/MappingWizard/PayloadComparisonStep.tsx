@@ -169,7 +169,7 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
         body: JSON.stringify({
           sourcePayload: sourceParsed,
           targetPayload: targetParsed,
-          sourceSystemId: 'gupy' // Para compatibilidade
+          sourceSystemId: 'hr-system' // Sistema HR genérico
         })
       });
 

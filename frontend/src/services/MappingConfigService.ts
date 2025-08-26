@@ -9,7 +9,7 @@ export class MappingConfigService {
     const mappingConfig: MappingConfigOutput = {
       integrationId: `integration-${Date.now()}`,
       version: '1.0.0',
-      sourceSchema: 'gupy',
+      sourceSchema: 'hr-system',
       targetSchema,
       customerConfig: {
         email: config.customerEmail,

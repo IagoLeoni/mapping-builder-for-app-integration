@@ -298,17 +298,18 @@ private static generatePubSubTask(): any {
 }
 ```
 
-#### **PADRÃO PAYLOAD GUPY REAL COM DADOS MINERVA FOODS**
-**Implementação**: gupyPayload como INPUT da integração com dados completos e reais
+#### **PADRÃO PAYLOAD SISTEMA ORIGEM REAL COM DADOS DE EXEMPLO**
+**Implementação**: sourceSystemPayload como INPUT da integração com dados completos e reais
 ```typescript
 // Configurado como INPUT da integração (inputOutputType: "IN")
 {
-  "key": "gupyPayload",
+  "key": "sourceSystemPayload",
   "dataType": "JSON_VALUE",
   "defaultValue": {
     "jsonValue": "{\n  \"body\": {\n    \"companyName\": \"Minerva Foods\",\n    \"event\": \"pre-employee.moved\",\n    \"id\": \"49589201-dbb3-46b7-b2d6-4f3ec16ac742\",\n    \"date\": \"2025-07-03T13:22:51.239Z\",\n    \"data\": {\n      \"job\": {\n        \"departmentCode\": \"40000605\",\n        \"roleCode\": \"35251270\",\n        \"branchCode\": null,\n        \"customFields\": [...],  // ✅ Campos customizados completos\n        \"id\": 9282348.0,\n        \"name\": \"VAGA TESTE INTEGRAÇÃO - Auxiliar de Produção\",\n        \"type\": \"vacancy_type_effective\",\n        \"department\": {\n          \"id\": 726936.0,\n          \"code\": \"40000605\",\n          \"name\": \"MIUDOS DIURNO\",\n          \"similarity\": \"operations\"\n        },\n        \"role\": {\n          \"id\": 1304055.0,\n          \"code\": \"35251270\",\n          \"name\": \"35251270 - AUXILIAR PRODUCAO\",\n          \"similarity\": \"auxiliary\"\n        },\n        \"branch\": {\n          \"id\": 1049440.0,\n          \"code\": null,\n          \"name\": \"BARRETOS - 09.104.182/0001-15 > MINERVA FINE FOODS - BARRETOS > COUROS - MINERVA > DIRETORIA PROCESSADOS\"\n        },\n        \"code\": \"77785-9282348\"\n      },\n      \"application\": {\n        \"id\": 5.7448886E8,\n        \"score\": 36.34942587268007,\n        \"partnerName\": \"gupy_public_page\",\n        \"status\": \"hired\",\n        \"tags\": [\"tagHired\"],\n        \"currentStep\": {\n          \"id\": 5.4392498E7,\n          \"name\": \"Contratação\",\n          \"type\": \"final\"\n        },\n        \"preHiringInformation\": {}\n      },\n      \"candidate\": {\n        \"name\": \"Erica\",\n        \"lastName\": \"Brugognolle\",\n        \"email\": \"ericabru@hotmail.com\",\n        \"identificationDocument\": \"26962277806\",\n        \"countryOfOrigin\": \"BR\",\n        \"birthdate\": \"1979-05-31\",\n        \"addressZipCode\": \"01521-000\",\n        \"addressStreet\": \"Rua Cesário Ramalho\",\n        \"addressNumber\": \"237\",\n        \"addressCity\": \"São Paulo\",\n        \"addressState\": \"São Paulo\",\n        \"addressStateShortName\": \"SP\",\n        \"addressCountry\": \"Brasil\",\n        \"addressCountryShortName\": \"BR\",\n        \"mobileNumber\": \"+5511986637567\",\n        \"phoneNumber\": \"+551138050155\",\n        \"schooling\": \"post_graduate\",\n        \"schoolingStatus\": \"complete\",\n        \"disabilities\": false,\n        \"id\": 256080.0,\n        \"gender\": \"Female\"\n      },\n      \"benefitsEnabled\": true,\n      \"benefits\": {  // ✅ Estrutura completa benefits\n        \"contracts\": [],\n        \"transportVoucher\": {...},\n        \"dentalPlan\": {...},\n        \"healthAssurance\": {...},\n        \"lifeAssurance\": {...},\n        \"foodAndMeal\": {...},\n        \"other\": []\n      },\n      \"admission\": {\n        \"status\": \"c40c64d6-7890-4608-ae5b-c7ce1711ea9a\",\n        \"admissionDeadline\": \"2025-06-27T03:00:00.000Z\",\n        \"hiringDate\": \"2025-06-30T03:00:00.000Z\",\n        \"documentsTemplate\": {\n          \"id\": 52807.0,\n          \"name\": \"Admissão CLT\"\n        },\n        \"documents\": [...],  // ✅ Documentos completos\n        \"dependents\": [...]  // ✅ Dependentes completos\n      },\n      \"position\": {\n        \"positionId\": 1156278.0,\n        \"formGroupType\": \"clt\",\n        \"paymentRecurrence\": \"mensalista\",\n        \"customFields\": [...],  // ✅ Custom fields\n        \"branch\": {...},\n        \"department\": {...},\n        \"role\": {...},\n        \"salary\": {\n          \"value\": 3000.0,\n          \"currency\": \"R$\"\n        },\n        \"costCenter\": null,\n        \"workShift\": null\n      },\n      \"source\": \"ats\",\n      \"isDirectInsertion\": false\n    },\n    \"user\": {\n      \"id\": 359236.0,\n      \"name\": \"Maria Eduarda da Silva Joaquim\",\n      \"email\": \"mariaeduarda.joaquim@gupy.com.br\"\n    }\n  }\n}"
   },
-  "displayName": "gupyPayload",
+  "displayName": "sourceSystemPayload",
+  "displayName": "sourceSystemPayload",
   "inputOutputType": "IN"  // ✅ CONFIGURADO COMO INPUT DA INTEGRAÇÃO
 }
 ```
@@ -316,7 +317,7 @@ private static generatePubSubTask(): any {
 #### **PADRÃO FLUXO EXECUTION DETALHADO COM PERFORMANCE**
 **Implementação**: Fluxo otimizado com métricas de latência para cada task
 ```
-TRIGGER (Webhook Gupy)
+TRIGGER (Webhook Sistema Origem)
     ↓
 FieldMappingTask (taskId: 1) [~200ms]
     ├─ Resolve systemPayload usando CONFIG_systemPayload + RESOLVE_TEMPLATE
@@ -339,7 +340,7 @@ SUCCESS PATH: SuccessOutputTask (taskId: 5) [~100ms]
 FAILURE PATH: PubSubTask (taskId: 4) [~300-500ms]
     ├─ Connection: projects/apigee-prd1/locations/us-central1/connections/pubsub-poc
     ├─ Action: publishMessage usando Google Cloud Connectors
-    ├─ Topic: "dlq-pre-employee-moved" (hardcoded para DLQ específico)
+    ├─ Topic: "dlq-pre-employee-moved" (hardcoded para DLQ específico - exemplo para sistema HR)
     ├─ Message: systemPayload convertido para JSON string (preserva payload original)
     ├─ Attributes: null (configurável no futuro para metadata adicional)
     └─ Output: messageId do PubSub para tracking e monitoring end-to-end
@@ -355,7 +356,7 @@ FAILURE PATH: PubSubTask (taskId: 4) [~300-500ms]
 
 **Robustez e Monitoramento**:
 - ✅ **Connection Reutilização**: Aproveita connection PubSub já existente, testada e configurada no ambiente
-- ✅ **Topic Dedicado**: "dlq-pre-employee-moved" permite filtering, monitoring e alertas específicos para falhas Gupy
+- ✅ **Topic Dedicado**: "dlq-pre-employee-moved" permite filtering, monitoring e alertas específicos para falhas do sistema origem
 - ✅ **Payload Completo Preservado**: Todo systemPayload original mantido para reprocessing e análise posterior
 - ✅ **MessageId Tracking**: Output PubSub permite rastreamento de mensagens, retry logic e dead letter policies
 
@@ -556,11 +557,11 @@ private static generatePubSubTask(): any {
 ```
 
 #### **PADRÃO PAYLOAD GUPY REAL COM DADOS MINERVA FOODS**
-**Implementação**: gupyPayload como INPUT da integração com dados completos e reais
+**Implementação**: sourceSystemPayload como INPUT da integração com dados completos e reais  
 ```typescript
 // Configurado como INPUT da integração (inputOutputType: "IN")
 {
-  "key": "gupyPayload",
+  "key": "sourceSystemPayload",
   "dataType": "JSON_VALUE",
   "defaultValue": {
     "jsonValue": "{\n  \"body\": {\n    \"companyName\": \"Minerva Foods\",\n    \"event\": \"pre-employee.moved\",\n    \"id\": \"49589201-dbb3-46b7-b2d6-4f3ec16ac742\",\n    \"date\": \"2025-07-03T13:22:51.239Z\",\n    \"data\": {\n      \"job\": {\n        \"departmentCode\": \"40000605\",\n        \"roleCode\": \"35251270\",\n        \"branchCode\": null,\n        \"customFields\": [...],  // ✅ Campos customizados completos\n        \"id\": 9282348.0,\n        \"name\": \"VAGA TESTE INTEGRAÇÃO - Auxiliar de Produção\",\n        \"type\": \"vacancy_type_effective\",\n        \"department\": {\n          \"id\": 726936.0,\n          \"code\": \"40000605\",\n          \"name\": \"MIUDOS DIURNO\",\n          \"similarity\": \"operations\"\n        },\n        \"role\": {\n          \"id\": 1304055.0,\n          \"code\": \"35251270\",\n          \"name\": \"35251270 - AUXILIAR PRODUCAO\",\n          \"similarity\": \"auxiliary\"\n        },\n        \"branch\": {\n          \"id\": 1049440.0,\n          \"code\": null,\n          \"name\": \"BARRETOS - 09.104.182/0001-15 > MINERVA FINE FOODS - BARRETOS > COUROS - MINERVA > DIRET

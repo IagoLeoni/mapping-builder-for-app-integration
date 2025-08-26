@@ -226,7 +226,7 @@ const SourcePayloadInput: React.FC<SourcePayloadInputProps> = ({
           <Box sx={{ mb: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
             <Typography variant="body2" sx={{ mr: 1 }}>Quick samples:</Typography>
             <Chip
-              label="Gupy HR"
+              label="HR System"
               size="small"
               onClick={() => loadSampleData('gupy')}
               sx={{ cursor: 'pointer' }}

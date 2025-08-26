@@ -98,7 +98,7 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
         body: JSON.stringify({
           clientSchema: targetParsed,
           inputType: inputType === 'json-schema' ? 'schema' : 'payload',
-          sourceSystemId: 'gupy' // Para compatibilidade
+          sourceSystemId: 'hr-system' // Sistema HR genérico
         })
       });
 

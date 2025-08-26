@@ -10,7 +10,7 @@ const router = express.Router();
  */
 router.post('/generate-mappings', async (req, res) => {
   try {
-    const { clientSchema, inputType = 'schema', sourceSystemId = 'gupy' } = req.body;
+    const { clientSchema, inputType = 'schema', sourceSystemId = 'hr-system' } = req.body;
     
     if (!clientSchema) {
       return res.status(400).json({ error: 'clientSchema é obrigatório' });
@@ -39,11 +39,11 @@ router.post('/generate-mappings', async (req, res) => {
 /**
  * GET /api/gemini/source-schema/:systemId?
  * Retorna o schema do sistema origem (Universal System Support)
- * @param systemId - ID do sistema origem (default: 'gupy')
+ * @param systemId - ID do sistema origem (default: 'hr-system')
  */
 router.get('/source-schema/:systemId?', async (req, res) => {
   try {
-    const systemId = req.params.systemId || 'gupy';
+    const systemId = req.params.systemId || 'hr-system';
     
     console.log(`📊 Carregando schema do sistema origem: ${systemId}`);
     
@@ -55,11 +55,11 @@ router.get('/source-schema/:systemId?', async (req, res) => {
       loadedAt: new Date().toISOString()
     });
   } catch (error) {
-    console.error(`Error loading schema for system ${req.params.systemId || 'gupy'}:`, error);
+    console.error(`Error loading schema for system ${req.params.systemId || 'hr-system'}:`, error);
     res.status(500).json({ 
       success: false,
-      error: `Erro ao carregar schema do sistema ${req.params.systemId || 'gupy'}`,
-      systemId: req.params.systemId || 'gupy'
+      error: `Erro ao carregar schema do sistema ${req.params.systemId || 'hr-system'}`,
+      systemId: req.params.systemId || 'hr-system'
     });
   }
 });
@@ -153,7 +153,7 @@ router.post('/payload-comparison', async (req, res) => {
     const { 
       sourcePayload, 
       targetPayload, 
-      sourceSystemId = 'gupy',
+      sourceSystemId = 'hr-system',
       // Legacy support
       gupyPayload, 
       systemPayload 
@@ -240,14 +240,14 @@ router.post('/generate-schema', async (req, res) => {
 /**
  * GET /api/gemini/source-payload-structure/:systemId?
  * Carrega estrutura do payload do sistema origem para drag & drop (Universal System Support)
- * @param systemId - ID do sistema origem (default: 'gupy')
+ * @param systemId - ID do sistema origem (default: 'hr-system')
  */
 router.get('/source-payload-structure/:systemId?', async (req, res) => {
   try {
     const fs = require('fs');
     const path = require('path');
     
-    const systemId = req.params.systemId || 'gupy';
+    const systemId = req.params.systemId || 'hr-system';
     
     console.log(`📄 Carregando estrutura do payload do sistema: ${systemId}`);
     
@@ -287,11 +287,11 @@ router.get('/source-payload-structure/:systemId?', async (req, res) => {
       loadedAt: new Date().toISOString()
     });
   } catch (error) {
-    console.error(`❌ Erro ao carregar estrutura do payload ${req.params.systemId || 'gupy'}:`, error);
+    console.error(`❌ Erro ao carregar estrutura do payload ${req.params.systemId || 'hr-system'}:`, error);
     res.status(500).json({
       success: false,
       error: 'Erro interno do servidor',
-      systemId: req.params.systemId || 'gupy',
+      systemId: req.params.systemId || 'hr-system',
       details: error instanceof Error ? error.message : 'Erro desconhecido'
     });
   }

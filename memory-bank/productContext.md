@@ -3,7 +3,7 @@
 ## 🌟 Por Que Este Projeto Existe
 
 ### O Desafio das Integrações
-- **Fluxos Complexos de Dados de RH**: Empresas usam Gupy para recrutamento mas precisam sincronizar dados de candidatos com sistemas internos de RH/ERP (Salesforce, Workday, SAP, etc.)
+- **Fluxos Complexos de Dados de RH**: Empresas usam sistemas HR para recrutamento mas precisam sincronizar dados de candidatos com sistemas internos de RH/ERP (Salesforce, Workday, SAP, etc.)
 - **Barreiras Técnicas**: Configuração de integração tradicional requer conhecimento técnico profundo, codificação personalizada e ciclos de desenvolvimento longos
 - **Complexidade do Google Cloud**: Embora o Google Cloud Application Integration seja poderoso, é muito técnico para usuários de negócio configurarem diretamente
 - **Configuração Repetitiva**: Cada integração de cliente requer padrões similares de mapeamento de campos mas implementação personalizada
@@ -33,13 +33,13 @@
 ### Personas Primárias
 
 #### 1. **Gerente de Tecnologia de RH**
-- **Objetivo**: Conectar dados de recrutamento do Gupy com HRIS da empresa
+- **Objetivo**: Conectar dados de recrutamento do sistema HR com HRIS da empresa
 - **Pontos de Dor**: Depende da TI para mudanças de integração, tempos de configuração longos
 - **Experiência**: Assistente intuitivo guia através de definição de schema → mapeamento de IA → deployment
 - **Métricas de Sucesso**: Configuração completa de integração em menos de 2 horas
 
 #### 2. **Integrador de Sistema**
-- **Objetivo**: Deployar rapidamente integrações Gupy para múltiplos clientes
+- **Objetivo**: Deployar rapidamente integrações HR para múltiplos clientes
 - **Pontos de Dor**: Desenvolvimento personalizado repetitivo para padrões similares
 - **Experiência**: Abordagem baseada em templates com transformações personalizáveis
 - **Métricas de Sucesso**: Redução de 10x no tempo de entrega de integração
@@ -117,6 +117,6 @@
 - **Custo**: Custo fixo de plataforma vs. custos variáveis de desenvolvimento
 
 #### vs. Ferramentas Concorrentes
-- **Específico para RH**: Otimizado para padrões Gupy → HRIS
+- **Específico para RH**: Otimizado para padrões HR → HRIS
 - **Excelência Visual**: Experiência de arrastar & soltar melhor da categoria
 - **Integração de IA**: Integração profunda com Gemini para sugestões inteligentes

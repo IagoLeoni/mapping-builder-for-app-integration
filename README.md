@@ -72,7 +72,7 @@ graph TD
     I --> J[🚀 Google Cloud Application Integration]
     
     J --> K[🔗 Webhook URL Ativo]
-    K --> L[📨 Gupy Envia Webhook]
+    K --> L[📨 Sistema Origem Envia Webhook]
     
     L --> M{✅ REST Success?}
     M -->|Sim| N[✅ SuccessOutputTask]
@@ -94,7 +94,7 @@ graph TD
 
 ```typescript
 // Processamento Single-Shot para 190+ campos
-async generateMappings(clientSchema: any, inputType: 'schema' | 'payload', sourceSystemId: string = 'gupy') {
+async generateMappings(clientSchema: any, inputType: 'schema' | 'payload', sourceSystemId: string = 'hr-system') {
   // 1. Carregar schemas de referência
   const sourceSchema = await SchemaManagerService.loadSourceSchema(sourceSystemId);
   const sourceExamplePayload = await SchemaManagerService.loadSourceSystemExamplePayload(sourceSystemId);
@@ -122,7 +122,7 @@ async generateMappings(clientSchema: any, inputType: 'schema' | 'payload', sourc
 ```
 🚀 GEMINI 2.0 FLASH - MAPEAMENTO COMPLETO DE 190 CAMPOS
 
-GUPY SCHEMA COMPLETO (origem):
+SISTEMA ORIGEM SCHEMA COMPLETO:
 {...estrutura completa com 200+ campos...}
 
 CLIENTE PAYLOAD (destino):
@@ -361,7 +361,7 @@ private generatePhoneSplitJsonnet(varName: string, inputPath: string): string {
 
 ```
 1. Webhook Trigger
-   ↓ (sourcePayload = payload da Gupy)
+   ↓ (sourcePayload = payload do sistema origem)
    
 2. JsonnetMapperTasks (taskIds: 10+) [OPCIONAL]
    ├─ Transform document format
@@ -429,13 +429,13 @@ schemas/
 ```typescript
 // ⭐ NOVO: Endpoints agnósticos que servem qualquer sistema
 router.get('/source-schema/:systemId?', async (req, res) => {
-  const systemId = req.params.systemId || 'gupy';
+  const systemId = req.params.systemId || 'hr-system';
   const schema = await SchemaManagerService.loadSourceSchema(systemId);
-  // Funciona para: gupy, salesforce, workday, sap, etc.
+  // Funciona para: hr-system, salesforce, workday, sap, etc.
 });
 
 router.post('/generate-mappings', async (req, res) => {
-  const { sourceSystemId = 'gupy' } = req.body;
+  const { sourceSystemId = 'hr-system' } = req.body;
   const mappings = await geminiService.generateMappings(clientSchema, inputType, sourceSystemId);
   // IA mapeia qualquer sistema origem automaticamente
 });
@@ -485,7 +485,7 @@ backend/src/services/
 ## 🚀 Funcionalidades
 
 - ✅ Interface visual drag & drop
-- ✅ Mapeamento de payload Gupy → Sistema cliente
+- ✅ Mapeamento de payload Sistema Origem → Sistema Destino
 - ✅ **Sistema PubSub DLQ para tratamento robusto de falhas** ⭐ **NOVO**
 - ✅ Geração automática de JSON de integração
 - ✅ Deploy automático no Google Cloud Application Integration
@@ -512,7 +512,7 @@ Substituímos o sistema EmailTask tradicional por uma solução PubSub Dead Lett
 #### **Arquitetura do Sistema DLQ**
 
 ```
-Webhook Gupy → FieldMappingTask → RestTask (Cliente)
+Webhook Sistema Origem → FieldMappingTask → RestTask (Cliente)
                                       ↓ (falha)
                                PubSubTask (DLQ)
                                       ↓
@@ -555,7 +555,7 @@ dlq-pre-employee-moved
    └─ Conditional Failure: responseStatus != "200 OK" → Task 4 (PubSub DLQ)
 
 3a. SUCCESS PATH: SuccessOutputTask (taskId: 5) [~100ms]
-    └─ Retorna { "Status": "Success" } para Gupy
+    └─ Retorna { "Status": "Success" } para Sistema Origem
 
 3b. FAILURE PATH: PubSubTask (taskId: 4) [~300-500ms]
     ├─ Connection: projects/apigee-prd1/locations/us-central1/connections/pubsub-poc
@@ -574,19 +574,19 @@ dlq-pre-employee-moved
 
 **Robustez e Monitoramento**:
 - ✅ **Connection Reutilização**: Infraestrutura PubSub existente e testada
-- ✅ **Topic Dedicado**: Filtering e alertas específicos para falhas Gupy
+- ✅ **Topic Dedicado**: Filtering e alertas específicos para falhas do sistema origem
 - ✅ **Payload Preservado**: Reprocessamento com dados originais completos
 - ✅ **MessageId Tracking**: Rastreamento end-to-end de mensagens
 
 **Escalabilidade e Flexibilidade**:
 - ✅ **Processamento Assíncrono**: Batch processing, retry automático
-- ✅ **Input Variable**: gupyPayload configurável por cliente
+- ✅ **Input Variable**: sourceSystemPayload configurável por cliente
 - ✅ **Schema Extensível**: Metadata customizada (timestamp, clientName)
 - ✅ **Multi-ambiente**: Connection parameterizável para dev/prod
 
-#### **Configuração Payload Gupy Real**
+#### **Configuração Payload Sistema Origem Real**
 
-O sistema agora usa dados reais da Minerva Foods com estrutura completa:
+O sistema agora usa dados reais de exemplo com estrutura completa:
 
 ```json
 {
@@ -778,7 +778,7 @@ Navegue até a URL do frontend deployado no Cloud Run.
 
 ### 3. Mapear Campos
 
-1. **Painel Esquerdo**: Visualize a estrutura do payload Gupy
+1. **Painel Esquerdo**: Visualize a estrutura do payload do sistema origem
 2. **Painel Central**: Arraste campos para criar mapeamentos
 3. **Painel Direito**: Configure e visualize o JSON gerado
 
@@ -819,7 +819,7 @@ ipaas-integration/
 │   │   │   ├── DebugPanel/      # Debug e monitoramento  
 │   │   │   ├── JsonPreview/     # Preview integração
 │   │   │   ├── MappingCanvas/   # Interface principal drag & drop
-│   │   │   └── PayloadTree/     # Visualização payload Gupy
+│   │   │   └── PayloadTree/     # Visualização payload sistema origem
 │   │   ├── types/          # Definições TypeScript
 │   │   ├── utils/          # Utilitários core
 │   │   └── services/       # Serviços frontend
@@ -841,7 +841,7 @@ ipaas-integration/
 │   │       └── TransformationEngine.ts  # Engine transformação
 │   └── Dockerfile
 ├── schemas/                # Schemas e exemplos
-│   ├── gupy/              # Schema oficial Gupy
+│   ├── gupy/              # Schema exemplo (mantido para compatibilidade)
 │   ├── examples/          # Exemplos sistemas
 │   └── patterns/          # Padrões semânticos
 ├── deployment/            # Configurações deploy
@@ -856,10 +856,10 @@ ipaas-integration/
 ## 🔄 Fluxo de Integração
 
 1. **Cliente configura** email e endpoint
-2. **Cliente mapeia** campos Gupy → Sistema
+2. **Cliente mapeia** campos Sistema Origem → Sistema Destino
 3. **Sistema gera** JSON de integração
 4. **Cloud Build** deploya no Application Integration
-5. **Gupy envia** webhook para integração
+5. **Sistema origem envia** webhook para integração
 6. **Integração processa** e envia para cliente
 7. **Em caso de erro**, email é enviado ao cliente
 

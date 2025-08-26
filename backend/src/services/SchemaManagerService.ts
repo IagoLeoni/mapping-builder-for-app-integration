@@ -7,7 +7,7 @@ export class SchemaManagerService {
   /**
    * Carrega o schema padrão do sistema de origem (processado para compatibilidade)
    */
-  static async loadSourceSchema(systemId: string = 'gupy'): Promise<any> {
+  static async loadSourceSchema(systemId: string = 'hr-system'): Promise<any> {
     try {
       const schemaPath = path.join(__dirname, `../../../schemas/source-systems/${systemId}/schema.json`);
       const schemaContent = await fs.readFile(schemaPath, 'utf-8');
@@ -93,7 +93,7 @@ export class SchemaManagerService {
   /**
    * Carrega o payload de exemplo do sistema de origem
    */
-  static async loadSourceSystemExamplePayload(systemId: string = 'gupy'): Promise<any> {
+  static async loadSourceSystemExamplePayload(systemId: string = 'hr-system'): Promise<any> {
     try {
       const payloadPath = path.join(__dirname, `../../../schemas/source-systems/${systemId}/example.json`);
       const payloadContent = await fs.readFile(payloadPath, 'utf-8');

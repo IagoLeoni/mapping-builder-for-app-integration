@@ -32,7 +32,7 @@ const SYSTEM_CONFIGS: Record<string, SourceSystemConfig> = {
 
 // ===== FUNÇÕES UNIVERSAIS PARA QUALQUER SISTEMA =====
 
-export const parseSourceSystemPayload = async (systemId: string = 'gupy'): Promise<PayloadField[]> => {
+export const parseSourceSystemPayload = async (systemId: string = 'hr-system'): Promise<PayloadField[]> => {
   // Verificar cache primeiro
   if (sourceSystemCache.has(systemId)) {
     console.log(`📦 Usando estrutura ${systemId} do cache`);
@@ -101,7 +101,7 @@ export const parseSourceSystemPayload = async (systemId: string = 'gupy'): Promi
   }
 };
 
-export const parseSourceSystemPayloadSync = (systemId: string = 'gupy'): PayloadField[] => {
+export const parseSourceSystemPayloadSync = (systemId: string = 'hr-system'): PayloadField[] => {
   if (sourceSystemCache.has(systemId)) {
     return sourceSystemCache.get(systemId)!;
   }

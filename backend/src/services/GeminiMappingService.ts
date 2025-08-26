@@ -34,7 +34,7 @@ export class GeminiMappingService {
   /**
    * Gera mapeamentos automáticos usando Gemini AI
    */
-  async generateMappings(clientSchema: any, inputType: 'schema' | 'payload' = 'schema', sourceSystemId: string = 'gupy'): Promise<MappingConnection[]> {
+  async generateMappings(clientSchema: any, inputType: 'schema' | 'payload' = 'schema', sourceSystemId: string = 'hr-system'): Promise<MappingConnection[]> {
     try {
       // Validar schema do cliente
       const validation = SchemaManagerService.validateClientSchema(clientSchema);
@@ -83,7 +83,7 @@ export class GeminiMappingService {
     sourceSchema: any, 
     clientPaths: string[], 
     semanticPatterns: any,
-    sourceSystemId: string = 'gupy'
+    sourceSystemId: string = 'hr-system'
   ): MappingConnection[] {
     const mappings: MappingConnection[] = [];
 
@@ -130,7 +130,7 @@ export class GeminiMappingService {
     clientPath: string, 
     semanticTags: string[], 
     patterns: any,
-    sourceSystemId: string = 'gupy'
+    sourceSystemId: string = 'hr-system'
   ): number {
     const sourceField = sourcePath.split('.').pop()?.toLowerCase() || '';
     const clientField = clientPath.split('.').pop()?.toLowerCase() || '';
@@ -193,7 +193,7 @@ export class GeminiMappingService {
   /**
    * Gera explicação do mapeamento
    */
-  private generateReasoning(sourcePath: string, clientPath: string, confidence: number, sourceSystemId: string = 'gupy'): string {
+  private generateReasoning(sourcePath: string, clientPath: string, confidence: number, sourceSystemId: string = 'hr-system'): string {
     const sourceField = sourcePath.split('.').pop() || sourcePath;
     const clientField = clientPath.split('.').pop() || clientPath;
 
@@ -216,7 +216,7 @@ export class GeminiMappingService {
     sourceExamplePayload: any,
     clientSchema: any,
     semanticPatterns: any,
-    sourceSystemId: string = 'gupy'
+    sourceSystemId: string = 'hr-system'
   ): Promise<MappingConnection[]> {
     try {
       const clientFieldCount = this.countFields(clientSchema);
@@ -257,8 +257,8 @@ export class GeminiMappingService {
    * Processa payloads grandes em lotes menores
    */
   private async processLargeMappings(
-    gupySchema: any,
-    gupyExamplePayload: any,
+    sourceSchema: any,
+    sourceExamplePayload: any,
     clientSchema: any,
     semanticPatterns: any
   ): Promise<MappingConnection[]> {
@@ -272,7 +272,7 @@ export class GeminiMappingService {
       console.log(`🤖 Processando categoria: ${category}`);
       
       try {
-        const prompt = this.buildGeminiPrompt(gupySchema, gupyExamplePayload, categorySchema, semanticPatterns);
+        const prompt = this.buildGeminiPrompt(sourceSchema, sourceExamplePayload, categorySchema, semanticPatterns);
         const response = await this.callGeminiAPI(prompt);
         const mappingsData = JSON.parse(response);
         
@@ -388,7 +388,7 @@ export class GeminiMappingService {
   /**
    * Constrói prompt comprehensivo para Gemini 2.0 Flash - Single Shot
    */
-  private buildComprehensivePrompt(gupySchema: any, gupyExamplePayload: any, clientSchema: any, patterns: any): string {
+  private buildComprehensivePrompt(sourceSchema: any, sourceExamplePayload: any, clientSchema: any, patterns: any): string {
     const isPayload = this.hasConcreteValues(clientSchema);
     const clientFieldCount = this.countFields(clientSchema);
     
@@ -397,11 +397,11 @@ export class GeminiMappingService {
 
 CONTEXTO COMPLETO:
 
-GUPY SCHEMA COMPLETO (origem - sempre fixo - USAR APENAS ESTES CAMPOS):
-${JSON.stringify(gupySchema.schema, null, 2)}
+SISTEMA ORIGEM SCHEMA COMPLETO (origem - sempre fixo - USAR APENAS ESTES CAMPOS):
+${JSON.stringify(sourceSchema.schema, null, 2)}
 
-GUPY PAYLOAD DE EXEMPLO (contexto dos valores reais - USAR APENAS ESTES CAMPOS):
-${JSON.stringify(gupyExamplePayload, null, 2)}
+SISTEMA ORIGEM PAYLOAD DE EXEMPLO (contexto dos valores reais - USAR APENAS ESTES CAMPOS):
+${JSON.stringify(sourceExamplePayload, null, 2)}
 
 ⚠️ IMPORTANTE: Use APENAS os campos listados acima. NÃO invente campos como "customString26" ou similares.
 
@@ -429,9 +429,9 @@ TRANSFORMAÇÕES AUTOMÁTICAS A DETECTAR:
 
 INSTRUÇÕES ESPECIAIS PARA TRANSFORMAÇÕES:
 - SEMPRE inclua campo "transformation" quando detectar necessidade
-- Compare valores de exemplo: Gupy vs Cliente para identificar padrões
-- Exemplo: "25272626207" (Gupy) vs "269.622.778-06" (Cliente) = ambos CPF, mas formatos diferentes
-- Exemplo: "John" + "Doe" (Gupy) vs "ERICA BRUGOGNOLLE" (Cliente) = concatenação vs nome completo
+- Compare valores de exemplo: Sistema Origem vs Cliente para identificar padrões
+- Exemplo: "25272626207" (Sistema Origem) vs "269.622.778-06" (Cliente) = ambos CPF, mas formatos diferentes
+- Exemplo: "John" + "Doe" (Sistema Origem) vs "ERICA BRUGOGNOLLE" (Cliente) = concatenação vs nome completo
 
 INSTRUÇÕES GERAIS:
 1. 🔍 Compare valores reais dos exemplos para identificar correspondências
@@ -452,7 +452,7 @@ FORMATO DE RESPOSTA (JSON válido - TODOS os mapeamentos encontrados):
     },
     "targetPath": "PerNationalId.nationalId",
     "confidence": 95,
-    "reasoning": "CPF: '25272626207' (Gupy) vs '269.622.778-06' (Cliente) - ambos documentos de identificação brasileiros",
+    "reasoning": "CPF: '25272626207' (Sistema Origem) vs '269.622.778-06' (Cliente) - ambos documentos de identificação brasileiros",
     "transformation": {
       "type": "format_document",
       "operation": "removeFormatting",
@@ -471,7 +471,7 @@ FORMATO DE RESPOSTA (JSON válido - TODOS os mapeamentos encontrados):
     },
     "targetPath": "PerPersonal.firstName", 
     "confidence": 90,
-    "reasoning": "Nome: 'John' (Gupy) vs 'ERICA' (Cliente) - ambos são primeiros nomes de pessoa"
+    "reasoning": "Nome: 'John' (Sistema Origem) vs 'ERICA' (Cliente) - ambos são primeiros nomes de pessoa"
   }
 ]
 
@@ -482,24 +482,24 @@ IMPORTANTE: Retorne TODOS os mapeamentos possíveis, não limite a quantidade!
   /**
    * Constrói prompt para Gemini (método legado para compatibilidade)
    */
-  private buildGeminiPrompt(gupySchema: any, gupyExamplePayload: any, clientSchema: any, patterns: any): string {
+  private buildGeminiPrompt(sourceSchema: any, sourceExamplePayload: any, clientSchema: any, patterns: any): string {
     const isPayload = this.hasConcreteValues(clientSchema);
     
-    // Otimizar payload da Gupy - apenas campos essenciais para contexto
-    const optimizedGupyPayload = this.optimizeGupyPayloadForPrompt(gupyExamplePayload);
+    // Otimizar payload do sistema origem - apenas campos essenciais para contexto
+    const optimizedSourcePayload = this.optimizeSourcePayloadForPrompt(sourceExamplePayload);
     
     // Contar campos do cliente para ajustar estratégia
     const clientFieldCount = this.countFields(clientSchema);
     const isLargePayload = clientFieldCount > 50;
     
     return `
-Especialista em mapeamento Gupy. ${isLargePayload ? 'PAYLOAD GRANDE DETECTADO - PRIORIZE OS MELHORES MAPEAMENTOS.' : ''}
+Especialista em mapeamento de sistemas HR. ${isLargePayload ? 'PAYLOAD GRANDE DETECTADO - PRIORIZE OS MELHORES MAPEAMENTOS.' : ''}
 
-GUPY SCHEMA (origem):
-${JSON.stringify(this.getEssentialGupyFields(gupySchema.schema), null, 2)}
+SISTEMA ORIGEM SCHEMA (origem):
+${JSON.stringify(this.getEssentialSourceFields(sourceSchema.schema), null, 2)}
 
-GUPY EXEMPLO (contexto):
-${JSON.stringify(optimizedGupyPayload, null, 2)}
+SISTEMA ORIGEM EXEMPLO (contexto):
+${JSON.stringify(optimizedSourcePayload, null, 2)}
 
 CLIENTE ${isPayload ? 'PAYLOAD' : 'SCHEMA'} (destino):
 ${JSON.stringify(clientSchema, null, 2)}
@@ -520,9 +520,9 @@ RESPOSTA JSON (${isLargePayload ? 'máximo 30 mapeamentos' : 'todos os mapeament
   }
 
   /**
-   * Otimiza payload da Gupy para reduzir tamanho do prompt
+   * Otimiza payload do sistema origem para reduzir tamanho do prompt
    */
-  private optimizeGupyPayloadForPrompt(payload: any): any {
+  private optimizeSourcePayloadForPrompt(payload: any): any {
     return {
       companyName: payload.companyName,
       data: {
@@ -553,9 +553,9 @@ RESPOSTA JSON (${isLargePayload ? 'máximo 30 mapeamentos' : 'todos os mapeament
   }
 
   /**
-   * Extrai campos essenciais do schema Gupy
+   * Extrai campos essenciais do schema do sistema origem
    */
-  private getEssentialGupyFields(schema: any): any {
+  private getEssentialSourceFields(schema: any): any {
     const essential: any = {};
     
     // Campos mais importantes para mapeamento
@@ -638,25 +638,25 @@ RESPOSTA JSON (${isLargePayload ? 'máximo 30 mapeamentos' : 'todos os mapeament
   /**
    * Gera mapeamentos usando equiparação de payloads - VERSÃO ESCALÁVEL SEM LIMITAÇÕES
    */
-  async generatePayloadComparisonMappings(gupyPayload: any, systemPayload: any): Promise<MappingConnection[]> {
+  async generatePayloadComparisonMappings(sourcePayload: any, systemPayload: any): Promise<MappingConnection[]> {
     try {
       console.log('🚀 Iniciando equiparação de payloads ESCALÁVEL...');
       
       // Contar campos totais para processamento adaptativo
-      const totalGupyFields = this.countFields(gupyPayload);
+      const totalSourceFields = this.countFields(sourcePayload);
       const totalSystemFields = this.countFields(systemPayload);
       
-      console.log(`📊 Análise inicial: ${totalGupyFields} campos Gupy, ${totalSystemFields} campos Sistema`);
+      console.log(`📊 Análise inicial: ${totalSourceFields} campos Sistema Origem, ${totalSystemFields} campos Sistema Destino`);
       
       // Usar processamento adaptativo em lotes para payloads grandes
-      if (totalSystemFields > 100 || totalGupyFields > 100) {
+      if (totalSystemFields > 100 || totalSourceFields > 100) {
         console.log('🔄 Payload grande detectado - usando processamento adaptativo em lotes');
-        return await this.processLargePayloadComparison(gupyPayload, systemPayload);
+        return await this.processLargePayloadComparison(sourcePayload, systemPayload);
       }
       
       // Para payloads menores, usar método direto otimizado
       console.log('⚡ Payload médio - usando processamento direto otimizado');
-      return await this.processSinglePayloadComparison(gupyPayload, systemPayload);
+      return await this.processSinglePayloadComparison(sourcePayload, systemPayload);
     } catch (error) {
       console.error('❌ Erro na equiparação de payloads:', error);
       throw error;
@@ -666,14 +666,14 @@ RESPOSTA JSON (${isLargePayload ? 'máximo 30 mapeamentos' : 'todos os mapeament
   /**
    * Processamento adaptativo em lotes para payloads grandes (NOVO)
    */
-  private async processLargePayloadComparison(gupyPayload: any, systemPayload: any): Promise<MappingConnection[]> {
+  private async processLargePayloadComparison(sourcePayload: any, systemPayload: any): Promise<MappingConnection[]> {
     const allMappings: MappingConnection[] = [];
     
     // Dividir payloads em seções lógicas
-    const gupyFields = this.extractAllFieldPaths(gupyPayload);
+    const sourceFields = this.extractAllFieldPaths(sourcePayload);
     const systemFields = this.extractAllFieldPaths(systemPayload);
     
-    console.log(`🔍 Extraídos ${gupyFields.length} campos Gupy e ${systemFields.length} campos Sistema`);
+    console.log(`🔍 Extraídos ${sourceFields.length} campos Sistema Origem e ${systemFields.length} campos Sistema Destino`);
     
     // Configuração adaptativa
     let batchSize = Math.min(60, Math.floor(systemFields.length / 4)); // Começa com lotes de ~25% do total
@@ -692,7 +692,7 @@ RESPOSTA JSON (${isLargePayload ? 'máximo 30 mapeamentos' : 'todos os mapeament
         // Criar sub-payloads para o lote atual
         const systemBatch = this.createFieldBatch(systemPayload, systemFields.slice(processedFields, processedFields + currentBatchSize));
         
-        const prompt = this.buildOptimizedPayloadComparisonPrompt(gupyPayload, systemBatch, batchNumber, currentBatchSize);
+        const prompt = this.buildOptimizedPayloadComparisonPrompt(sourcePayload, systemBatch, batchNumber, currentBatchSize);
         
         console.log(`📡 Enviando lote ${batchNumber} para Gemini (${prompt.length} caracteres)`);
         const startTime = Date.now();
@@ -755,10 +755,10 @@ RESPOSTA JSON (${isLargePayload ? 'máximo 30 mapeamentos' : 'todos os mapeament
   /**
    * Processamento direto otimizado para payloads médios (NOVO)
    */
-  private async processSinglePayloadComparison(gupyPayload: any, systemPayload: any): Promise<MappingConnection[]> {
+  private async processSinglePayloadComparison(sourcePayload: any, systemPayload: any): Promise<MappingConnection[]> {
     console.log('📡 Enviando payload completo para análise direta...');
     
-    const prompt = this.buildOptimizedPayloadComparisonPrompt(gupyPayload, systemPayload, 1, this.countFields(systemPayload));
+    const prompt = this.buildOptimizedPayloadComparisonPrompt(sourcePayload, systemPayload, 1, this.countFields(systemPayload));
     const response = await this.callGeminiAPI(prompt);
     
     console.log(`📄 Resposta recebida: ${response.length} caracteres`);
@@ -772,41 +772,41 @@ RESPOSTA JSON (${isLargePayload ? 'máximo 30 mapeamentos' : 'todos os mapeament
   /**
    * Constrói prompt especializado para equiparação de payloads
    */
-  private buildPayloadComparisonPrompt(gupyPayload: any, systemPayload: any): string {
+  private buildPayloadComparisonPrompt(sourcePayload: any, systemPayload: any): string {
     return `
 🎯 EQUIPARAÇÃO DE PAYLOADS - ANÁLISE COMPARATIVA
 
-PAYLOAD GUPY (origem - dados reais):
-${JSON.stringify(gupyPayload, null, 2)}
+PAYLOAD SISTEMA ORIGEM (origem - dados reais):
+${JSON.stringify(sourcePayload, null, 2)}
 
 PAYLOAD SISTEMA (destino - mesmos dados transformados):
 ${JSON.stringify(systemPayload, null, 2)}
 
-MISSÃO: Compare os payloads lado a lado e identifique EXATAMENTE como cada campo da Gupy se transformou no Sistema.
+MISSÃO: Compare os payloads lado a lado e identifique EXATAMENTE como cada campo do Sistema Origem se transformou no Sistema.
 
 EXEMPLOS DE DETECÇÃO AUTOMÁTICA:
 1. 📄 Formatação de Documentos:
-   Gupy: "123.456.789-00" → Sistema: "12345678900" 
+   Sistema Origem: "123.456.789-00" → Sistema: "12345678900" 
    = format_document (remove pontos e hífen)
 
 2. 👤 Divisão de Nomes:
-   Gupy: "João Silva" → Sistema: "firstName": "JOÃO", "lastName": "SILVA"
+   Sistema Origem: "João Silva" → Sistema: "firstName": "JOÃO", "lastName": "SILVA"
    = name_split + normalize (upper_case)
 
 3. 📱 Divisão de Telefone:
-   Gupy: "+5511999998888" → Sistema: "areaCode": "11", "number": "999998888"
+   Sistema Origem: "+5511999998888" → Sistema: "areaCode": "11", "number": "999998888"
    = phone_split (extrai partes)
 
 4. 🗺️ Mapeamento de Códigos:
-   Gupy: "Brasil" → Sistema: "BRA"
+   Sistema Origem: "Brasil" → Sistema: "BRA"
    = country_code (ISO conversion)
 
 5. ⚧️ Códigos de Gênero:
-   Gupy: "Male" → Sistema: "M"
+   Sistema Origem: "Male" → Sistema: "M"
    = gender_code (abreviação)
 
 6. 📅 Formatação de Datas:
-   Gupy: "2024-01-15T00:00:00.000Z" → Sistema: "2024-01-15"
+   Sistema Origem: "2024-01-15T00:00:00.000Z" → Sistema: "2024-01-15"
    = format_date (ISO to date)
 
 INSTRUÇÕES ESPECIAIS:
@@ -831,7 +831,7 @@ FORMATO DE RESPOSTA (JSON válido - todos os mapeamentos detectados):
     },
     "targetPath": "employee.documentNumber",
     "confidence": 99,
-    "reasoning": "CPF: '123.456.789-00' (Gupy) vs '12345678900' (Sistema) - mesmos dados, formatação removida",
+    "reasoning": "CPF: '123.456.789-00' (Sistema Origem) vs '12345678900' (Sistema) - mesmos dados, formatação removida",
     "transformation": {
       "type": "format_document",
       "operation": "remove_formatting",
@@ -850,7 +850,7 @@ FORMATO DE RESPOSTA (JSON válido - todos os mapeamentos detectados):
     },
     "targetPath": "employee.firstName",
     "confidence": 99,
-    "reasoning": "Nome: 'João Silva' (Gupy) vs 'JOÃO' (Sistema) - primeiro nome extraído e convertido para maiúscula",
+    "reasoning": "Nome: 'João Silva' (Sistema Origem) vs 'JOÃO' (Sistema) - primeiro nome extraído e convertido para maiúscula",
     "transformation": {
       "type": "name_split",
       "operation": "split_first_name",
@@ -1057,12 +1057,12 @@ RETORNE TODOS OS MAPEAMENTOS DETECTADOS pela comparação dos valores!
   /**
    * Constrói prompt otimizado para equiparação com menos verbosidade (NOVO)
    */
-  private buildOptimizedPayloadComparisonPrompt(gupyPayload: any, systemPayload: any, batchNumber: number, fieldCount: number): string {
+  private buildOptimizedPayloadComparisonPrompt(sourcePayload: any, systemPayload: any, batchNumber: number, fieldCount: number): string {
     return `
 🎯 EQUIPARAÇÃO LOTE ${batchNumber} - ${fieldCount} CAMPOS
 
-GUPY (origem):
-${JSON.stringify(gupyPayload, null, 1)}
+SISTEMA ORIGEM (origem):
+${JSON.stringify(sourcePayload, null, 1)}
 
 SISTEMA (destino):
 ${JSON.stringify(systemPayload, null, 1)}

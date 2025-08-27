@@ -5,16 +5,8 @@ import { TransformationEngine, TransformationConfig } from './TransformationEngi
 export class TemplateService {
   private static templatesPath = path.join(__dirname, '../../../templates');
 
-  // Carregar template de arquivo
-  private static loadTemplate(templatePath: string): string {
-    try {
-      const fullPath = path.join(this.templatesPath, templatePath);
-      return fs.readFileSync(fullPath, 'utf-8');
-    } catch (error) {
-      console.error(`Error loading template ${templatePath}:`, error);
-      throw new Error(`Failed to load template: ${templatePath}`);
-    }
-  }
+  // Método removido - sistema agora usa implementações hardcoded
+  // private static loadTemplate(templatePath: string): string { ... }
 
   // Substituir placeholders no template
   private static replacePlaceholders(template: string, replacements: Record<string, any>): string {
@@ -595,61 +587,10 @@ export class TemplateService {
     };
   }
 
-  // Gerar tarefa de email (versão com template - mantida para compatibilidade)
-  private static generateEmailTask(customerEmail: string): any {
-    const template = this.loadTemplate('integration/tasks/email-task.json');
-    
-    const replacements = {
-      TASK_ID: "4",
-      EMAIL_TO: customerEmail || "customer@example.com",
-      EMAIL_SUBJECT: "Integration Error Notification",
-      EMAIL_BODY: "There was an error processing your integration. Please check your system.",
-      DISPLAY_NAME: "Send Error Email",
-      POSITION_X: "620",
-      POSITION_Y: "181"
-    };
+  // Métodos removidos - sistema agora usa apenas implementações hardcoded
+  // Estes métodos tentavam carregar templates de arquivos que foram removidos
 
-    const result = this.replacePlaceholders(template, replacements);
-    return JSON.parse(result);
-  }
-
-  // Gerar tarefa de output de sucesso (versão com template - mantida para compatibilidade)
-  private static generateSuccessOutputTask(): any {
-    const template = this.loadTemplate('integration/tasks/field-mapping-task.json');
-    
-    const mappingConfig = {
-      "@type": "type.googleapis.com/enterprise.crm.eventbus.proto.FieldMappingConfig",
-      "mappedFields": [{
-        "inputField": {
-          "fieldType": "JSON_VALUE",
-          "transformExpression": {
-            "initialValue": {
-              "referenceValue": "$Output$"
-            }
-          }
-        },
-        "outputField": {
-          "referenceKey": "$Output$",
-          "fieldType": "JSON_VALUE",
-          "cardinality": "OPTIONAL"
-        }
-      }]
-    };
-
-    const replacements = {
-      TASK_ID: "5",
-      MAPPING_CONFIG: JSON.stringify(mappingConfig),
-      NEXT_TASKS: JSON.stringify([]),
-      DISPLAY_NAME: "Success Output",
-      POSITION_X: "146",
-      POSITION_Y: "504"
-    };
-
-    const result = this.replacePlaceholders(template, replacements);
-    return JSON.parse(result);
-  }
-
-  // Gerar tarefa JsonnetMapperTask
+  // Gerar tarefa JsonnetMapperTask (versão hardcoded)
   static generateJsonnetMapperTask(
     taskId: string,
     jsonnetTemplate: string,
@@ -657,19 +598,29 @@ export class TemplateService {
     positionX: number,
     positionY: number
   ): any {
-    const template = this.loadTemplate('integration/tasks/jsonnet-mapper-task.json');
+    console.log(`🔧 Gerando JsonnetMapperTask hardcoded - taskId: ${taskId}, displayName: ${displayName}`);
     
-    const replacements = {
-      TASK_ID: taskId,
-      JSONNET_TEMPLATE: jsonnetTemplate,
-      NEXT_TASKS: JSON.stringify([{ "taskId": "1" }]),
-      DISPLAY_NAME: displayName,
-      POSITION_X: positionX.toString(),
-      POSITION_Y: positionY.toString()
+    // Retornar objeto hardcoded para evitar problemas de template
+    return {
+      "task": "JsonnetMapperTask",
+      "taskId": taskId,
+      "parameters": {
+        "template": {
+          "key": "template",
+          "value": {
+            "stringValue": jsonnetTemplate
+          }
+        }
+      },
+      "nextTasks": [{ "taskId": "1" }],
+      "taskExecutionStrategy": "WHEN_ALL_SUCCEED",
+      "displayName": displayName,
+      "externalTaskType": "NORMAL_TASK",
+      "position": { 
+        "x": positionX.toString(), 
+        "y": positionY.toString() 
+      }
     };
-
-    const result = this.replacePlaceholders(template, replacements);
-    return JSON.parse(result);
   }
 
   // Gerar UUID simples
@@ -985,29 +936,11 @@ export class TemplateService {
     target[lastKey] = value;
   }
 
-  // Validar se todos os templates existem
+  // Validar se todos os templates existem (atualizado para refletir sistema hardcoded)
   static validateTemplates(): boolean {
-    const requiredTemplates = [
-      'integration/base-integration.json',
-      'integration/tasks/field-mapping-task.json',
-      'integration/tasks/rest-task.json',
-      'integration/tasks/email-task.json',
-      'integration/tasks/jsonnet-mapper-task.json',
-      'transformations/value-mapping.jsonnet',
-      'transformations/date-format.jsonnet',
-      'transformations/expression.jsonnet',
-      'transformations/conditional.jsonnet'
-    ];
-
-    for (const template of requiredTemplates) {
-      try {
-        this.loadTemplate(template);
-      } catch (error) {
-        console.error(`Missing template: ${template}`);
-        return false;
-      }
-    }
-
+    // Com a mudança para sistema hardcoded, não precisamos validar templates de arquivos
+    // Todos os métodos críticos agora são hardcoded e não dependem de arquivos externos
+    console.log('📋 Sistema usando implementações hardcoded - validação de templates não necessária');
     return true;
   }
 }

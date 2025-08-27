@@ -35,19 +35,19 @@ const MappingMethodSelector: React.FC<MappingMethodProps> = ({ onMethodSelected 
       icon: '🤖',
       title: 'Gemini AI',
       subtitle: 'Schema/Payload', 
-      accuracy: '~95% precisão',
-      speed: '10-20 segundos',
-      description: 'Análise semântica baseado em schema/payload',
+      accuracy: '~95% accuracy',
+      speed: '10-20 seconds',
+      description: 'Semantic analysis based on schema/payload',
       color: '#1976d2'
     },
     {
       id: 'payload-comparison',
       icon: '📋', 
-      title: 'Equiparação',
+      title: 'Comparison',
       subtitle: 'Payload vs Payload',
-      accuracy: '~99% precisão',
-      speed: '5-10 segundos', 
-      description: 'Mesmos dados, formatos diferentes',
+      accuracy: '~99% accuracy',
+      speed: '5-10 seconds', 
+      description: 'Same data, different formats',
       highlight: true,
       color: '#ff6b35'
     },
@@ -56,26 +56,26 @@ const MappingMethodSelector: React.FC<MappingMethodProps> = ({ onMethodSelected 
       icon: '✋',
       title: 'Manual', 
       subtitle: 'Drag & Drop',
-      accuracy: '100% controle',
-      speed: '5-15 minutos',
-      description: 'Interface tradicional arrastar e soltar',
+      accuracy: '100% control',
+      speed: '5-15 minutes',
+      description: 'Traditional drag and drop interface',
       color: '#666'
     }
   ];
 
   const handleMethodClick = (method: MappingMethod) => {
-    console.log(`🎯 Método selecionado: ${method}`);
+    console.log(`🎯 Method selected: ${method}`);
     onMethodSelected(method);
   };
 
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', mb: 3 }}>
-        🚀 Escolha o Método de Mapeamento
+        🚀 Choose the Mapping Method
       </Typography>
       
       <Typography variant="body1" color="text.secondary" sx={{ textAlign: 'center', mb: 4 }}>
-        Selecione como deseja mapear os campos entre sistemas origem e destino
+        Select how you want to map fields between source and destination systems
       </Typography>
 
       <Grid container spacing={3}>
@@ -99,7 +99,7 @@ const MappingMethodSelector: React.FC<MappingMethodProps> = ({ onMethodSelected 
             >
               {method.highlight && (
                 <Chip 
-                  label="RECOMENDADO" 
+                  label="RECOMMENDED" 
                   color="primary" 
                   size="small"
                   sx={{ 
@@ -168,7 +168,7 @@ const MappingMethodSelector: React.FC<MappingMethodProps> = ({ onMethodSelected 
                     handleMethodClick(method.id);
                   }}
                 >
-                  Selecionar {method.title}
+                  Select {method.title}
                 </Button>
               </CardContent>
             </Card>
@@ -176,15 +176,15 @@ const MappingMethodSelector: React.FC<MappingMethodProps> = ({ onMethodSelected 
         ))}
       </Grid>
 
-      {/* Informações Adicionais */}
+      {/* Additional Information */}
       <Paper sx={{ mt: 4, p: 2, bgcolor: 'info.light', color: 'info.contrastText' }}>
         <Typography variant="subtitle2" fontWeight="medium" gutterBottom>
-          💡 Dica: Qual método escolher?
+          💡 Tip: Which method to choose?
         </Typography>
         <Typography variant="body2">
-          • <strong>Equiparação</strong>: Ideal quando você tem dados reais nos dois formatos<br/>
-          • <strong>Gemini AI</strong>: Perfeito para mapeamento baseado em schemas e exemplos<br/>
-          • <strong>Manual</strong>: Total controle, ideal para casos muito específicos
+          • <strong>Comparison</strong>: Ideal when you have real data in both formats<br/>
+          • <strong>Gemini AI</strong>: Perfect for schema and example-based mapping<br/>
+          • <strong>Manual</strong>: Full control, ideal for very specific cases
         </Typography>
       </Paper>
     </Box>

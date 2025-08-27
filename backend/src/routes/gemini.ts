@@ -21,7 +21,7 @@ router.post('/generate-mappings', async (req, res) => {
     const geminiService = new GeminiMappingService();
     const mappings = await geminiService.generateMappings(clientSchema, inputType, sourceSystemId);
     
-    res.json({
+    return res.json({
       success: true,
       mappings,
       count: mappings.length,
@@ -30,7 +30,7 @@ router.post('/generate-mappings', async (req, res) => {
     });
   } catch (error) {
     console.error('Erro ao gerar mapeamentos:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: `Failed to generate mappings: ${error instanceof Error ? error.message : 'Unknown error'}`
     });
   }
@@ -48,7 +48,7 @@ router.get('/source-schema/:systemId?', async (req, res) => {
     console.log(`📊 Carregando schema do sistema origem: ${systemId}`);
     
     const schema = await SchemaManagerService.loadSourceSchema(systemId);
-    res.json({
+    return res.json({
       success: true,
       schema,
       systemId,
@@ -56,7 +56,7 @@ router.get('/source-schema/:systemId?', async (req, res) => {
     });
   } catch (error) {
     console.error(`Error loading schema for system ${req.params.systemId || 'hr-system'}:`, error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       success: false,
       error: `Erro ao carregar schema do sistema ${req.params.systemId || 'hr-system'}`,
       systemId: req.params.systemId || 'hr-system'
@@ -73,10 +73,10 @@ router.get('/gupy-schema', async (req, res) => {
     console.log('📊 [LEGACY] Carregando schema da Gupy via endpoint legacy');
     
     const schema = await SchemaManagerService.loadSourceSchema('gupy');
-    res.json(schema);
+    return res.json(schema);
   } catch (error) {
     console.error('Error loading Gupy schema:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Erro ao carregar schema da Gupy' 
     });
   }
@@ -89,10 +89,10 @@ router.get('/gupy-schema', async (req, res) => {
 router.get('/example-schemas', async (req, res) => {
   try {
     const examples = await SchemaManagerService.loadExampleSchemas();
-    res.json(examples);
+    return res.json(examples);
   } catch (error) {
     console.error('Error loading example schemas:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Erro ao carregar exemplos de schemas' 
     });
   }
@@ -105,10 +105,10 @@ router.get('/example-schemas', async (req, res) => {
 router.get('/semantic-patterns', async (req, res) => {
   try {
     const patterns = await SchemaManagerService.loadSemanticPatterns();
-    res.json(patterns);
+    return res.json(patterns);
   } catch (error) {
     console.error('Error loading semantic patterns:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Erro ao carregar padrões semânticos' 
     });
   }
@@ -130,14 +130,14 @@ router.post('/validate-schema', async (req, res) => {
 
     const validation = SchemaManagerService.validateClientSchema(schema);
     
-    res.json({
+    return res.json({
       valid: validation.valid,
       errors: validation.errors,
       fieldPaths: validation.valid ? SchemaManagerService.extractFieldPaths(schema) : []
     });
   } catch (error) {
     console.error('Error validating schema:', error);
-    res.status(500).json({ 
+    return res.status(500).json({ 
       error: 'Erro ao validar schema' 
     });
   }
@@ -182,7 +182,7 @@ router.post('/payload-comparison', async (req, res) => {
       finalTargetPayload
     );
 
-    res.json({
+    return res.json({
       success: true,
       mappings,
       count: mappings.length,
@@ -193,7 +193,7 @@ router.post('/payload-comparison', async (req, res) => {
 
   } catch (error) {
     console.error('Erro no endpoint payload-comparison:', error);
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Erro interno do servidor',
       details: error instanceof Error ? error.message : 'Erro desconhecido'
     });
@@ -221,7 +221,7 @@ router.post('/generate-schema', async (req, res) => {
       targetFormat
     );
     
-    res.json({
+    return res.json({
       success: true,
       schema,
       description: description.trim(),
@@ -230,7 +230,7 @@ router.post('/generate-schema', async (req, res) => {
     });
   } catch (error) {
     console.error('Erro no endpoint generate-schema:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: error instanceof Error ? error.message : 'Erro interno do servidor'
     });
@@ -278,7 +278,7 @@ router.get('/source-payload-structure/:systemId?', async (req, res) => {
     
     console.log(`✅ Estrutura do payload ${systemId} carregada com sucesso`);
     
-    res.json({
+    return res.json({
       success: true,
       payloadStructure,
       fieldCount: countFields(payloadStructure),
@@ -288,7 +288,7 @@ router.get('/source-payload-structure/:systemId?', async (req, res) => {
     });
   } catch (error) {
     console.error(`❌ Erro ao carregar estrutura do payload ${req.params.systemId || 'hr-system'}:`, error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Erro interno do servidor',
       systemId: req.params.systemId || 'hr-system',
@@ -325,7 +325,7 @@ router.get('/gupy-payload-structure', async (req, res) => {
     
     console.log('✅ Estrutura do payload carregada com sucesso');
     
-    res.json({
+    return res.json({
       success: true,
       payloadStructure,
       fieldCount: countFields(payloadStructure),
@@ -333,7 +333,7 @@ router.get('/gupy-payload-structure', async (req, res) => {
     });
   } catch (error) {
     console.error('❌ Erro ao carregar estrutura do payload Gupy:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Erro interno do servidor',
       details: error instanceof Error ? error.message : 'Erro desconhecido'

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
 import { Box, Container, Grid, Paper, Typography, AppBar, Toolbar } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -141,24 +141,24 @@ function App() {
   };
 
   const handleTargetSchemaChange = (fields: PayloadField[]) => {
-    // Target fields agora são gerenciados internamente pelo MappingCanvas
+    // Target fields are now managed internally by MappingCanvas
     console.log('🎯 Target schema changed:', fields.length);
   };
 
   const handleAddMappings = (aiMappings: MappingConnection[]) => {
-    console.log('🔄 handleAddMappings chamado com:', aiMappings.length, 'mapeamentos');
-    console.log('📋 Mapeamentos recebidos:', aiMappings.map(m => `${m.sourceField.name} → ${m.targetPath}`));
+    console.log('🔄 handleAddMappings called with:', aiMappings.length, 'mappings');
+    console.log('📋 Received mappings:', aiMappings.map(m => `${m.sourceField.name} → ${m.targetPath}`));
     
-    // Filtrar mapeamentos que já existem para evitar duplicatas
+    // Filter mappings that already exist to avoid duplicates
     const existingPaths = mappings.map(m => m.sourceField.path);
-    console.log('📝 Paths existentes:', existingPaths);
+    console.log('📝 Existing paths:', existingPaths);
     
     const newMappings = aiMappings.filter(mapping => 
       !existingPaths.includes(mapping.sourceField.path)
     );
     
-    console.log('✅ Novos mapeamentos após filtro:', newMappings.length);
-    console.log('📊 Detalhes dos novos mapeamentos:', newMappings.map(m => ({
+    console.log('✅ New mappings after filter:', newMappings.length);
+    console.log('📊 Details of new mappings:', newMappings.map(m => ({
       source: m.sourceField.path,
       target: m.targetPath,
       confidence: m.confidence
@@ -166,11 +166,11 @@ function App() {
     
     if (newMappings.length > 0) {
       const updatedMappings = [...mappings, ...newMappings];
-      console.log('🎯 Total de mapeamentos após atualização:', updatedMappings.length);
+      console.log('🎯 Total mappings after update:', updatedMappings.length);
       setMappings(updatedMappings);
       updateSystemPayload(updatedMappings);
     } else {
-      console.warn('⚠️ Nenhum mapeamento novo foi adicionado (todos eram duplicatas ou filtrados)');
+      console.warn('⚠️ No new mappings were added (all were duplicates or filtered)');
     }
   };
 
@@ -181,12 +181,12 @@ function App() {
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              iPaaS Integration Builder
+              Mapping Builder for Application Integration
             </Typography>
           </Toolbar>
         </AppBar>
         
-        <Container maxWidth={false} sx={{ mt: 2, mb: 2 }}>
+        <Container maxWidth={false} sx={{ mt: 2, mb: 12, pb: 4 }}>
           <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
             <Grid container spacing={2} sx={{ minHeight: 'calc(100vh - 120px)' }}>
               {/* Mapping Canvas - Main Panel */}
@@ -208,14 +208,16 @@ function App() {
               
               {/* Config Panel - Right Panel */}
               <Grid item xs={4}>
-                <Paper sx={{ height: '100%', p: 2 }}>
+                <Paper sx={{ height: '100%', p: 2, display: 'flex', flexDirection: 'column' }}>
                   <Typography variant="h6" gutterBottom>
                     ⚙️ Configuration
                   </Typography>
-                  <ConfigPanel 
-                    config={config}
-                    onChange={handleConfigChange}
-                  />
+                  <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                    <ConfigPanel 
+                      config={config}
+                      onChange={handleConfigChange}
+                    />
+                  </Box>
                 </Paper>
               </Grid>
             </Grid>

@@ -25,7 +25,7 @@ import { MappingConnection } from '../../types';
 interface AIMappingStepProps {
   onMappingsGenerated: (mappings: MappingConnection[]) => void;
   onBack: () => void;
-  sourceFields?: any[]; // Fields do sistema origem já carregados
+  sourceFields?: any[]; // Source system fields already loaded
 }
 
 type InputType = 'json-schema' | 'json-payload';
@@ -81,14 +81,14 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
     setError(null);
     
     try {
-      // Validar entrada
+      // Validate input
       if (!targetSchema.trim()) {
-        throw new Error('Schema do sistema destino é obrigatório');
+        throw new Error('Destination system schema is required');
       }
 
       const targetParsed = JSON.parse(targetSchema);
 
-      console.log('🤖 Iniciando mapeamento com Gemini AI...');
+      console.log('🤖 Starting mapping with Gemini AI...');
       console.log('📄 Target schema:', targetParsed);
       console.log('🔧 Input type:', inputType);
 
@@ -104,26 +104,26 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
 
       if (!response.ok) {
         const errorData = await response.text();
-        throw new Error(`Erro na API: ${response.status} - ${errorData}`);
+        throw new Error(`API Error: ${response.status} - ${errorData}`);
       }
 
       const result = await response.json();
       
       if (!result.success) {
-        throw new Error(result.error || 'Erro desconhecido na geração de mapeamentos');
+        throw new Error(result.error || 'Unknown error in mapping generation');
       }
 
-      console.log('✅ Mapeamentos AI gerados:', result);
-      console.log(`🎯 ${result.mappings.length} mapeamentos com AI`);
+      console.log('✅ AI mappings generated:', result);
+      console.log(`🎯 ${result.mappings.length} mappings with AI`);
 
       setResults(result.mappings);
-      // Selecionar todos os mapeamentos por padrão
+      // Select all mappings by default
       const allMappingIds = new Set<string>(result.mappings.map((m: MappingConnection, index: number) => m.id || index.toString()));
       setSelectedMappings(allMappingIds);
 
     } catch (error) {
-      console.error('❌ Erro na geração de mapeamentos AI:', error);
-      setError(error instanceof Error ? error.message : 'Erro desconhecido');
+      console.error('❌ Error in AI mapping generation:', error);
+      setError(error instanceof Error ? error.message : 'Unknown error');
     } finally {
       setIsGenerating(false);
     }
@@ -144,7 +144,7 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
       const acceptedMappings = results.filter((mapping, index) => 
         selectedMappings.has(mapping.id || index.toString())
       );
-      console.log('🎉 Aceitando mapeamentos AI:', acceptedMappings.length);
+      console.log('🎉 Accepting AI mappings:', acceptedMappings.length);
       onMappingsGenerated(acceptedMappings);
     }
   };
@@ -165,23 +165,23 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
-        🤖 Mapeamento com Gemini AI
+        🤖 Mapping with Gemini AI
       </Typography>
       
       <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-        Forneça o schema ou exemplo do seu sistema destino para gerar mapeamentos automáticos 
-        com <strong>~95% de precisão</strong> usando inteligência artificial.
+        Provide the schema or example of your destination system to generate automatic mappings 
+        with <strong>~95% accuracy</strong> using artificial intelligence.
       </Typography>
 
       <Paper sx={{ p: 2, mb: 3, bgcolor: 'grey.50', border: '1px solid', borderColor: 'grey.200' }}>
         <Typography variant="subtitle2" fontWeight="medium" gutterBottom>
-          🧠 Como Funciona o Gemini AI
+          🧠 How Gemini AI Works
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          1. <strong>Análise Semântica:</strong> IA analisa nomes e estruturas dos campos<br/>
-          2. <strong>Correspondência Inteligente:</strong> Encontra relações baseadas em significado<br/>
-          3. <strong>Transformações Automáticas:</strong> Detecta necessidade de formatação e conversão<br/>
-          4. <strong>Confidence Score:</strong> Cada mapeamento tem score de confiança
+          1. <strong>Semantic Analysis:</strong> AI analyzes field names and structures<br/>
+          2. <strong>Intelligent Matching:</strong> Finds relationships based on meaning<br/>
+          3. <strong>Automatic Transformations:</strong> Detects need for formatting and conversion<br/>
+          4. <strong>Confidence Score:</strong> Each mapping has a confidence score
         </Typography>
       </Paper>
 
@@ -189,10 +189,10 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
         <>
           <Box sx={{ mb: 3, display: 'flex', gap: 2, alignItems: 'center' }}>
             <FormControl size="small" sx={{ minWidth: 160 }}>
-              <InputLabel>Tipo de Input</InputLabel>
+              <InputLabel>Input Type</InputLabel>
               <Select
                 value={inputType}
-                label="Tipo de Input"
+                label="Input Type"
                 onChange={handleInputTypeChange}
               >
                 <MenuItem value="json-payload">JSON Payload</MenuItem>
@@ -205,17 +205,17 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
               onClick={loadExampleSchema}
               size="small"
             >
-              📄 Carregar Exemplo
+              📄 Load Example
             </Button>
             
             <Typography variant="caption" color="text.secondary">
-              Carrega um exemplo típico de sistema HR
+              Loads a typical HR system example
             </Typography>
           </Box>
 
           <Box sx={{ mb: 3 }}>
             <Typography variant="subtitle1" fontWeight="medium" gutterBottom>
-              {inputType === 'json-schema' ? '📋 JSON Schema do Sistema Destino' : '🎯 Exemplo de Payload do Sistema Destino'}
+              {inputType === 'json-schema' ? '📋 Destination System JSON Schema' : '🎯 Destination System Payload Example'}
             </Typography>
             
             <TextField
@@ -261,10 +261,10 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
               helperText={
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <span>
-                    {targetSchema && !isValidJSON(targetSchema) ? '❌ JSON inválido' : 
-                     targetSchema ? '✅ JSON válido' : 'Aguardando input'}
+                    {targetSchema && !isValidJSON(targetSchema) ? '❌ Invalid JSON' : 
+                     targetSchema ? '✅ Valid JSON' : 'Waiting for input'}
                   </span>
-                  <span>{targetSchema.length} caracteres</span>
+                  <span>{targetSchema.length} characters</span>
                 </Box>
               }
               sx={{ 
@@ -288,7 +288,7 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
               onClick={onBack}
               disabled={isGenerating}
             >
-              ← Voltar
+              ← Back
             </Button>
             
             <Button 
@@ -301,7 +301,7 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
               }}
               startIcon={isGenerating ? <CircularProgress size={20} color="inherit" /> : undefined}
             >
-              {isGenerating ? 'Gerando...' : '🤖 GERAR MAPEAMENTOS AI'}
+              {isGenerating ? 'Generating...' : '🤖 GENERATE AI MAPPINGS'}
             </Button>
           </Box>
         </>
@@ -310,16 +310,16 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
       {hasResults && (
         <Box>
           <Alert severity="success" sx={{ mb: 3 }}>
-            ✅ Mapeamentos gerados! {results.length} correspondências encontradas pela IA
+            ✅ Mappings generated! {results.length} matches found by AI
           </Alert>
 
           <Paper sx={{ p: 2, mb: 3, maxHeight: '500px', overflow: 'auto' }}>
             <Typography variant="h6" gutterBottom>
-              🔗 Mapeamentos Sugeridos pela IA
+              🔗 AI Suggested Mappings
             </Typography>
             
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Selecione os mapeamentos que deseja aceitar:
+              Select the mappings you want to accept:
             </Typography>
             
             <List dense>
@@ -382,7 +382,7 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
                           <Box>
                             <Typography variant="caption" color="text.secondary">
                               {mapping.sourceField.path}
-                              {mapping.transformation && ` • Transformação: ${mapping.transformation.type}`}
+                              {mapping.transformation && ` • Transformation: ${mapping.transformation.type}`}
                             </Typography>
                             {mapping.reasoning && (
                               <Typography variant="caption" sx={{ display: 'block', fontStyle: 'italic' }}>
@@ -409,11 +409,11 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
                 setError(null);
               }}
             >
-              🔄 Novo Mapeamento
+              🔄 New Mapping
             </Button>
             
             <Typography variant="body2" color="text.secondary">
-              {selectedCount} de {results.length} selecionados
+              {selectedCount} of {results.length} selected
             </Typography>
             
             <Button
@@ -422,7 +422,7 @@ const AIMappingStep: React.FC<AIMappingStepProps> = ({
               disabled={selectedCount === 0}
               sx={{ bgcolor: '#4caf50' }}
             >
-              ✅ Aceitar Selecionados ({selectedCount})
+              ✅ Accept Selected ({selectedCount})
             </Button>
           </Box>
         </Box>

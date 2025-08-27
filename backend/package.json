@@ -1,7 +1,7 @@
 {
-  "name": "ipaas-backend",
+  "name": "mapping-builder-backend",
   "version": "1.0.0",
-  "description": "Backend API for iPaaS Integration Builder",
+  "description": "Backend API for Mapping Builder for Application Integration",
   "main": "dist/index.js",
   "scripts": {
     "start": "node dist/index.js",
@@ -35,11 +35,11 @@
     "typescript": "^5.3.3"
   },
   "keywords": [
-    "ipaas",
-    "integration",
+    "mapping-builder",
+    "application-integration",
     "google-cloud",
     "api"
   ],
-  "author": "iPaaS Team",
+  "author": "Mapping Builder Team",
   "license": "MIT"
 }

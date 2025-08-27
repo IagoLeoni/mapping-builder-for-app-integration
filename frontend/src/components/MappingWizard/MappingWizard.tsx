@@ -36,17 +36,17 @@ const MappingWizard: React.FC<MappingWizardProps> = ({
   const [selectedMethod, setSelectedMethod] = useState<MappingMethod | null>(null);
 
   const handleMethodSelected = (method: MappingMethod) => {
-    console.log(`🎯 Método selecionado no wizard: ${method}`);
+    console.log(`🎯 Method selected in wizard: ${method}`);
     setSelectedMethod(method);
     
     if (method === 'manual') {
-      // Para método manual, fechar o wizard e deixar o usuário usar drag & drop
-      console.log('✋ Método manual selecionado - fechando wizard');
+      // For manual method, close wizard and let user use drag & drop
+      console.log('✋ Manual method selected - closing wizard');
       handleClose();
       return;
     }
     
-    // Para outros métodos, avançar para o step correspondente
+    // For other methods, advance to corresponding step
     if (method === 'gemini-ai') {
       setCurrentStep('ai-mapping');
     } else if (method === 'payload-comparison') {
@@ -55,7 +55,7 @@ const MappingWizard: React.FC<MappingWizardProps> = ({
   };
 
   const handleMappingsGenerated = (mappings: MappingConnection[]) => {
-    console.log('🎉 Mapeamentos gerados no wizard:', mappings.length);
+    console.log('🎉 Mappings generated in wizard:', mappings.length);
     onMappingsGenerated(mappings);
     handleClose();
   };
@@ -74,24 +74,24 @@ const MappingWizard: React.FC<MappingWizardProps> = ({
   const getStepTitle = (): string => {
     switch (currentStep) {
       case 'method-selection':
-        return 'Assistente de Mapeamento Automático';
+        return 'Automatic Mapping Assistant';
       case 'ai-mapping':
-        return 'Mapeamento com Gemini AI';
+        return 'Mapping with Gemini AI';
       case 'payload-comparison':
-        return 'Equiparação de Payloads';
+        return 'Payload Comparison';
       default:
-        return 'Assistente de Mapeamento';
+        return 'Mapping Assistant';
     }
   };
 
   const getStepDescription = (): string => {
     switch (currentStep) {
       case 'method-selection':
-        return 'Escolha como deseja mapear os campos entre sistemas';
+        return 'Choose how you want to map fields between systems';
       case 'ai-mapping':
-        return 'Análise semântica com ~95% de precisão';
+        return 'Semantic analysis with ~95% accuracy';
       case 'payload-comparison':
-        return 'Comparação de dados reais com ~99% de precisão';
+        return 'Real data comparison with ~99% accuracy';
       default:
         return '';
     }
@@ -100,13 +100,13 @@ const MappingWizard: React.FC<MappingWizardProps> = ({
   const steps = [
     { 
       id: 'method-selection', 
-      label: 'Método', 
+      label: 'Method', 
       active: currentStep === 'method-selection' 
     },
     { 
       id: 'mapping', 
       label: selectedMethod === 'gemini-ai' ? 'Gemini AI' : 
-             selectedMethod === 'payload-comparison' ? 'Equiparação' : 'Mapeamento',
+             selectedMethod === 'payload-comparison' ? 'Comparison' : 'Mapping',
       active: currentStep !== 'method-selection' 
     }
   ];

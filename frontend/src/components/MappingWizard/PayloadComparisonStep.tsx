@@ -60,7 +60,7 @@ const PayloadEditor: React.FC<PayloadEditorProps> = ({
         }}
       />
       <Typography variant="caption" color="text.secondary">
-        {value.length} caracteres • {value ? (isValidJSON(value) ? '✅ JSON válido' : '❌ JSON inválido') : 'Aguardando input'}
+        {value.length} characters • {value ? (isValidJSON(value) ? '✅ Valid JSON' : '❌ Invalid JSON') : 'Waiting for input'}
       </Typography>
     </Box>
   );
@@ -151,15 +151,15 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
     setError(null);
     
     try {
-      // Validar JSONs
+      // Validate JSONs
       if (!sourcePayload.trim() || !targetPayload.trim()) {
-        throw new Error('Ambos os payloads são obrigatórios');
+        throw new Error('Both payloads are required');
       }
 
       const sourceParsed = JSON.parse(sourcePayload);
       const targetParsed = JSON.parse(targetPayload);
 
-      console.log('📋 Iniciando equiparação de payloads...');
+      console.log('📋 Starting payload comparison...');
       console.log('📄 Source payload:', sourceParsed);
       console.log('🎯 Target payload:', targetParsed);
 
@@ -175,23 +175,23 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
 
       if (!response.ok) {
         const errorData = await response.text();
-        throw new Error(`Erro na API: ${response.status} - ${errorData}`);
+        throw new Error(`API Error: ${response.status} - ${errorData}`);
       }
 
       const result = await response.json();
       
       if (!result.success) {
-        throw new Error(result.error || 'Erro desconhecido na equiparação');
+        throw new Error(result.error || 'Unknown error in comparison');
       }
 
-      console.log('✅ Equiparação concluída:', result);
-      console.log(`🎯 ${result.mappings.length} mapeamentos gerados`);
+      console.log('✅ Comparison completed:', result);
+      console.log(`🎯 ${result.mappings.length} mappings generated`);
 
       setResults(result.mappings);
 
     } catch (error) {
-      console.error('❌ Erro na equiparação:', error);
-      setError(error instanceof Error ? error.message : 'Erro desconhecido');
+      console.error('❌ Error in comparison:', error);
+      setError(error instanceof Error ? error.message : 'Unknown error');
     } finally {
       setIsAnalyzing(false);
     }
@@ -199,7 +199,7 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
 
   const handleAcceptMappings = () => {
     if (results && results.length > 0) {
-      console.log('🎉 Aceitando mapeamentos de equiparação:', results.length);
+      console.log('🎉 Accepting comparison mappings:', results.length);
       onMappingsGenerated(results);
     }
   };
@@ -211,19 +211,19 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" gutterBottom>
-        📋 Equiparação de Payloads
+        📋 Payload Comparison
       </Typography>
       
       <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-        Forneça payloads com <strong>os mesmos dados</strong> nos formatos da origem e do seu sistema 
-        para detecção automática de transformações com ~99% de precisão.
+        Provide payloads with <strong>the same data</strong> in source and target system formats 
+        for automatic transformation detection with ~99% accuracy.
       </Typography>
 
-      <InfoBox title="Como Funciona a Equiparação">
-        1. <strong>Payload Origem:</strong> Dados no formato original do sistema origem<br/>
-        2. <strong>Payload Destino:</strong> Os mesmos dados no formato que seu sistema espera<br/>
-        3. <strong>IA Compara:</strong> Identifica automaticamente como transformar cada campo<br/>
-        4. <strong>Alta Precisão:</strong> ~99% de confiança na correspondência de campos
+      <InfoBox title="How Payload Comparison Works">
+        1. <strong>Source Payload:</strong> Data in the original source system format<br/>
+        2. <strong>Target Payload:</strong> The same data in the format your system expects<br/>
+        3. <strong>AI Compares:</strong> Automatically identifies how to transform each field<br/>
+        4. <strong>High Precision:</strong> ~99% confidence in field correspondence
       </InfoBox>
 
       {!results && (
@@ -235,17 +235,17 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
               sx={{ mr: 2 }}
               size="small"
             >
-              📄 Carregar Exemplo
+              📄 Load Example
             </Button>
             <Typography variant="caption" color="text.secondary">
-              Carrega dados de exemplo para testar a funcionalidade
+              Loads example data to test functionality
             </Typography>
           </Box>
 
           <Grid container spacing={3} sx={{ mb: 3 }}>
             <Grid item xs={6}>
               <PayloadEditor 
-                title="📄 Payload Sistema Origem"
+                title="📄 Source System Payload"
                 value={sourcePayload}
                 onChange={setSourcePayload}
                 placeholder={`{
@@ -259,13 +259,13 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
     }
   }
 }`}
-                error={sourcePayload && !isValidJSON(sourcePayload) ? 'JSON inválido' : undefined}
+                error={sourcePayload && !isValidJSON(sourcePayload) ? 'Invalid JSON' : undefined}
               />
             </Grid>
             
             <Grid item xs={6}>
               <PayloadEditor 
-                title="🎯 Payload Sistema Destino" 
+                title="🎯 Target System Payload" 
                 value={targetPayload}
                 onChange={setTargetPayload}
                 placeholder={`{
@@ -274,7 +274,7 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
   "email": "joao@email.com",
   "documentNumber": "12345678900"
 }`}
-                error={targetPayload && !isValidJSON(targetPayload) ? 'JSON inválido' : undefined}
+                error={targetPayload && !isValidJSON(targetPayload) ? 'Invalid JSON' : undefined}
               />
             </Grid>
           </Grid>
@@ -291,7 +291,7 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
               onClick={onBack}
               disabled={isAnalyzing}
             >
-              ← Voltar
+              ← Back
             </Button>
             
             <Button 
@@ -305,7 +305,7 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
               }}
               startIcon={isAnalyzing ? <CircularProgress size={20} color="inherit" /> : undefined}
             >
-              {isAnalyzing ? 'Analisando...' : '🚀 ANALISAR EQUIPARAÇÃO'}
+              {isAnalyzing ? 'Analyzing...' : '🚀 ANALYZE COMPARISON'}
             </Button>
           </Box>
         </>
@@ -314,12 +314,12 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
       {results && (
         <Box>
           <Alert severity="success" sx={{ mb: 3 }}>
-            ✅ Equiparação concluída! {results.length} mapeamentos detectados com alta precisão
+            ✅ Comparison completed! {results.length} mappings detected with high precision
           </Alert>
 
           <Paper sx={{ p: 2, mb: 3, maxHeight: '400px', overflow: 'auto' }}>
             <Typography variant="h6" gutterBottom>
-              🔗 Mapeamentos Detectados
+              🔗 Detected Mappings
             </Typography>
             
             <List dense>
@@ -352,7 +352,7 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
                         <Box>
                           <Typography variant="caption" color="text.secondary">
                             {mapping.sourceField.path} 
-                            {mapping.transformation && ` • Transformação: ${mapping.transformation.type}`}
+                            {mapping.transformation && ` • Transformation: ${mapping.transformation.type}`}
                           </Typography>
                           {mapping.reasoning && (
                             <Typography variant="caption" sx={{ display: 'block', fontStyle: 'italic' }}>
@@ -377,7 +377,7 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
                 setError(null);
               }}
             >
-              🔄 Nova Equiparação
+              🔄 New Comparison
             </Button>
             
             <Button
@@ -385,7 +385,7 @@ const PayloadComparisonStep: React.FC<PayloadComparisonStepProps> = ({
               onClick={handleAcceptMappings}
               sx={{ bgcolor: '#4caf50' }}
             >
-              ✅ Aceitar Mapeamentos ({results.length})
+              ✅ Accept Mappings ({results.length})
             </Button>
           </Box>
         </Box>

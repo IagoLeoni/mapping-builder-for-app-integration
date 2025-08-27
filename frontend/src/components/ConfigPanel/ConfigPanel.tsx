@@ -19,28 +19,28 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, onChange }) => {
   const [isDeploying, setIsDeploying] = React.useState(false);
   const [deployStatus, setDeployStatus] = React.useState<'idle' | 'success' | 'error'>('idle');
 
-  // NORMALIZAÇÃO ESPECÍFICA DO CLIENTE (tudo junto)
+  // CLIENT-SPECIFIC NORMALIZATION (all together)
   const normalizeClientName = (value: string): string => {
     if (!value) return '';
     
     return value
-      .toLowerCase()                    // Converte para lowercase
-      .replace(/[^a-z0-9]/g, '')       // Remove TODOS caracteres especiais e espaços
-      .replace(/^-+|-+$/g, '');        // Remove hífens das bordas
+      .toLowerCase()                    // Convert to lowercase
+      .replace(/[^a-z0-9]/g, '')       // Remove ALL special characters and spaces
+      .replace(/^-+|-+$/g, '');        // Remove hyphens from edges
   };
 
-  // NORMALIZAÇÃO ESPECÍFICA DO EVENTO (hífen apenas para pontos)
+  // EVENT-SPECIFIC NORMALIZATION (hyphen only for dots)
   const normalizeEventName = (value: string): string => {
     if (!value) return '';
     
     return value
-      .toLowerCase()                    // Converte para lowercase
-      .replace(/\./g, '-')             // Substitui APENAS pontos por hífen
-      .replace(/-+/g, '-')             // Remove hífens duplicados
-      .replace(/^-+|-+$/g, '');        // Remove hífens das bordas
+      .toLowerCase()                    // Convert to lowercase
+      .replace(/\./g, '-')             // Replace ONLY dots with hyphen
+      .replace(/-+/g, '-')             // Remove duplicate hyphens
+      .replace(/^-+|-+$/g, '');        // Remove hyphens from edges
   };
 
-  // GERAÇÃO DO NOME FINAL DA INTEGRAÇÃO
+  // FINAL INTEGRATION NAME GENERATION
   const generateIntegrationName = (): string => {
     if (!config.clientName || !config.eventName) return '';
     
@@ -50,7 +50,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, onChange }) => {
     return `${normalizedClient}-${normalizedEvent}`;
   };
 
-  // PREVIEW EM TEMPO REAL
+  // REAL-TIME PREVIEW
   const [clientNamePreview, setClientNamePreview] = React.useState('');
   const [eventNamePreview, setEventNamePreview] = React.useState('');
 
@@ -123,7 +123,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, onChange }) => {
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}>
-      {/* CAMPO CLIENT NAME COM PREVIEW */}
+      {/* CLIENT NAME FIELD WITH PREVIEW */}
       <Box>
         <TextField
           label="Client Name"
@@ -132,7 +132,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, onChange }) => {
           fullWidth
           size="small"
           required
-          helperText="Nome do cliente (será unido sem espaços)"
+          helperText="Client name (will be joined without spaces)"
           placeholder="Minerva Foods"
         />
         {config.clientName && (
@@ -151,7 +151,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, onChange }) => {
         )}
       </Box>
 
-      {/* CAMPO EVENT NAME COM PREVIEW */}
+      {/* EVENT NAME FIELD WITH PREVIEW */}
       <Box>
         <TextField
           label="Event Name"
@@ -160,7 +160,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, onChange }) => {
           fullWidth
           size="small"
           required
-          helperText="Nome do evento (apenas pontos viram hífen)"
+          helperText="Event name (only dots become hyphens)"
           placeholder="pre-employee.moved"
         />
         {config.eventName && (
@@ -179,7 +179,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, onChange }) => {
         )}
       </Box>
 
-      {/* PREVIEW FINAL DO NOME DA INTEGRAÇÃO */}
+      {/* FINAL INTEGRATION NAME PREVIEW */}
       {config.clientName && config.eventName && (
         <Box sx={{ 
           p: 2, 
@@ -189,7 +189,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, onChange }) => {
           borderColor: 'success.main'
         }}>
           <Typography variant="subtitle2" gutterBottom color="success.main">
-            🎯 Nome Final da Integração:
+            🎯 Final Integration Name:
           </Typography>
           <Typography 
             variant="h6" 
@@ -208,8 +208,8 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, onChange }) => {
             {generateIntegrationName()}
           </Typography>
           <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-            • Cliente: <strong>{clientNamePreview}</strong> (tudo junto)<br/>
-            • Evento: <strong>{eventNamePreview}</strong> (pontos → hífens)
+            • Client: <strong>{clientNamePreview}</strong> (all together)<br/>
+            • Event: <strong>{eventNamePreview}</strong> (dots → hyphens)
           </Typography>
         </Box>
       )}
@@ -224,7 +224,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, onChange }) => {
         fullWidth
         size="small"
         required
-        helperText="Email para notificações"
+        helperText="Email for notifications"
       />
 
       <TextField
@@ -235,7 +235,7 @@ const ConfigPanel: React.FC<ConfigPanelProps> = ({ config, onChange }) => {
         fullWidth
         size="small"
         required
-        helperText="URL de callback do seu sistema"
+        helperText="Your system's callback URL"
         placeholder="https://your-system.com/webhook"
       />
 

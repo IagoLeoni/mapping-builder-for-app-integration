@@ -6,7 +6,6 @@ import {
   IconButton,
   Collapse,
   Chip,
-  Divider,
   Tabs,
   Tab
 } from '@mui/material';
@@ -72,7 +71,7 @@ const DebugPanel: React.FC<DebugPanelProps> = ({ config, mappings }) => {
       bottom: 0, 
       left: 0, 
       right: 0, 
-      zIndex: 1000,
+      zIndex: 500, // ✅ Reduzido de 1000 para 500 para não cobrir botão deploy
       bgcolor: 'background.paper',
       borderTop: 1,
       borderColor: 'divider'

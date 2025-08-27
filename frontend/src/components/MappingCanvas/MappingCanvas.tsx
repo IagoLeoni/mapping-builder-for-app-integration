@@ -4,8 +4,7 @@ import {
   Typography,
   TextField,
   Button,
-  Paper,
-  Grid
+  Paper
 } from '@mui/material';
 import { MappingConnection, PayloadField, TransformationConfig } from '../../types';
 import TargetFieldsTree from './TargetFieldsTree';
@@ -70,13 +69,13 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
     setWizardOpen(true);
   };
 
-  // Função para gerar targetFields automaticamente dos mapeamentos recebidos
+  // Function to automatically generate targetFields from received mappings
   const generateTargetFieldsFromMappings = (mappings: MappingConnection[]): PayloadField[] => {
-    console.log('🔧 Gerando targetFields dos mapeamentos:', mappings.length);
+    console.log('🔧 Generating targetFields from mappings:', mappings.length);
     
-    // Extrair paths únicos dos mapeamentos
+    // Extract unique paths from mappings
     const targetPaths = [...new Set(mappings.map(m => m.targetPath))];
-    console.log('📍 Target paths únicos:', targetPaths);
+    console.log('📍 Unique target paths:', targetPaths);
     
     const fields: PayloadField[] = [];
     const fieldMap = new Map<string, PayloadField>();
@@ -92,17 +91,17 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
           const field: PayloadField = {
             id: currentPath.replace(/\./g, '-'),
             name: part,
-            type: index === parts.length - 1 ? 'string' : 'object', // último nível é string, outros são object
+            type: index === parts.length - 1 ? 'string' : 'object', // last level is string, others are object
             path: currentPath
           };
           
           fieldMap.set(currentPath, field);
           
-          // Se é o primeiro nível, adicionar ao array principal
+          // If it's the first level, add to main array
           if (index === 0) {
             fields.push(field);
-          } else {
-            // Caso contrário, adicionar como filho do pai
+            } else {
+              // Otherwise, add as child of parent
             const parentPath = currentPath.substring(0, currentPath.lastIndexOf('.'));
             const parent = fieldMap.get(parentPath);
             if (parent) {
@@ -114,21 +113,21 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
       });
     });
 
-    console.log('✅ TargetFields gerados:', fields.length, 'campos raiz');
+    console.log('✅ TargetFields generated:', fields.length, 'root fields');
     return fields;
   };
 
   const handleWizardMappingsGenerated = (mappings: MappingConnection[]) => {
     console.log('🎉 Wizard generated mappings:', mappings.length);
-    console.log('📋 Mapeamentos recebidos:', mappings.map(m => `${m.sourceField.name} → ${m.targetPath}`));
+    console.log('📋 Received mappings:', mappings.map(m => `${m.sourceField.name} → ${m.targetPath}`));
     
-    // ✅ CORREÇÃO: Auto-gerar targetFields dos mapeamentos para popular a interface drag & drop
+    // ✅ CORRECTION: Auto-generate targetFields from mappings to populate drag & drop interface
     const generatedTargetFields = generateTargetFieldsFromMappings(mappings);
     console.log('🎯 Auto-generated target fields:', generatedTargetFields.length);
     
-    // Atualizar targetFields para popular a árvore de campos destino
+    // Update targetFields to populate destination fields tree
     handleSchemaChange(generatedTargetFields);
-    console.log('📝 Target fields atualizados no estado');
+    console.log('📝 Target fields updated in state');
     
     if (onAddMappings) {
       onAddMappings(mappings);
@@ -141,7 +140,7 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
     setWizardOpen(false);
   };
 
-  // Função para converter schema do wizard em PayloadFields
+  // Function to convert wizard schema to PayloadFields
   const convertSchemaToFields = (schema: any, parentPath: string = '', parentId: string = ''): PayloadField[] => {
     const fields: PayloadField[] = [];
     
@@ -166,7 +165,7 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
         type = 'boolean';
       }
       
-      // Adicionar campo se tem filhos ou é primitivo
+      // Add field if it has children or is primitive
       if (children && children.length > 0) {
         fields.push({
           id,
@@ -196,19 +195,22 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
         onSourceCleared={handleSourceCleared}
       />
 
-      {/* Main Layout: Source + Target Side by Side */}
-      <Grid container spacing={2} sx={{ flexGrow: 1, minHeight: 0 }}>
-        {/* Source Fields - Left Panel */}
-        <Grid item xs={6}>
+      {/* Layout with Responsive Grid */}
+      <Box sx={{ display: 'flex', gap: 2, flexGrow: 1, minHeight: 0 }}>
+        
+        {/* Source Fields - Sticky Left Panel */}
+        <Box sx={{ width: '30%' }}>
           <Paper sx={{ 
-            height: '100%', 
-            p: 2, 
-            display: 'flex', 
+            position: 'sticky',
+            top: '80px', // Stick below AppBar
+            height: 'calc(100vh - 160px)', // Full viewport height minus header/footer
+            p: 2,
+            display: 'flex',
             flexDirection: 'column',
-            minHeight: '500px'
+            boxShadow: 2
           }}>
             <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              📄 Source System Fields
+              📌 Source System Fields
               {sourceSystemType && (
                 <Typography variant="caption" sx={{ 
                   bgcolor: 'primary.main', 
@@ -225,7 +227,7 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
             {sourceFields.length > 0 ? (
               <>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  Drag fields to target system →
+                  Drag fields to destination system →
                 </Typography>
                 <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
                   <PayloadTree fields={sourceFields} />
@@ -250,16 +252,15 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
               </Box>
             )}
           </Paper>
-        </Grid>
+        </Box>
 
-        {/* Target Fields - Right Panel */}
-        <Grid item xs={6}>
+        {/* Target Fields - Main Scrollable Panel */}
+        <Box sx={{ width: '70%' }}>
           <Paper sx={{ 
-            height: '100%', 
+            minHeight: 'calc(100vh - 160px)',
             p: 2, 
             display: 'flex', 
-            flexDirection: 'column',
-            minHeight: '500px'
+            flexDirection: 'column'
           }}>
             <Typography variant="h6" gutterBottom>
               🎯 Target System Fields
@@ -324,7 +325,7 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
 
             {/* Target Fields Tree */}
             {targetFields.length > 0 ? (
-              <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
+              <Box sx={{ flexGrow: 1, mb: 2 }}>
                 <TargetFieldsTree 
                   fields={targetFields}
                   mappings={mappings}
@@ -337,7 +338,7 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center', 
-                flexGrow: 1,
+                minHeight: '400px',
                 bgcolor: 'grey.50',
                 border: '2px dashed',
                 borderColor: 'grey.300',
@@ -350,18 +351,22 @@ const MappingCanvas: React.FC<MappingCanvasProps> = ({
                 </Typography>
               </Box>
             )}
-          </Paper>
-        </Grid>
-      </Grid>
 
-      {/* Mappings Summary */}
-      {mappings.length > 0 && (
-        <Paper sx={{ mt: 2, p: 2, bgcolor: 'info.light', color: 'info.contrastText' }}>
-          <Typography variant="subtitle2" fontWeight="medium">
-            🔗 Active Mappings: {mappings.length}
-          </Typography>
-        </Paper>
-      )}
+            {/* Active Mappings Summary */}
+            {mappings.length > 0 && (
+              <Box sx={{ mt: 'auto', pt: 2, borderTop: '1px solid', borderColor: 'divider' }}>
+                <Paper sx={{ p: 1.5, bgcolor: 'info.light', color: 'info.contrastText' }}>
+                  <Typography variant="subtitle2" fontWeight="medium">
+                    🔗 Active Mappings: {mappings.length}
+                  </Typography>
+                </Paper>
+              </Box>
+            )}
+          </Paper>
+        </Box>
+      </Box>
+
+      {/* Mappings Summary - Moved inside the main container */}
 
       {/* Mapping Wizard Dialog */}
       <MappingWizard

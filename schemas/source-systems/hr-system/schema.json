@@ -1,0 +1,301 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Generic HR System Schema",
+  "description": "Schema genérico para sistemas de RH - baseado em estruturas comuns",
+  "type": "object",
+  "properties": {
+    "body": {
+      "type": "object",
+      "properties": {
+        "companyName": {
+          "type": "string",
+          "description": "Nome da empresa"
+        },
+        "event": {
+          "type": "string",
+          "description": "Tipo de evento (ex: employee.hired, employee.moved)"
+        },
+        "id": {
+          "type": "string",
+          "description": "ID único do evento"
+        },
+        "date": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Data e hora do evento"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "candidate": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Nome do candidato/funcionário"
+                },
+                "lastName": {
+                  "type": "string",
+                  "description": "Sobrenome do candidato/funcionário"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email",
+                  "description": "Email do candidato/funcionário"
+                },
+                "identificationDocument": {
+                  "type": "string",
+                  "description": "Documento de identificação (CPF, RG, etc.)"
+                },
+                "countryOfOrigin": {
+                  "type": "string",
+                  "description": "País de origem"
+                },
+                "birthdate": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Data de nascimento"
+                },
+                "addressZipCode": {
+                  "type": "string",
+                  "description": "CEP do endereço"
+                },
+                "addressStreet": {
+                  "type": "string",
+                  "description": "Rua do endereço"
+                },
+                "addressNumber": {
+                  "type": "string",
+                  "description": "Número do endereço"
+                },
+                "addressCity": {
+                  "type": "string",
+                  "description": "Cidade do endereço"
+                },
+                "addressState": {
+                  "type": "string",
+                  "description": "Estado do endereço"
+                },
+                "addressStateShortName": {
+                  "type": "string",
+                  "description": "Sigla do estado"
+                },
+                "addressCountry": {
+                  "type": "string",
+                  "description": "País do endereço"
+                },
+                "addressCountryShortName": {
+                  "type": "string",
+                  "description": "Sigla do país"
+                },
+                "mobileNumber": {
+                  "type": "string",
+                  "description": "Número do celular"
+                },
+                "phoneNumber": {
+                  "type": "string",
+                  "description": "Número do telefone fixo"
+                },
+                "schooling": {
+                  "type": "string",
+                  "description": "Nível de escolaridade"
+                },
+                "schoolingStatus": {
+                  "type": "string",
+                  "description": "Status da escolaridade (complete, incomplete, etc.)"
+                },
+                "disabilities": {
+                  "type": "boolean",
+                  "description": "Indica se possui deficiências"
+                },
+                "id": {
+                  "type": "number",
+                  "description": "ID único do candidato"
+                },
+                "gender": {
+                  "type": "string",
+                  "description": "Gênero"
+                }
+              }
+            },
+            "job": {
+              "type": "object",
+              "properties": {
+                "departmentCode": {
+                  "type": "string",
+                  "description": "Código do departamento"
+                },
+                "roleCode": {
+                  "type": "string",
+                  "description": "Código do cargo"
+                },
+                "branchCode": {
+                  "type": ["string", "null"],
+                  "description": "Código da filial"
+                },
+                "id": {
+                  "type": "number",
+                  "description": "ID da vaga"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Nome da vaga"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Tipo da vaga"
+                },
+                "department": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "ID do departamento"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "Código do departamento"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Nome do departamento"
+                    },
+                    "similarity": {
+                      "type": "string",
+                      "description": "Similaridade/categoria do departamento"
+                    }
+                  }
+                },
+                "role": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "ID do cargo"
+                    },
+                    "code": {
+                      "type": "string",
+                      "description": "Código do cargo"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Nome do cargo"
+                    },
+                    "similarity": {
+                      "type": "string",
+                      "description": "Similaridade/categoria do cargo"
+                    }
+                  }
+                },
+                "branch": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "number",
+                      "description": "ID da filial"
+                    },
+                    "code": {
+                      "type": ["string", "null"],
+                      "description": "Código da filial"
+                    },
+                    "name": {
+                      "type": "string",
+                      "description": "Nome da filial"
+                    }
+                  }
+                }
+              }
+            },
+            "admission": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "description": "Status da admissão"
+                },
+                "admissionDeadline": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Prazo de admissão"
+                },
+                "hiringDate": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "Data de contratação"
+                },
+                "position": {
+                  "type": "object",
+                  "properties": {
+                    "salary": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "number",
+                          "description": "Valor do salário"
+                        },
+                        "currency": {
+                          "type": "string",
+                          "description": "Moeda do salário"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "position": {
+              "type": "object",
+              "properties": {
+                "positionId": {
+                  "type": "number",
+                  "description": "ID da posição"
+                },
+                "formGroupType": {
+                  "type": "string",
+                  "description": "Tipo de contrato (CLT, PJ, etc.)"
+                },
+                "paymentRecurrence": {
+                  "type": "string",
+                  "description": "Recorrência do pagamento (mensalista, horista)"
+                },
+                "salary": {
+                  "type": "object",
+                  "properties": {
+                    "value": {
+                      "type": "number",
+                      "description": "Valor do salário"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "description": "Moeda do salário"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number",
+              "description": "ID do usuário que executou a ação"
+            },
+            "name": {
+              "type": "string",
+              "description": "Nome do usuário"
+            },
+            "email": {
+              "type": "string",
+              "format": "email",
+              "description": "Email do usuário"
+            }
+          }
+        }
+      },
+      "required": ["event", "id", "date"]
+    }
+  },
+  "required": ["body"]
+}

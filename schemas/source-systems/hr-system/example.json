@@ -1,0 +1,53 @@
+{
+  "body": {
+    "companyName": "Example Corp",
+    "event": "pre-employee.moved",
+    "data": {
+      "candidate": {
+        "name": "John Doe",
+        "email": "john@example.com",
+        "phone": "+5511999999999",
+        "documents": {
+          "cpf": "12345678901",
+          "passport": "AB1234567"
+        },
+        "addresses": [
+          {
+            "type": "residential",
+            "street": "Rua Example, 123",
+            "city": "São Paulo",
+            "state": "SP",
+            "zipCode": "01234-567",
+            "country": "Brasil"
+          }
+        ],
+        "personalInfo": {
+          "birthDate": "1990-05-15",
+          "gender": "M",
+          "maritalStatus": "single"
+        }
+      },
+      "job": {
+        "title": "Software Engineer",
+        "department": "Technology",
+        "departmentCode": "TECH",
+        "branch": "São Paulo Office",
+        "responsibilities": "Development and maintenance of applications",
+        "workLocation": "hybrid"
+      },
+      "admission": {
+        "startDate": "2023-01-15",
+        "contractType": "CLT",
+        "workSchedule": "full-time",
+        "salary": {
+          "amount": 5000,
+          "currency": "BRL"
+        },
+        "manager": {
+          "name": "Jane Smith",
+          "email": "jane.smith@example.com"
+        }
+      }
+    }
+  }
+}

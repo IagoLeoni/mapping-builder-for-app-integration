@@ -40,7 +40,7 @@ router.post('/test', async (req, res) => {
     // Gerar preview
     const preview = TransformationEngine.generatePreview(value, transformation);
 
-    res.json({
+    return res.json({
       success: true,
       input: value,
       output: result,
@@ -50,7 +50,7 @@ router.post('/test', async (req, res) => {
 
   } catch (error) {
     console.error('Erro ao testar transformação:', error);
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Erro interno do servidor',
       details: error instanceof Error ? error.message : 'Erro desconhecido'
     });
@@ -87,7 +87,7 @@ router.post('/test-multiple', async (req, res) => {
       currentValue = stepResult;
     }
 
-    res.json({
+    return res.json({
       success: true,
       originalValue: value,
       finalResult: result,
@@ -96,7 +96,7 @@ router.post('/test-multiple', async (req, res) => {
 
   } catch (error) {
     console.error('Erro ao testar múltiplas transformações:', error);
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Erro interno do servidor',
       details: error instanceof Error ? error.message : 'Erro desconhecido'
     });
@@ -130,7 +130,7 @@ router.post('/generate-integration', async (req, res) => {
     const transformationsCount = mappings.filter((m: any) => m.transformation).length;
     const transformationTasks = integration.taskConfigs?.filter((task: any) => task.taskType === 'JsonnetMapperTask') || [];
     
-    res.json({
+    return res.json({
       success: true,
       integration: integration,
       statistics: {
@@ -151,7 +151,7 @@ router.post('/generate-integration', async (req, res) => {
 
   } catch (error) {
     console.error('Erro ao gerar integração com transformações:', error);
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Erro interno do servidor',
       details: error instanceof Error ? error.message : 'Erro desconhecido'
     });
@@ -358,7 +358,7 @@ router.post('/validate', async (req, res) => {
       }
     }
 
-    res.json({
+    return res.json({
       success: true,
       valid: isValid,
       input: value,
@@ -369,7 +369,7 @@ router.post('/validate', async (req, res) => {
 
   } catch (error) {
     console.error('Erro ao validar transformação:', error);
-    res.status(500).json({
+    return res.status(500).json({
       error: 'Erro interno do servidor',
       details: error instanceof Error ? error.message : 'Erro desconhecido'
     });

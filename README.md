@@ -1,8 +1,12 @@
-# iPaaS Integration Builder
+# Mapping Builder for Application Integration
 
-Uma plataforma visual de integração que serve como fachada "customer face" para o Google Cloud Application Integration. Permite aos clientes mapear visualmente payloads através de uma interface drag & drop e gerar automaticamente integrações deployáveis.
+**⚠️ Disclaimer: This is not an officially supported Google product, nor is it part of any official Google product.**
 
-## 🏗️ Arquitetura
+A visual integration platform that serves as a customer-facing frontend for Google Cloud Application Integration. Enables clients to visually map payloads through a drag & drop interface and automatically generate deployable integrations.
+
+📄 **[Documentação em Português](./docs/pt-BR/README.md)**
+
+## 🏗️ Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
@@ -12,21 +16,21 @@ Uma plataforma visual de integração que serve como fachada "customer face" par
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
 
-### Componentes
+### Components
 
-- **Frontend**: Interface React com drag & drop para mapeamento visual
-- **Backend**: API Node.js para validação e deployment
-- **Google Cloud**: Application Integration para execução das integrações
+- **Frontend**: React interface with drag & drop for visual mapping
+- **Backend**: Node.js API for validation and deployment
+- **Google Cloud**: Application Integration for runtime execution
 
-## 🏗️ Arquitetura Detalhada
+## 🏗️ Detailed Architecture
 
-### 📋 Visão Geral do Sistema
+### 📋 System Overview
 
-O iPaaS Integration Builder implementa uma arquitetura system-agnostic em 3 camadas que transforma mapeamentos visuais em integrações Google Cloud Application Integration deployáveis:
+The Mapping Builder implements a system-agnostic 3-layer architecture that transforms visual mappings into deployable Google Cloud Application Integration integrations:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                           CAMADA DE APRESENTAÇÃO                            │
+│                           PRESENTATION LAYER                                │
 ├─────────────────┬─────────────────┬─────────────────┬─────────────────────────┤
 │   Schema Input  │  Mapping Canvas │  AI Assistant   │    JSON Preview         │
 │   - JSON Parse  │  - Drag & Drop  │  - Gemini 2.0   │    - Integration JSON   │
@@ -34,35 +38,35 @@ O iPaaS Integration Builder implementa uma arquitetura system-agnostic em 3 cama
 └─────────────────┴─────────────────┴─────────────────┴─────────────────────────┘
                                     │
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                            CAMADA DE NEGÓCIO                                │
+│                            BUSINESS LAYER                                   │
 ├─────────────────┬─────────────────┬─────────────────┬─────────────────────────┤
 │ GeminiMapping   │ Transformation  │  Template       │    Integration          │
 │ Service         │ Engine          │  Service        │    Service              │
-│ - IA Mapping    │ - Data Transform│  - JSON Gen     │    - Orchestration      │
+│ - AI Mapping    │ - Data Transform│  - JSON Gen     │    - Orchestration      │
 │ - Semantic      │ - Jsonnet       │  - PubSub DLQ   │    - Validation         │
 │ - Recovery      │ - Preview       │  - Variables    │    - Deployment         │
 └─────────────────┴─────────────────┴─────────────────┴─────────────────────────┘
                                     │
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                         CAMADA DE INFRAESTRUTURA                            │
+│                         INFRASTRUCTURE LAYER                                │
 ├─────────────────┬─────────────────┬─────────────────┬─────────────────────────┤
 │  Cloud Build    │ Application     │   PubSub DLQ    │   Cloud Monitoring      │
 │  - CI/CD        │ Integration     │   - Fail Handle │   - Logs & Metrics      │
-│  - Deploy Auto  │ - Runtime Exec  │   - Reprocessing│   - Error Tracking      │
+│  - Auto Deploy  │ - Runtime Exec  │   - Reprocessing│   - Error Tracking      │
 └─────────────────┴─────────────────┴─────────────────┴─────────────────────────┘
 ```
 
-### 🔄 Fluxo Completo: Input do Usuário → Application Integration Deployada
+### 🔄 Complete Flow: User Input → Deployed Application Integration
 
 ```mermaid
 graph TD
-    A[📝 Usuario Cola Schema/Payload] --> B[🔍 Schema Validation]
-    B --> C{🤖 Usar IA?}
+    A[📝 User Pastes Schema/Payload] --> B[🔍 Schema Validation]
+    B --> C{🤖 Use AI?}
     
-    C -->|Sim| D[🧠 Gemini 2.0 Flash]
-    C -->|Não| E[✋ Manual Drag & Drop]
+    C -->|Yes| D[🧠 Gemini 2.0 Flash]
+    C -->|No| E[✋ Manual Drag & Drop]
     
-    D --> F[🎯 Mapeamentos + Transformações]
+    D --> F[🎯 Mappings + Transformations]
     E --> F
     
     F --> G[⚙️ TemplateService.generateIntegration]
@@ -71,76 +75,60 @@ graph TD
     H --> I[☁️ Cloud Build Deploy]
     I --> J[🚀 Google Cloud Application Integration]
     
-    J --> K[🔗 Webhook URL Ativo]
-    K --> L[📨 Sistema Origem Envia Webhook]
+    J --> K[🔗 Active Webhook URL]
+    K --> L[📨 Source System Sends Webhook]
     
     L --> M{✅ REST Success?}
-    M -->|Sim| N[✅ SuccessOutputTask]
-    M -->|Não| O[📤 PubSub DLQ Task]
+    M -->|Yes| N[✅ SuccessOutputTask]
+    M -->|No| O[📤 PubSub DLQ Task]
     
     O --> P[💾 dlq-pre-employee-moved Topic]
-    P --> Q[🔄 Sistema Reprocessamento]
+    P --> Q[🔄 Reprocessing System]
 ```
 
-### 🧩 Componentes Detalhados
+### 🧩 Detailed Components
 
-#### 1. **GeminiMappingService** - Detecção Automática IA
+#### 1. **GeminiMappingService** - AI-Powered Auto Detection
 
-**Localização**: `backend/src/services/GeminiMappingService.ts`
+**Location**: `backend/src/services/GeminiMappingService.ts`
 
-**Responsabilidade**: Mapear automaticamente campos entre sistema origem e destino usando IA Gemini 2.0 Flash
+**Responsibility**: Automatically map fields between source and target systems using Gemini 2.0 Flash AI
 
-**Como Funciona**:
+**How It Works**:
 
 ```typescript
-// Processamento Single-Shot para 190+ campos
+// Single-shot processing for 190+ fields
 async generateMappings(clientSchema: any, inputType: 'schema' | 'payload', sourceSystemId: string = 'hr-system') {
-  // 1. Carregar schemas de referência
+  // 1. Load reference schemas
   const sourceSchema = await SchemaManagerService.loadSourceSchema(sourceSystemId);
   const sourceExamplePayload = await SchemaManagerService.loadSourceSystemExamplePayload(sourceSystemId);
   
-  // 2. Construir prompt comprehensivo
+  // 2. Build comprehensive prompt
   const prompt = this.buildComprehensivePrompt(sourceSchema, sourceExamplePayload, clientSchema, semanticPatterns);
   
-  // 3. Chamada única para Gemini 2.0 Flash
+  // 3. Single call to Gemini 2.0 Flash
   const response = await this.callGeminiAPI(prompt);
   
-  // 4. Parse com sistema de recuperação robusto
+  // 4. Parse with robust recovery system
   const mappings = this.parseResponseWithRecovery(response);
   
-  return mappings; // 27+ mapeamentos com 86.3% confiança média
+  return mappings; // 27+ mappings with 86.3% average confidence
 }
 ```
 
-**Capacidades Especiais**:
-- ✅ **Single-Shot Processing**: Processa 190+ campos em uma única chamada
-- ✅ **Sistema de Recuperação**: Algoritmo defensivo contra JSON truncado
-- ✅ **Processamento Adaptativo**: Lotes inteligentes para payloads grandes
-- ✅ **Confidence Normalization**: Normaliza valores percentuais para decimais
+**Special Capabilities**:
+- ✅ **Single-Shot Processing**: Processes 190+ fields in one call
+- ✅ **Recovery System**: Defensive algorithm against truncated JSON
+- ✅ **Adaptive Processing**: Smart batching for large payloads
+- ✅ **Confidence Normalization**: Normalizes percentage values to decimals
 
-**Exemplo de Prompt**:
-```
-🚀 GEMINI 2.0 FLASH - MAPEAMENTO COMPLETO DE 190 CAMPOS
+#### 2. **TransformationEngine** - Data Transformation Logic
 
-SISTEMA ORIGEM SCHEMA COMPLETO:
-{...estrutura completa com 200+ campos...}
+**Location**: `backend/src/services/TransformationEngine.ts`
 
-CLIENTE PAYLOAD (destino):
-{...payload cliente com valores reais...}
+**Responsibility**: Apply data transformations (CPF, phone, names, etc.)
 
-MISSÃO: Mapear TODOS os campos possíveis com:
-✅ Confiança ≥70% para mapeamentos simples
-✅ Transformações automáticas detectadas
-✅ Reasoning detalhado para cada mapeamento
-```
-
-#### 2. **TransformationEngine** - Lógica de Transformações
-
-**Localização**: `backend/src/services/TransformationEngine.ts`
-
-**Responsabilidade**: Aplicar transformações de dados (CPF, telefone, nomes, etc.)
-
-**Arquitetura das Transformações**:
+**Transformation Architecture**:
 
 ```typescript
 interface TransformationConfig {
@@ -151,7 +139,7 @@ interface TransformationConfig {
   preview?: { input: string; output: string; };
 }
 
-// Engine principal com switch case para cada tipo
+// Main engine with switch case for each type
 static applyTransformation(value: any, transformation: TransformationConfig): any {
   switch (transformation.type) {
     case 'format_document':
@@ -168,247 +156,115 @@ static applyTransformation(value: any, transformation: TransformationConfig): an
 }
 ```
 
-**Exemplos de Transformações Implementadas**:
+#### 3. **TemplateService** - Template Generation
 
-1. **Formatação de Documentos**:
-```typescript
-private static formatDocument(value: string, config: TransformationConfig): string {
-  switch (config.pattern) {
-    case 'cpf':
-      return value.replace(/[.\-\s]/g, ''); // Remove pontos, hífens, espaços
-    case 'phone':
-      return value.replace(/[\s\-\(\)\+]/g, ''); // Remove formatação telefone
-    default:
-      return value.replace(/[.\-\s]/g, ''); // Formatação genérica
-  }
-}
-```
+**Location**: `backend/src/services/TemplateService.ts`
 
-2. **Divisão de Telefone**:
-```typescript
-private static splitPhone(value: string, config: TransformationConfig): any {
-  const patterns = [
-    /^\+55(\d{2})(\d{8,9})$/, // +5511999999999
-    /^\((\d{2})\)(\d{8,9})$/, // (11)999999999
-    /^(\d{2})(\d{8,9})$/      // 11999999999
-  ];
+**Responsibility**: Generate complete Google Cloud Application Integration JSON
 
-  for (const pattern of patterns) {
-    const match = value.replace(/[\s\-]/g, '').match(pattern);
-    if (match) {
-      return {
-        countryCode: '55',
-        areaCode: match[1],
-        phoneNumber: match[2]
-      };
-    }
-  }
-  return value;
-}
-```
-
-#### 3. **TemplateService** - Geração de Templates
-
-**Localização**: `backend/src/services/TemplateService.ts`
-
-**Responsabilidade**: Gerar JSON completo do Google Cloud Application Integration
-
-**Como Gera Templates**:
+**How Templates Are Generated**:
 
 ```typescript
-// Método principal que orquestra toda a geração
+// Main method that orchestrates entire generation
 static generateIntegration(config: IntegrationConfig): any {
   const integrationId = `int-${Date.now()}`;
   const triggerName = config.integrationName || integrationId;
   
-  // 1. Gerar tasks principais
+  // 1. Generate main tasks
   const fieldMappingTask = this.generateFieldMappingTask(config.customerEmail);
   const restTask = this.generateRestTask();
-  const pubsubTask = this.generatePubSubTask(); // ⭐ NOVO: Sistema DLQ
+  const pubsubTask = this.generatePubSubTask(); // ⭐ NEW: DLQ System
   const successTask = this.generateSuccessOutputTask();
   
-  // 2. Gerar tasks de transformação (Jsonnet)
+  // 2. Generate transformation tasks (Jsonnet)
   const transformationTasks = config.mappings
     .filter(m => m.transformation)
     .map((mapping, index) => this.generateJsonnetMapperTask(mapping, index));
   
-  // 3. Montar JSON final do Application Integration
+  // 3. Assemble final Application Integration JSON
   return {
     "name": `projects/160372229474/locations/us-central1/integrations/${integrationId}/versions/1`,
     "updateTime": new Date().toISOString(),
     "triggerConfigs": [{
       "label": "API Trigger",
       "triggerType": "API",
-      "triggerId": `api_trigger/${triggerName}`, // ⭐ NOVO: Trigger ID limpo
+      "triggerId": `api_trigger/${triggerName}`, // ⭐ NEW: Clean Trigger ID
       "startTasks": [{ "taskId": "1" }]
     }],
     "taskConfigs": [
       fieldMappingTask,  // taskId: 1
       restTask,          // taskId: 2  
       successTask,       // taskId: 5
-      pubsubTask,        // taskId: 4 ⭐ NOVO: Substitui EmailTask
+      pubsubTask,        // taskId: 4 ⭐ NEW: Replaces EmailTask
       ...transformationTasks // taskIds: 10+
     ],
-    "integrationParameters": [...], // Schemas Input/Output
+    "integrationParameters": [...], // Input/Output schemas
     "integrationConfigParameters": [...] // CONFIG variables
   };
 }
 ```
 
-**Sistema PubSub DLQ Implementado**:
-```typescript
-// ⭐ NOVA FUNCIONALIDADE: PubSub Task para Dead Letter Queue
-private static generatePubSubTask(): any {
-  return {
-    "task": "GenericConnectorTask",
-    "taskId": "4", // Mantém mesmo ID da antiga EmailTask
-    "parameters": {
-      "connectionName": {
-        "value": { "stringValue": "projects/apigee-prd1/locations/us-central1/connections/pubsub-poc" }
-      },
-      "actionName": {
-        "value": { "stringValue": "publishMessage" }
-      },
-      "connectorInputPayload": {
-        "value": { "stringValue": "$`Task_4_connectorInputPayload`$" }
-      }
-    },
-    "displayName": "Publish to PubSub DLQ"
-  };
-}
-```
+### 🔄 **PubSub Dead Letter Queue (DLQ) System** ⭐ **CRITICAL FEATURE IMPLEMENTED**
 
-**Conversão JSON→String Nativa**:
-```typescript
-// Integrada no FieldMappingTask - elimina JsonnetMapperTask extra
-{
-  "inputField": {
-    "fieldType": "JSON_VALUE",
-    "transformExpression": {
-      "initialValue": { "referenceValue": "$systemPayload$" },
-      "transformationFunctions": [{
-        "functionType": {
-          "stringFunction": { "functionName": "TO_JSON" } // ⭐ Função nativa
-        }
-      }]
-    }
-  },
-  "outputField": {
-    "referenceKey": "$`Task_4_connectorInputPayload`.message$",
-    "fieldType": "STRING_VALUE"
-  }
-}
-```
+#### **Business Context and Need**
+We replaced the traditional EmailTask system with a PubSub Dead Letter Queue solution for robust integration failure handling. This change resolves critical scalability and configuration limitations.
 
-#### 4. **IntegrationService** - Orquestração
+#### **EmailTask Problems Solved**
+- **❌ Corporate email dependency**: Complex SMTP configuration specific per client
+- **❌ Scalability limitations**: Emails are not ideal for batch processing
+- **❌ Dynamic variable problems**: Error context corrupted email variables
+- **❌ No reprocessing**: Emails don't allow automatic retry
 
-**Localização**: `backend/src/services/IntegrationService.ts`
+#### **PubSub Solution Implemented**
+- **✅ Asynchronous by design**: Batch processing, automatic retry and load balancing
+- **✅ Existing infrastructure**: Reuses already configured PubSub connection
+- **✅ Advanced monitoring**: Metrics, alerts and message tracking
+- **✅ Preserved payload**: Original systemPayload maintained for reprocessing
 
-**Responsabilidade**: Coordenar geração completa da integração com transformações
-
-**Fluxo de Orquestração**:
-
-```typescript
-// Método principal que coordena tudo
-static generateIntegrationWithTransformations(config: IntegrationConfig): any {
-  // 1. Processar mapeamentos e extrair transformações
-  const transformationTasks = config.mappings
-    .filter(m => m.transformation && m.transformation.type)
-    .map((mapping, index) => ({
-      "task": "JsonnetMapperTask",
-      "taskId": (10 + index).toString(),
-      "parameters": {
-        "template": {
-          "value": {
-            "stringValue": this.generateJsonnetTemplate(mapping.transformation, mapping.sourceField.path)
-          }
-        }
-      },
-      "displayName": `Transform ${mapping.sourceField.name} (${mapping.transformation.type})`
-    }));
-
-  // 2. Gerar templates Jsonnet específicos por tipo
-  const templates = {
-    'format_document': this.generateFormatDocumentJsonnet,
-    'phone_split': this.generatePhoneSplitJsonnet,
-    'name_split': this.generateNameSplitJsonnet,
-    'country_code': this.generateCountryCodeJsonnet
-  };
-
-  // 3. Usar TemplateService para integração final
-  return TemplateService.generateIntegration({
-    ...config,
-    transformationTasks
-  });
-}
-```
-
-**Templates Jsonnet Auto-Contidos**:
-```typescript
-// ⭐ CRÍTICO: Templates sem imports externos (compatível Application Integration)
-private generateFormatDocumentJsonnet(varName: string, inputPath: string): string {
-  return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; { ${varName}: std.strReplace(std.strReplace(std.strReplace(inputValue, ".", ""), "-", ""), " ", "") }`;
-}
-
-private generatePhoneSplitJsonnet(varName: string, inputPath: string): string {
-  return `local sourcePayload = std.extVar("sourcePayload"); local inputValue = ${inputPath}; local cleanPhone = std.strReplace(std.strReplace(inputValue, "+55", ""), " ", ""); { ${varName}: std.substr(cleanPhone, 0, 2) }`;
-}
-```
-
-### 🔄 Fluxo de Execução Runtime
-
-#### Execução no Google Cloud Application Integration
+#### **DLQ System Architecture**
 
 ```
-1. Webhook Trigger
-   ↓ (sourcePayload = payload do sistema origem)
-   
-2. JsonnetMapperTasks (taskIds: 10+) [OPCIONAL]
-   ├─ Transform document format
-   ├─ Transform phone split  
-   ├─ Transform name split
-   └─ Output: variables transformadas
-   ↓
-   
-3. FieldMappingTask (taskId: 1) [~200ms]
-   ├─ Resolve systemPayload usando CONFIG + RESOLVE_TEMPLATE
-   ├─ Aplica todos os mapeamentos definidos
-   ├─ Configura systemEndpoint, customerEmail, topic DLQ
-   └─ Converte systemPayload para JSON string (TO_JSON)
-   ↓
-   
-4. RestTask (taskId: 2) [~1-5s]
-   ├─ POST para endpoint do cliente
-   ├─ Headers: Content-Type: application/json
-   ├─ Body: systemPayload (JSON completo)
-   ├─ ✅ Success (200 OK) → Task 5
-   └─ ❌ Failure (≠200) → Task 4
-   ↓
-   
-5a. SuccessOutputTask (taskId: 5) [~100ms]
-    └─ Return: { "Status": "Success" }
-    
-5b. PubSubTask (taskId: 4) [~300ms] ⭐ SISTEMA DLQ
-    ├─ Connection: pubsub-poc
-    ├─ Topic: "dlq-pre-employee-moved"
-    ├─ Message: systemPayload (JSON string)
-    └─ Output: messageId para tracking
+Source System Webhook → FieldMappingTask → RestTask (Client)
+                                      ↓ (failure)
+                               PubSubTask (DLQ)
+                                      ↓
+                          Topic: "dlq-pre-employee-moved"
+                                      ↓
+                            Reprocessing System
 ```
 
-### 🌐 Sistema Universal System-Agnostic
+#### **Technical Specifications**
 
-#### Transformação Arquitetural Concluída
+**PubSub Connection**:
+```
+projects/apigee-prd1/locations/us-central1/connections/pubsub-poc
+```
 
-O sistema passou por uma transformação completa para suportar qualquer sistema origem:
+**DLQ Topic**:
+```
+dlq-pre-employee-moved
+```
 
-**ANTES**: `Gupy (fixo) → Target System (configurável)`
-**DEPOIS**: `Source System (configurável) → Target System (configurável)`
+**DLQ Payload**: Complete systemPayload converted to JSON string using native `TO_JSON` function
 
-#### Estrutura Universal Implementada
+**Defined Schemas**:
+- **Input Schema**: `{message: string, topic: string, attributes?: string}`
+- **Output Schema**: `{messageId: string}` for tracking
+
+### 🌐 Universal System-Agnostic System
+
+#### Completed Architectural Transformation
+
+The system underwent a complete transformation to support any source system:
+
+**BEFORE**: `Gupy (fixed) → Target System (configurable)`
+**AFTER**: `Source System (configurable) → Target System (configurable)`
+
+#### Implemented Universal Structure
 
 ```
 schemas/
-├── source-systems/          # ⭐ NOVO: Sistemas origem configuráveis
+├── source-systems/          # ⭐ NEW: Configurable source systems
 │   ├── gupy/
 │   │   ├── schema.json
 │   │   └── example.json
@@ -416,236 +272,90 @@ schemas/
 │   │   └── schema.json
 │   └── workday/
 │       └── schema.json
-├── target-systems/          # ⭐ NOVO: Sistemas destino configuráveis  
+├── target-systems/          # ⭐ NEW: Configurable target systems  
 │   ├── generic/
 │   ├── salesforce/
 │   ├── workday/
 │   └── sap/
-└── system-definitions.json  # ⭐ NOVO: Metadata centralizada
+└── system-definitions.json  # ⭐ NEW: Centralized metadata
 ```
 
-#### APIs Universais
+#### Universal APIs
 
 ```typescript
-// ⭐ NOVO: Endpoints agnósticos que servem qualquer sistema
+// ⭐ NEW: Agnostic endpoints serving any system
 router.get('/source-schema/:systemId?', async (req, res) => {
   const systemId = req.params.systemId || 'hr-system';
   const schema = await SchemaManagerService.loadSourceSchema(systemId);
-  // Funciona para: hr-system, salesforce, workday, sap, etc.
+  // Works for: hr-system, salesforce, workday, sap, etc.
 });
 
 router.post('/generate-mappings', async (req, res) => {
   const { sourceSystemId = 'hr-system' } = req.body;
   const mappings = await geminiService.generateMappings(clientSchema, inputType, sourceSystemId);
-  // IA mapeia qualquer sistema origem automaticamente
+  // AI maps any source system automatically
 });
 ```
 
-#### Templates Universais
+#### Universal Templates
 
 ```
 templates/
-└── universal/              # ⭐ NOVO: Templates que funcionam com qualquer sistema
+└── universal/              # ⭐ NEW: Templates working with any system
     ├── tasks/
     │   └── pubsub-dlq-task.json
     └── transformations/
-        ├── document-format.jsonnet    # Remove formatação documentos
-        ├── name-split.jsonnet         # Divide nomes
-        ├── phone-split.jsonnet        # Divide telefones  
-        └── country-code.jsonnet       # Converte códigos país
+        ├── document-format.jsonnet    # Remove document formatting
+        ├── name-split.jsonnet         # Split names
+        ├── phone-split.jsonnet        # Split phones  
+        └── country-code.jsonnet       # Convert country codes
 ```
 
-### 📊 Métricas e Performance
+### 📊 Metrics and Performance
 
-#### Capacidades Atuais
-- **Processamento IA**: Single-shot para 190+ campos em <5 segundos
-- **Geração JSON**: Integration completa em <2 segundos
-- **Deploy Pipeline**: Mapeamento → Live em <5 minutos
-- **Confiança IA**: 86.3% média com Gemini 2.0 Flash
-- **Cobertura**: 27+ mapeamentos automáticos típicos
+#### Current Capabilities
+- **AI Processing**: Single-shot for 190+ fields in <5 seconds
+- **JSON Generation**: Complete integration in <2 seconds
+- **Deploy Pipeline**: Mapping → Live in <5 minutes
+- **AI Confidence**: 86.3% average with Gemini 2.0 Flash
+- **Coverage**: 27+ typical automatic mappings
 
-#### Evidências de Funcionalidade
-- ✅ **Sistema 100% Funcional**: Zero erros críticos conhecidos
-- ✅ **Deploy Pipeline**: Integração criada → publicada → LIVE automaticamente  
-- ✅ **PubSub DLQ**: Sistema robusto de tratamento de falhas implementado
-- ✅ **System-Agnostic**: Arquitetura universal para qualquer sistema origem
-- ✅ **Confidence Fix**: Normalização implementada resolve erro deployment
+#### Functionality Evidence
+- ✅ **100% Functional System**: Zero known critical errors
+- ✅ **Deploy Pipeline**: Integration created → published → LIVE automatically  
+- ✅ **PubSub DLQ**: Robust failure handling system implemented
+- ✅ **System-Agnostic**: Universal architecture for any source system
+- ✅ **Confidence Fix**: Normalization implemented resolves deployment error
 
-#### Arquivos Core do Sistema
+#### Core System Files
 
 ```
 backend/src/services/
-├── GeminiMappingService.ts   # 🧠 IA + Algoritmos de mapeamento
-├── TransformationEngine.ts   # ⚙️ Engine de transformação de dados
-├── TemplateService.ts        # 📋 Geração JSON Application Integration
-├── IntegrationService.ts     # 🎯 Orquestração completa
-└── SchemaManagerService.ts   # 📁 Gestão schemas universal
+├── GeminiMappingService.ts   # 🧠 AI + Mapping algorithms
+├── TransformationEngine.ts   # ⚙️ Data transformation engine
+├── TemplateService.ts        # 📋 Application Integration JSON generation
+├── IntegrationService.ts     # 🎯 Complete orchestration
+└── SchemaManagerService.ts   # 📁 Universal schema management
 ```
 
-## 🚀 Funcionalidades
+## 🚀 Features
 
-- ✅ Interface visual drag & drop
-- ✅ Mapeamento de payload Sistema Origem → Sistema Destino
-- ✅ **Sistema PubSub DLQ para tratamento robusto de falhas** ⭐ **NOVO**
-- ✅ Geração automática de JSON de integração
-- ✅ Deploy automático no Google Cloud Application Integration
-- ✅ Pipeline CI/CD com Cloud Build
-- ✅ Monitoramento e logs de execução
+- ✅ Visual drag & drop interface
+- ✅ Source System → Target System payload mapping
+- ✅ **PubSub DLQ system for robust failure handling** ⭐ **NEW**
+- ✅ Automatic integration JSON generation
+- ✅ Auto-deploy to Google Cloud Application Integration
+- ✅ CI/CD pipeline with Cloud Build
+- ✅ Execution monitoring and logs
 
-### 🔄 **Sistema PubSub Dead Letter Queue (DLQ)** ⭐ **FUNCIONALIDADE CRÍTICA IMPLEMENTADA**
-
-#### **Contexto e Necessidade Business**
-Substituímos o sistema EmailTask tradicional por uma solução PubSub Dead Letter Queue para tratamento robusto de falhas de integração. Esta mudança resolve limitações críticas de escalabilidade e configuração.
-
-#### **Problema EmailTask Resolvido**
-- **❌ Dependência email corporativa**: Configuração SMTP complexa e específica por cliente
-- **❌ Limitações de escalabilidade**: Emails não são ideais para processamento em lote
-- **❌ Variáveis dinâmicas problemáticas**: Contexto de erro corrompia variáveis de email
-- **❌ Falta de reprocessamento**: Emails não permitem retry automático
-
-#### **Solução PubSub Implementada**
-- **✅ Assíncrono por design**: Processamento batch, retry automático e load balancing
-- **✅ Infraestrutura existente**: Reutiliza connection PubSub já configurada
-- **✅ Monitoramento avançado**: Métricas, alertas e tracking de mensagens
-- **✅ Payload preservado**: SystemPayload original mantido para reprocessamento
-
-#### **Arquitetura do Sistema DLQ**
-
-```
-Webhook Sistema Origem → FieldMappingTask → RestTask (Cliente)
-                                      ↓ (falha)
-                               PubSubTask (DLQ)
-                                      ↓
-                          Topic: "dlq-pre-employee-moved"
-                                      ↓
-                            Sistema de Reprocessamento
-```
-
-#### **Especificações Técnicas**
-
-**Connection PubSub**:
-```
-projects/apigee-prd1/locations/us-central1/connections/pubsub-poc
-```
-
-**Topic DLQ**:
-```
-dlq-pre-employee-moved
-```
-
-**Payload DLQ**: SystemPayload completo convertido para JSON string usando função nativa `TO_JSON`
-
-**Schemas Definidos**:
-- **Input Schema**: `{message: string, topic: string, attributes?: string}`
-- **Output Schema**: `{messageId: string}` para tracking
-
-#### **Fluxo de Execução Detalhado**
-
-```
-1. FieldMappingTask (taskId: 1) [~200ms]
-   ├─ Resolve systemPayload usando CONFIG_systemPayload + RESOLVE_TEMPLATE
-   ├─ Configura systemEndpoint usando CONFIG_systemEndpoint  
-   ├─ Hardcode topic "dlq-pre-employee-moved"
-   └─ Converte systemPayload JSON → String usando TO_JSON nativo
-   
-2. RestTask (taskId: 2) [~1-5s]
-   ├─ POST para endpoint do cliente com systemPayload
-   ├─ Headers: Content-Type: application/json, X-Integration-Source: iPaaS-Builder
-   ├─ Conditional Success: responseStatus = "200 OK" → Task 5 (Success)
-   └─ Conditional Failure: responseStatus != "200 OK" → Task 4 (PubSub DLQ)
-
-3a. SUCCESS PATH: SuccessOutputTask (taskId: 5) [~100ms]
-    └─ Retorna { "Status": "Success" } para Sistema Origem
-
-3b. FAILURE PATH: PubSubTask (taskId: 4) [~300-500ms]
-    ├─ Connection: projects/apigee-prd1/locations/us-central1/connections/pubsub-poc
-    ├─ Action: publishMessage usando Google Cloud Connectors
-    ├─ Topic: "dlq-pre-employee-moved" 
-    ├─ Message: systemPayload convertido para JSON string
-    └─ Output: messageId para tracking e monitoramento
-```
-
-#### **Vantagens Técnicas**
-
-**Performance e Simplicidade**:
-- ✅ **Conversão Nativa**: TO_JSON integrado (elimina JsonnetMapperTask extra)
-- ✅ **Compatibilidade Total**: Mantém taskId 4 (zero refactoring)
-- ✅ **Schemas Bem Definidos**: JSON Draft-07 para validation automática
-
-**Robustez e Monitoramento**:
-- ✅ **Connection Reutilização**: Infraestrutura PubSub existente e testada
-- ✅ **Topic Dedicado**: Filtering e alertas específicos para falhas do sistema origem
-- ✅ **Payload Preservado**: Reprocessamento com dados originais completos
-- ✅ **MessageId Tracking**: Rastreamento end-to-end de mensagens
-
-**Escalabilidade e Flexibilidade**:
-- ✅ **Processamento Assíncrono**: Batch processing, retry automático
-- ✅ **Input Variable**: sourceSystemPayload configurável por cliente
-- ✅ **Schema Extensível**: Metadata customizada (timestamp, clientName)
-- ✅ **Multi-ambiente**: Connection parameterizável para dev/prod
-
-#### **Configuração Payload Sistema Origem Real**
-
-O sistema agora usa dados reais de exemplo com estrutura completa:
-
-```json
-{
-  "body": {
-    "companyName": "Minerva Foods",
-    "event": "pre-employee.moved",
-    "id": "49589201-dbb3-46b7-b2d6-4f3ec16ac742",
-    "date": "2025-07-03T13:22:51.239Z",
-    "data": {
-      "job": {
-        "departmentCode": "40000605",
-        "roleCode": "35251270", 
-        "name": "VAGA TESTE INTEGRAÇÃO - Auxiliar de Produção",
-        "department": {
-          "id": 726936.0,
-          "code": "40000605",
-          "name": "MIUDOS DIURNO"
-        }
-      },
-      "candidate": {
-        "name": "Erica",
-        "lastName": "Brugognolle", 
-        "email": "ericabru@hotmail.com",
-        "identificationDocument": "26962277806",
-        "mobileNumber": "+5511986637567"
-      },
-      "admission": {
-        "hiringDate": "2025-06-30T03:00:00.000Z",
-        "documentsTemplate": {
-          "id": 52807.0,
-          "name": "Admissão CLT"
-        }
-      },
-      "position": {
-        "salary": {
-          "value": 3000.0,
-          "currency": "R$"
-        }
-      }
-    }
-  }
-}
-```
-
-#### **Evidências de Sucesso**
-- ✅ **Deploy Successful**: Integration JSON gerado sem erros
-- ✅ **PubSub Connection**: Validada e operacional no ambiente apigee-prd1
-- ✅ **Topic Creation**: "dlq-pre-employee-moved" criado e monitorado
-- ✅ **Conditional Flow**: RestTask falha → PubSubTask executa automaticamente
-- ✅ **Payload Structure**: Wrapper body.data.* funcionando com dados reais
-
-## 📋 Pré-requisitos
+## 📋 Prerequisites
 
 - Node.js 18+
 - Docker
 - Google Cloud SDK
-- Conta Google Cloud com Application Integration habilitado
+- Google Cloud account with Application Integration enabled
 
-## 🛠️ Desenvolvimento Local
+## 🛠️ Local Development
 
 ### Frontend
 
@@ -655,7 +365,7 @@ npm install
 npm start
 ```
 
-A aplicação estará disponível em `http://localhost:3000`
+The application will be available at `http://localhost:3000`
 
 ### Backend
 
@@ -665,56 +375,56 @@ npm install
 npm run dev
 ```
 
-A API estará disponível em `http://localhost:8080`
+The API will be available at `http://localhost:8080`
 
-### Variáveis de Ambiente
+### Environment Variables
 
-Crie um arquivo `.env` no diretório `backend`:
+Create a `.env` file in the `backend` directory:
 
 ```env
 NODE_ENV=development
 PORT=8080
-GOOGLE_CLOUD_PROJECT_ID=seu-project-id
+GOOGLE_CLOUD_PROJECT_ID=your-project-id
 GOOGLE_CLOUD_REGION=us-central1
 FRONTEND_URL=http://localhost:3000
 
-# Gemini AI (opcional - para mapeamento automático)
-GEMINI_API_KEY=sua-api-key-do-gemini
+# Gemini AI (optional - for automatic mapping)
+GEMINI_API_KEY=your-gemini-api-key
 ```
 
-### 🤖 Configuração do Gemini AI (Opcional)
+### 🤖 Gemini AI Configuration (Optional)
 
-Para habilitar o mapeamento automático com IA:
+To enable automatic mapping with AI:
 
-1. **Obter API Key**:
-   - Acesse: https://makersuite.google.com/app/apikey
-   - Crie uma nova API key
-   - Copie a chave gerada
+1. **Get API Key**:
+   - Access: https://makersuite.google.com/app/apikey
+   - Create a new API key
+   - Copy the generated key
 
-2. **Configurar no Backend**:
+2. **Configure in Backend**:
    ```bash
    cd backend
-   echo "GEMINI_API_KEY=sua-api-key-aqui" >> .env
+   echo "GEMINI_API_KEY=your-api-key-here" >> .env
    ```
 
-3. **Funcionalidades com Gemini**:
-   - ✅ Mapeamento automático baseado em semântica
-   - ✅ Sugestões inteligentes de campos
-   - ✅ Análise de padrões de nomenclatura
-   - ✅ Fallback para algoritmo simples se API falhar
+3. **Features with Gemini**:
+   - ✅ Automatic mapping based on semantics
+   - ✅ Intelligent field suggestions
+   - ✅ Naming pattern analysis
+   - ✅ Fallback to simple algorithm if API fails
 
-**Nota**: Sem a API key, o sistema usa um algoritmo de mapeamento baseado em padrões semânticos locais.
+**Note**: Without the API key, the system uses a local semantic pattern-based mapping algorithm.
 
 ## 🐳 Docker
 
-### Build Local
+### Local Build
 
 ```bash
 # Backend
-docker build -t ipaas-backend ./backend
+docker build -t mapping-builder-backend ./backend
 
 # Frontend
-docker build -t ipaas-frontend ./frontend
+docker build -t mapping-builder-frontend ./frontend
 ```
 
 ### Docker Compose
@@ -723,16 +433,16 @@ docker build -t ipaas-frontend ./frontend
 docker-compose up -d
 ```
 
-## ☁️ Deploy no Google Cloud
+## ☁️ Deploy to Google Cloud
 
-### 1. Configurar Projeto
+### 1. Configure Project
 
 ```bash
-# Definir projeto
-export PROJECT_ID=seu-project-id
+# Set project
+export PROJECT_ID=your-project-id
 gcloud config set project $PROJECT_ID
 
-# Habilitar APIs necessárias
+# Enable required APIs
 gcloud services enable cloudbuild.googleapis.com
 gcloud services enable run.googleapis.com
 gcloud services enable integrations.googleapis.com
@@ -741,172 +451,180 @@ gcloud services enable integrations.googleapis.com
 ### 2. Deploy via Cloud Build
 
 ```bash
-# Trigger manual
+# Manual trigger
 gcloud builds submit --config=deployment/cloudbuild.yaml
 
-# Ou configurar trigger automático
+# Or configure automatic trigger
 gcloud builds triggers create github \
-  --repo-name=ipaas-integration \
-  --repo-owner=seu-usuario \
+  --repo-name=mapping-builder \
+  --repo-owner=your-username \
   --branch-pattern="^main$" \
   --build-config=deployment/cloudbuild.yaml
 ```
 
-### 3. Configurar Permissões
+### 3. Configure Permissions
 
 ```bash
-# Service account para Application Integration
-gcloud iam service-accounts create ipaas-integration \
-  --display-name="iPaaS Integration Service Account"
+# Service account for Application Integration
+gcloud iam service-accounts create mapping-builder-integration \
+  --display-name="Mapping Builder Integration Service Account"
 
-# Adicionar roles necessários
+# Add required roles
 gcloud projects add-iam-policy-binding $PROJECT_ID \
-  --member="serviceAccount:ipaas-integration@$PROJECT_ID.iam.gserviceaccount.com" \
+  --member="serviceAccount:mapping-builder-integration@$PROJECT_ID.iam.gserviceaccount.com" \
   --role="roles/integrations.integrationAdmin"
 ```
 
-## 📖 Como Usar
+## 📖 How to Use
 
-### 1. Acessar a Interface
+### 1. Access the Interface
 
-Navegue até a URL do frontend deployado no Cloud Run.
+Navigate to the frontend URL deployed on Cloud Run.
 
-### 2. Configurar Integração
+### 2. Configure Integration
 
-1. **Email do Cliente**: Insira o email para notificações de erro
-2. **Endpoint do Sistema**: URL do webhook do sistema cliente
+1. **Client Email**: Enter email for error notifications
+2. **System Endpoint**: URL of the client system webhook
 
-### 3. Mapear Campos
+### 3. Map Fields
 
-1. **Painel Esquerdo**: Visualize a estrutura do payload do sistema origem
-2. **Painel Central**: Arraste campos para criar mapeamentos
-3. **Painel Direito**: Configure e visualize o JSON gerado
+1. **Left Panel**: View source system payload structure
+2. **Center Panel**: Drag fields to create mappings
+3. **Right Panel**: Configure and view generated JSON
 
 ### 4. Deploy
 
-Clique em "Deploy Integration" para criar a integração no Google Cloud.
+Click "Deploy Integration" to create the integration in Google Cloud.
 
-## 🧹 **LIMPEZA DE CÓDIGO RECÉM-IMPLEMENTADA** (Agosto 2025)
+## 🧹 **RECENT CODE CLEANUP IMPLEMENTATION** (August 2025)
 
-### ✅ **Código Otimizado e Simplificado**
-O projeto passou por uma limpeza abrangente para remover código não utilizado:
+### ✅ **Optimized and Simplified Code**
+The project underwent comprehensive cleanup to remove unused code:
 
-- **22 arquivos/pastas removidos** (~25% redução no tamanho)
-- **Interface simplificada** sem componentes Wizard desnecessários
-- **Build otimizado** para 164.01 kB (bundle final)
-- **Código mais limpo** focado apenas no essencial
+- **22 files/folders removed** (~25% size reduction)
+- **Simplified interface** without unnecessary Wizard components
+- **Optimized build** to 164.01 kB (final bundle)
+- **Cleaner code** focused only on essentials
 
-### 📁 **Arquivos Removidos**
-- ❌ Arquivos de teste manuais obsoletos (6 arquivos)
-- ❌ Schemas duplicados e documentação redundante
-- ❌ Templates Jsonnet obsoletos (pasta completa)
-- ❌ Componentes Wizard não utilizados (2 pastas completas)
-- ❌ Templates integration obsoletos
+### 📁 **Removed Files**
+- ❌ Obsolete manual test files (6 files)
+- ❌ Duplicate schemas and redundant documentation
+- ❌ Obsolete Jsonnet templates (complete folder)
+- ❌ Unused Wizard components (2 complete folders)
+- ❌ Obsolete integration templates
 
-### 🎯 **Interface Otimizada**
-- **Schema Input Direto**: Input JSON simplificado no MappingCanvas
-- **Drag & Drop Core**: Foco na funcionalidade principal
-- **Zero Dependências Mortas**: Código 100% utilizado
+### 🎯 **Optimized Interface**
+- **Direct Schema Input**: Simplified JSON input in MappingCanvas
+- **Core Drag & Drop**: Focus on main functionality
+- **Zero Dead Dependencies**: 100% utilized code
 
-## 🔧 Estrutura do Projeto (Atualizada)
+## 🔧 Project Structure (Updated)
 
 ```
-ipaas-integration/
-├── frontend/                 # React frontend (otimizado)
+mapping-builder/
+├── frontend/                 # React frontend (optimized)
 │   ├── src/
-│   │   ├── components/      # Componentes essenciais
-│   │   │   ├── ConfigPanel/     # Configuração cliente
-│   │   │   ├── DebugPanel/      # Debug e monitoramento  
-│   │   │   ├── JsonPreview/     # Preview integração
-│   │   │   ├── MappingCanvas/   # Interface principal drag & drop
-│   │   │   └── PayloadTree/     # Visualização payload sistema origem
-│   │   ├── types/          # Definições TypeScript
-│   │   ├── utils/          # Utilitários core
-│   │   └── services/       # Serviços frontend
+│   │   ├── components/      # Essential components
+│   │   │   ├── ConfigPanel/     # Client configuration
+│   │   │   ├── DebugPanel/      # Debug and monitoring  
+│   │   │   ├── JsonPreview/     # Integration preview
+│   │   │   ├── MappingCanvas/   # Main drag & drop interface
+│   │   │   └── PayloadTree/     # Source system payload visualization
+│   │   ├── types/          # TypeScript definitions
+│   │   ├── utils/          # Core utilities
+│   │   └── services/       # Frontend services
 │   ├── Dockerfile
 │   └── nginx.conf
 ├── backend/                 # Node.js backend
 │   ├── src/
-│   │   ├── routes/         # APIs RESTful
-│   │   │   ├── deploy.ts       # Deploy integração
-│   │   │   ├── gemini.ts       # Mapeamento IA
-│   │   │   ├── integration.ts  # Gestão integração
-│   │   │   └── transformations.ts # Preview transformação
-│   │   └── services/       # Serviços de negócio
-│   │       ├── CloudBuildService.ts     # Automação deploy
-│   │       ├── GeminiMappingService.ts  # IA mapeamento
-│   │       ├── IntegrationService.ts    # Geração integração
-│   │       ├── SchemaManagerService.ts  # Gestão schemas
-│   │       ├── TemplateService.ts       # Sistema PubSub
-│   │       └── TransformationEngine.ts  # Engine transformação
+│   │   ├── routes/         # RESTful APIs
+│   │   │   ├── deploy.ts       # Integration deployment
+│   │   │   ├── gemini.ts       # AI mapping
+│   │   │   ├── integration.ts  # Integration management
+│   │   │   └── transformations.ts # Transformation preview
+│   │   └── services/       # Business services
+│   │       ├── CloudBuildService.ts     # Deploy automation
+│   │       ├── GeminiMappingService.ts  # AI mapping
+│   │       ├── IntegrationService.ts    # Integration generation
+│   │       ├── SchemaManagerService.ts  # Schema management
+│   │       ├── TemplateService.ts       # PubSub system
+│   │       └── TransformationEngine.ts  # Transformation engine
 │   └── Dockerfile
-├── schemas/                # Schemas e exemplos
-│   ├── gupy/              # Schema exemplo (mantido para compatibilidade)
-│   ├── examples/          # Exemplos sistemas
-│   └── patterns/          # Padrões semânticos
-├── deployment/            # Configurações deploy
+├── schemas/                # Schemas and examples
+│   ├── source-systems/    # Source system schemas
+│   ├── target-systems/    # Target system schemas
+│   ├── examples/          # System examples
+│   └── patterns/          # Semantic patterns
+├── templates/             # Universal templates
+│   ├── universal/         # System-agnostic templates
+│   ├── source-systems/    # Source-specific templates
+│   └── target-systems/    # Target-specific templates
+├── deployment/            # Deploy configurations
 │   ├── cloudbuild.yaml   # CI/CD pipeline
-│   └── integration-build.yaml # Deploy integração
-└── memory-bank/          # Documentação técnica
-    ├── activeContext.md   # Estado atual
-    ├── progress.md        # Progresso projeto
-    └── systemPatterns.md  # Padrões arquiteturais
+│   └── integration-build.yaml # Integration deploy
+├── docs/                  # Documentation
+│   ├── en/               # English documentation
+│   └── pt-BR/            # Portuguese documentation
+└── memory-bank/          # Technical documentation
+    ├── activeContext.md   # Current state
+    ├── progress.md        # Project progress
+    └── systemPatterns.md  # Architectural patterns
 ```
 
-## 🔄 Fluxo de Integração
+## 🔄 Integration Flow
 
-1. **Cliente configura** email e endpoint
-2. **Cliente mapeia** campos Sistema Origem → Sistema Destino
-3. **Sistema gera** JSON de integração
-4. **Cloud Build** deploya no Application Integration
-5. **Sistema origem envia** webhook para integração
-6. **Integração processa** e envia para cliente
-7. **Em caso de erro**, email é enviado ao cliente
+1. **Client configures** email and endpoint
+2. **Client maps** Source System → Target System fields
+3. **System generates** integration JSON
+4. **Cloud Build** deploys to Application Integration
+5. **Source system sends** webhook to integration
+6. **Integration processes** and sends to client
+7. **On error**, message is published to PubSub DLQ
 
-## 📊 Monitoramento
+## 📊 Monitoring
 
-### Logs de Execução
+### Execution Logs
 
 ```bash
-# Logs do Cloud Run
+# Cloud Run logs
 gcloud logging read "resource.type=cloud_run_revision" --limit=50
 
-# Logs do Application Integration
+# Application Integration logs
 gcloud logging read "resource.type=integration" --limit=50
 ```
 
-### Métricas
+### Metrics
 
-- Execuções por minuto
-- Taxa de sucesso/erro
-- Latência média
-- Uso de recursos
+- Executions per minute
+- Success/error rate
+- Average latency
+- Resource usage
 
-## 🛡️ Segurança
+## 🛡️ Security
 
-- ✅ Headers de segurança configurados
-- ✅ Validação de entrada com Joi
+- ✅ Security headers configured
+- ✅ Input validation with Joi
 - ✅ Rate limiting
-- ✅ CORS configurado
-- ✅ Containers não-root
+- ✅ CORS configured
+- ✅ Non-root containers
 - ✅ Health checks
 
-## 🤝 Contribuição
+## 🤝 Contributing
 
-1. Fork o projeto
-2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudanças (`git commit -am 'Adiciona nova funcionalidade'`)
-4. Push para a branch (`git push origin feature/nova-funcionalidade`)
-5. Abra um Pull Request
+1. Fork the project
+2. Create a branch (`git checkout -b feature/new-feature`)
+3. Commit your changes (`git commit -am 'Add new feature'`)
+4. Push to the branch (`git push origin feature/new-feature`)
+5. Open a Pull Request
 
-## 📝 Licença
+## 📝 License
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para detalhes.
+This project is under the MIT license. See the [LICENSE](LICENSE) file for details.
 
-## 🆘 Suporte
+## 🆘 Support
 
-Para suporte, abra uma issue no GitHub ou entre em contato com a equipe de desenvolvimento.
+For support, open an issue on GitHub or contact the development team.
 
 ---
 
-**Desenvolvido com ❤️ para facilitar integrações no Google Cloud**
+**Built with ❤️ to facilitate integrations on Google Cloud**

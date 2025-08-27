@@ -1,5 +1,6 @@
 # Mapping Builder for Application Integration
 
+## Not Google Product Clause
 **⚠️ Disclaimer: This is not an officially supported Google product, nor is it part of any official Google product.**
 
 A visual integration platform that serves as a customer-facing frontend for Google Cloud Application Integration. Enables clients to visually map payloads through a drag & drop interface and automatically generate deployable integrations.

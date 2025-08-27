@@ -108,3 +108,6 @@ integration-deployer-key.json
 
 # Local development
 *.local
+
+# Memory Bank (Cline documentation)
+memory-bank/

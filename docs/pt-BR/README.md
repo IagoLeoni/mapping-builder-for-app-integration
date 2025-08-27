@@ -253,32 +253,6 @@ dlq-pre-employee-moved
 
 ### 🌐 Sistema Universal System-Agnostic
 
-#### Transformação Arquitetural Concluída
-
-O sistema passou por uma transformação completa para suportar qualquer sistema origem:
-
-**ANTES**: `Gupy (fixo) → Target System (configurável)`
-**DEPOIS**: `Source System (configurável) → Target System (configurável)`
-
-#### Estrutura Universal Implementada
-
-```
-schemas/
-├── source-systems/          # ⭐ NOVO: Sistemas origem configuráveis
-│   ├── gupy/
-│   │   ├── schema.json
-│   │   └── example.json
-│   ├── salesforce/
-│   │   └── schema.json
-│   └── workday/
-│       └── schema.json
-├── target-systems/          # ⭐ NOVO: Sistemas destino configuráveis  
-│   ├── generic/
-│   ├── salesforce/
-│   ├── workday/
-│   └── sap/
-└── system-definitions.json  # ⭐ NOVO: Metadata centralizada
-```
 
 #### APIs Universais
 

@@ -252,34 +252,6 @@ dlq-pre-employee-moved
 - **Input Schema**: `{message: string, topic: string, attributes?: string}`
 - **Output Schema**: `{messageId: string}` for tracking
 
-### 🌐 Universal System-Agnostic System
-
-#### Completed Architectural Transformation
-
-The system underwent a complete transformation to support any source system:
-
-**BEFORE**: `Gupy (fixed) → Target System (configurable)`
-**AFTER**: `Source System (configurable) → Target System (configurable)`
-
-#### Implemented Universal Structure
-
-```
-schemas/
-├── source-systems/          # ⭐ NEW: Configurable source systems
-│   ├── gupy/
-│   │   ├── schema.json
-│   │   └── example.json
-│   ├── salesforce/
-│   │   └── schema.json
-│   └── workday/
-│       └── schema.json
-├── target-systems/          # ⭐ NEW: Configurable target systems  
-│   ├── generic/
-│   ├── salesforce/
-│   ├── workday/
-│   └── sap/
-└── system-definitions.json  # ⭐ NEW: Centralized metadata
-```
 
 #### Universal APIs
 

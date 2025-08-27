@@ -205,52 +205,7 @@ static generateIntegration(config: IntegrationConfig): any {
 }
 ```
 
-### 🔄 **PubSub Dead Letter Queue (DLQ) System** ⭐ **CRITICAL FEATURE IMPLEMENTED**
-
-#### **Business Context and Need**
-We replaced the traditional EmailTask system with a PubSub Dead Letter Queue solution for robust integration failure handling. This change resolves critical scalability and configuration limitations.
-
-#### **EmailTask Problems Solved**
-- **❌ Corporate email dependency**: Complex SMTP configuration specific per client
-- **❌ Scalability limitations**: Emails are not ideal for batch processing
-- **❌ Dynamic variable problems**: Error context corrupted email variables
-- **❌ No reprocessing**: Emails don't allow automatic retry
-
-#### **PubSub Solution Implemented**
-- **✅ Asynchronous by design**: Batch processing, automatic retry and load balancing
-- **✅ Existing infrastructure**: Reuses already configured PubSub connection
-- **✅ Advanced monitoring**: Metrics, alerts and message tracking
-- **✅ Preserved payload**: Original systemPayload maintained for reprocessing
-
-#### **DLQ System Architecture**
-
-```
-Source System Webhook → FieldMappingTask → RestTask (Client)
-                                      ↓ (failure)
-                               PubSubTask (DLQ)
-                                      ↓
-                          Topic: "dlq-pre-employee-moved"
-                                      ↓
-                            Reprocessing System
-```
-
 #### **Technical Specifications**
-
-**PubSub Connection**:
-```
-projects/apigee-prd1/locations/us-central1/connections/pubsub-poc
-```
-
-**DLQ Topic**:
-```
-dlq-pre-employee-moved
-```
-
-**DLQ Payload**: Complete systemPayload converted to JSON string using native `TO_JSON` function
-
-**Defined Schemas**:
-- **Input Schema**: `{message: string, topic: string, attributes?: string}`
-- **Output Schema**: `{messageId: string}` for tracking
 
 
 #### Universal APIs
@@ -284,22 +239,6 @@ templates/
         └── country-code.jsonnet       # Convert country codes
 ```
 
-### 📊 Metrics and Performance
-
-#### Current Capabilities
-- **AI Processing**: Single-shot for 190+ fields in <5 seconds
-- **JSON Generation**: Complete integration in <2 seconds
-- **Deploy Pipeline**: Mapping → Live in <5 minutes
-- **AI Confidence**: 86.3% average with Gemini 2.0 Flash
-- **Coverage**: 27+ typical automatic mappings
-
-#### Functionality Evidence
-- ✅ **100% Functional System**: Zero known critical errors
-- ✅ **Deploy Pipeline**: Integration created → published → LIVE automatically  
-- ✅ **PubSub DLQ**: Robust failure handling system implemented
-- ✅ **System-Agnostic**: Universal architecture for any source system
-- ✅ **Confidence Fix**: Normalization implemented resolves deployment error
-
 #### Core System Files
 
 ```
@@ -315,7 +254,6 @@ backend/src/services/
 
 - ✅ Visual drag & drop interface
 - ✅ Source System → Target System payload mapping
-- ✅ **PubSub DLQ system for robust failure handling** ⭐ **NEW**
 - ✅ Automatic integration JSON generation
 - ✅ Auto-deploy to Google Cloud Application Integration
 - ✅ CI/CD pipeline with Cloud Build
@@ -469,27 +407,6 @@ Navigate to the frontend URL deployed on Cloud Run.
 
 Click "Deploy Integration" to create the integration in Google Cloud.
 
-## 🧹 **RECENT CODE CLEANUP IMPLEMENTATION** (August 2025)
-
-### ✅ **Optimized and Simplified Code**
-The project underwent comprehensive cleanup to remove unused code:
-
-- **22 files/folders removed** (~25% size reduction)
-- **Simplified interface** without unnecessary Wizard components
-- **Optimized build** to 164.01 kB (final bundle)
-- **Cleaner code** focused only on essentials
-
-### 📁 **Removed Files**
-- ❌ Obsolete manual test files (6 files)
-- ❌ Duplicate schemas and redundant documentation
-- ❌ Obsolete Jsonnet templates (complete folder)
-- ❌ Unused Wizard components (2 complete folders)
-- ❌ Obsolete integration templates
-
-### 🎯 **Optimized Interface**
-- **Direct Schema Input**: Simplified JSON input in MappingCanvas
-- **Core Drag & Drop**: Focus on main functionality
-- **Zero Dead Dependencies**: 100% utilized code
 
 ## 🔧 Project Structure (Updated)
 
@@ -582,22 +499,4 @@ gcloud logging read "resource.type=integration" --limit=50
 - ✅ Non-root containers
 - ✅ Health checks
 
-## 🤝 Contributing
 
-1. Fork the project
-2. Create a branch (`git checkout -b feature/new-feature`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature/new-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is under the MIT license. See the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-For support, open an issue on GitHub or contact the development team.
-
----
-
-**Built with ❤️ to facilitate integrations on Google Cloud**
